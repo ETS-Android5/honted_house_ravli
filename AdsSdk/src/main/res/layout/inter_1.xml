@@ -80,7 +80,7 @@
                     android:minWidth="20dp"
                     android:minHeight="20dp"
                     android:text="5"
-                    android:textColor="@color/ad_text_primary"
+                    android:textColor="@color/black"
                     android:textSize="14dp"
                     android:visibility="gone" />
             </androidx.cardview.widget.CardView>
@@ -167,7 +167,7 @@
                                 android:lineSpacingExtra="5dp"
                                 android:maxLines="2"
                                 android:text="My Photo Phone Dialer - Photo Caller Dialer 2021"
-                                android:textColor="@color/ad_text_primary"
+                                android:textColor="@color/black"
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
 
@@ -373,7 +373,7 @@
                                 
                                 android:gravity="center"
                                 android:text="Close"
-                                android:textColor="@color/ad_text_primary"
+                                android:textColor="@color/black"
                                 android:textSize="12dp" />
 
                             <TextView
@@ -397,7 +397,7 @@
                                     
                                     android:gravity="center"
                                     android:text="5"
-                                    android:textColor="@color/ad_text_primary"
+                                    android:textColor="@color/black"
                                     android:textSize="12dp"
                                     android:visibility="gone" />
 

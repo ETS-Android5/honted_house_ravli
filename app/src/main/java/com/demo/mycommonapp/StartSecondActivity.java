@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.demo.mycommonapp.newpk.MainAAActivity;
+import com.pesonal.adsdk.dialog.PrivacyDialog;
 import com.pesonal.adsdk.model.MOREAPPSPLASH;
 import com.pesonal.adsdk.remote.APIManager;
 
@@ -97,7 +97,7 @@ public class StartSecondActivity extends AppCompatActivity implements View.OnCli
                 startActivity(Intent.createChooser(share, "Share Application"));
                 break;
             case R.id.ivPrivacy:
-//                PrivacyDialog.show(StartSecondActivity.this);
+                    PrivacyDialog.show(StartSecondActivity.this,getResources().getStringArray(R.array.terms_of_service));
                 return;
 
         }

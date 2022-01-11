@@ -21,14 +21,12 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:background="@color/adColor"
-
-        
         android:paddingLeft="3dp"
         android:paddingTop="2dp"
         android:paddingRight="3dp"
         android:paddingBottom="2dp"
         android:text="@string/ad"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:textSize="7dp" />
 
     <ImageView
@@ -167,7 +165,7 @@
                 android:singleLine="true"
                 android:text="Install"
                 android:textAllCaps="true"
-                android:textColor="#fff"
+                android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold" />
         </FrameLayout>

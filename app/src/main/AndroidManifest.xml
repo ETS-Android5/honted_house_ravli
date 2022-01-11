@@ -27,10 +27,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".StartSecondActivity"/>
-        <activity android:name=".newpk.MainActivity2"/>
-        <activity android:name=".newpk.MainActivity3"/>
-        <activity android:name=".newpk.ExitActivity"/>
-        <activity android:name=".newpk.MainAAActivity"/>
+        <activity android:name=".MainActivity2"/>
+        <activity android:name=".MainActivity3"/>
+        <activity android:name=".ExitActivity"/>
+        <activity android:name=".MainAAActivity"/>
     </application>
 
 </manifest>

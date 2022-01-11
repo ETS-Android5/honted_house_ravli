@@ -12,23 +12,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.demo.mycommonapp.newpk.MainAAActivity;
 import com.pesonal.adsdk.ADS_SplashActivity;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.utils.getDataListner;
 
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 public class SplashActivity extends ADS_SplashActivity {
 

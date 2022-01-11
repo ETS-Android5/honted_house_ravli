@@ -1,4 +1,4 @@
-package com.demo.mycommonapp.newpk;
+package com.demo.mycommonapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.demo.mycommonapp.R;
 import com.pesonal.adsdk.remote.APIManager;
 
 public class MainAAActivity extends AppCompatActivity implements View.OnClickListener {

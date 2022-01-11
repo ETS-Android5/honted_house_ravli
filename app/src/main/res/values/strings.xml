@@ -2,4 +2,46 @@
     <string name="app_name">My Demo App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <array name="terms_of_service">
+        <item>This privacy policy page describe which kind of detail we collect , Why we collect information , What is used for that data , how we make secure your data? That all kind information you can read from this privacy policy. We provide complete detail about policy and at regular interval we will update this page.So, visit and read this policy carefully.</item>
+        <item>Personal Information</item>
+        <item>We DO NOT collect or gather any personal information while you visit, download or upgrade any application, your personal information like your first name and last name, physical addresses, telephone numbers, fax numbers and information stored within your device. We will not collect or store your Personal Information and we will not use, transfer or disclose your Personal Information, excepting the personal information that you submit to us when you create a user account, send an error report or participate in online surveys and other activities. In the following circumstances, we may disclose your personal information according to your wish or regulations by law:</item>
+        <item>1. Your prior permission.</item>
+        <item>2. By the applicable law within or outside your country of residence, legal process, litigation requests.</item>
+        <item>3. By requests from public and governmental authorities.</item>
+        <item>4. To protect our legal rights and interests.</item>
+        <item />
+        <item>Permission in this Application:</item>
+        <item />
+        <item>ACCESS_COARSE_LOCATION : This permission used for Allows an app to access approximate location.</item>
+        <item>ACCESS_NETWORK_STATE : This permission is used in settings and notification toolbar, in order to view network connections.</item>
+        <item>CHANGE_NETWORK_STATE : This permission is used in change network connectivity state.</item>
+        <item>ACCESS_WIFI_STATE : This permission is used in settings and notification toolbar in order to connect and disconnect from Wi-Fi.</item>
+        <item>CHANGE_WIFI_STATE : This permission is used in change Wi-Fi connectivity state.</item>
+        <item>ACCESS_COARSE_LOCATION : This permission is used for access approximate location.</item>
+        <item>ACCESS_FINE_LOCATION : This permission is used for access precise location.</item>
+        <item>INTERNET : This permission is used for check internet connection is on or off.</item>
+        <item>RECORD_AUDIO : This permission is used for to record audio.</item>
+        <item>WRITE_EXTERNAL_STORAGE : This permission is used for modify in image from sd card.</item>
+        <item>READ_EXTERNAL_STORAGE : This permission is used for to read or to see data which available in sd card.</item>
+        <item>CAMERA : This permission used for taking photo from camera.</item>
+        <item>ACCESS_ASSISTED_GPS : This permission used for get your current location.</item>
+        <item>ACCESS_GPS : This permission used for get your current location.</item>
+        <item>WAKE_LOCK : This permission used for PowerManager WakeLocks to keep processor from sleeping or screen from dimming.</item>
+        <item />
+        <item>PROTECTION YOUR PERSONAL INFORMATION</item>
+        <item>We take precautions — including administrative, technical, and physical measures — to safeguard your personal information against loss, theft, and misuse, as well as against unauthorized access, disclosure, alteration, and destruction. When you use some products, services, or post your comments, the personal information you share is visible to other users and can be read, collected, or used by them. You are responsible for the personal information you choose to submit in these instances. Please take care when using these features. To make sure your personal information is secure; we communicate our privacy and security guidelines to all members and strictly enforce privacy safeguards within the team.</item>
+        <item />
+        <item>Third Parties Sites</item>
+        <item>We use Google Admob SDK for advertisements in our applications. Remember, there could be errors in the programming, and sometime programming errors may cause unwanted side effects.carry advertisements from other companies.</item>
+        <item>We use Google Facebook Audience Network for advertisements in our applications. Remember, there could be errors in the programming, and sometime programming errors may cause unwanted side effects.carry advertisements from other companies.</item>
+        <item />
+        <item>PROTECTION YOUR PERSONAL INFORMATION</item>
+        <item>We take precautions — including administrative, technical, and physical measures — to safeguard your personal information against loss, theft, and misuse, as well as against unauthorized access, disclosure, alteration, and destruction. When you use some products, services, or post your comments, the personal information you share is visible to other users and can be read, collected, or used by them. You are responsible for the personal information you choose to submit in these instances. Please take care when using these features. To make sure your personal information is secure; we communicate our privacy and security guidelines to all members and strictly enforce privacy safeguards within the team.</item>
+        <item />
+        <item>Children</item>
+        <item>We do not collect, use or disclose personal information from children. If you are under 13, you may use our website when you are with a parent or guardian.We do not provide service focus on Children.</item>
+        <item />
+    </array>
 </resources>

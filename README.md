@@ -198,6 +198,23 @@ APIManager.getInstance(MainAAActivity.this).showAdsStartExit(this, () -> {
 });
 ```
 
+### Change Color of Ads Button
+```xml
+<color name="adColor">#E91E63</color>
+```
+
+### Privacy Dialog
+```java
+PrivacyDialog.show(StartSecondActivity.this,getResources().getStringArray(R.array.terms_of_service));
+```
+
+### Gift Dialog
+```java
+new GiftAds(StartSecondActivity.this).showGiftAds();
+```
+
+
+
 ## Support
 
 For support, email ravinasukhadiya@aanibrothers.in

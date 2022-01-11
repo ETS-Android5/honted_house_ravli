@@ -1,4 +1,4 @@
-package com.demo.mycommonapp.newpk;
+package com.demo.mycommonapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.demo.mycommonapp.AppAdsAdapter;
-import com.demo.mycommonapp.AppAdsAdapterExit;
-import com.demo.mycommonapp.R;
-import com.demo.mycommonapp.StartSecondActivity;
 import com.google.android.material.circularreveal.CircularRevealLinearLayout;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 
