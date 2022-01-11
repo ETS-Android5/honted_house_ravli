@@ -8,8 +8,10 @@ This is AdModule for Aani brothers infotech team members.
 This library requires `minSdkVersion` to `19` or above.
 
 ## Step #1. Add this line ```gradle.properties``` file
+
 ```authToken=jp_62qh7p9ium74pbl2t38o2qdahp```
-## Step #1. Add the JitPack repository to your build file
+
+## Step #2. Add the JitPack repository to your build file
 
 ```gradle
 allprojects {
@@ -23,7 +25,7 @@ allprojects {
 }
 ```
 
-## Step #2. Add the dependency.
+## Step #3. Add the dependency.
 
 ```groovy
 dependencies {
@@ -34,7 +36,7 @@ dependencies {
 }
 ```
 
-## Step #3. Initialization.
+## Step #4. Initialization.
 ### Splash Activity
 Extend as Ads_SplashActivity and call below method in ```onCreate()```.
 ```java
