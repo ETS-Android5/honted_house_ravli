@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.demo.mycommonapp.R;
 import com.pesonal.adsdk.remote.APIManager;
+import com.pesonal.adsdk.remote.RewardCallback;
 
 public class MainActivity2 extends AppCompatActivity {
 

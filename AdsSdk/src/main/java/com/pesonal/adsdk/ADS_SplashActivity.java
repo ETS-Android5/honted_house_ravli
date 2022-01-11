@@ -140,6 +140,7 @@ public class ADS_SplashActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess() {
                     APIManager.getInstance(ADS_SplashActivity.this).loadInterstitialAd();
+                    APIManager.getInstance(ADS_SplashActivity.this).loadRewardAd();
                 }
 
                 @Override
@@ -228,6 +229,7 @@ public class ADS_SplashActivity extends AppCompatActivity {
                             public void onSuccess() {
                                 if (status.equals("true")) {
                                     APIManager.getInstance(ADS_SplashActivity.this).loadInterstitialAd();
+                                    APIManager.getInstance(ADS_SplashActivity.this).loadRewardAd();
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {

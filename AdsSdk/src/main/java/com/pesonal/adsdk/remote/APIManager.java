@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -39,6 +40,8 @@ import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.gson.Gson;
 import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
@@ -52,7 +55,6 @@ import com.pesonal.adsdk.qureka.BannerUtils;
 import com.pesonal.adsdk.qureka.CustomiseinterActivity;
 import com.pesonal.adsdk.qureka.Glob;
 import com.pesonal.adsdk.qureka.Nativeutils;
-import com.pesonal.adsdk.qureka.OnClick;
 import com.pesonal.adsdk.utils.Inflate_ADS;
 import com.pesonal.adsdk.utils.getDataListner;
 
@@ -97,6 +99,11 @@ public class APIManager {
     public static boolean aBoolean = false;
     public static AppOpenManager manager;
 
+    private static RewardedAd rewardedAd;
+    private static boolean showCustomreward = false;
+    private RewardCallback rewardCallback;
+    final boolean[] booleans = new boolean[]{false};
+
     public APIManager(Activity activity) {
         APIManager.activity = activity;
     }
@@ -107,6 +114,12 @@ public class APIManager {
             mInstance = new APIManager(activity);
         }
         return mInstance;
+    }
+
+    public boolean getQureka() {
+        if (responseRoot == null)
+            return false;
+        return responseRoot.getAPPSETTINGS().getQUREKA().equals("ON");
     }
 
     public static int getApp_adShowStatus() {
@@ -423,6 +436,9 @@ public class APIManager {
         }
         String platform = getPlatFormName("I");
         String adUnitId = getUnitID(platform, "I", whichOne);
+//        Log.e("TAG", "RequestInterstitial: " + adUnitId + "  " + platform);
+
+
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(activity, adUnitId, adRequest, new InterstitialAdLoadCallback() {
             @Override
@@ -438,9 +454,8 @@ public class APIManager {
 
                     @Override
                     public void onAdFailedToShowFullScreenContent(@NonNull com.google.android.gms.ads.AdError adError) {
-                        Log.e("TAG", "The ad failed to show.");
-                        requestInterstitial("Next");
-                        interstitialCallBack();
+                        // Called when fullscreen content failed to show.
+                        Log.d("TAG", "The ad failed to show.");
                     }
 
                     @Override
@@ -479,8 +494,6 @@ public class APIManager {
             Window window = dialog.getWindow();
             window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-            Log.e(TAG, "displayInterstitialAd: " + mInterstitialAd + "   " + showCustom);
             if (showCustom || mInterstitialAd == null) {
                 showCustomInter(activity);
             } else {
@@ -505,12 +518,7 @@ public class APIManager {
                 }
             }
         } else {
-            CustomiseinterActivity.H(activity, new OnClick() {
-                @Override
-                public void a() {
-                    interstitialCallBack();
-                }
-            }, Glob.dataset(activity));
+            CustomiseinterActivity.H(activity, this::interstitialCallBack, Glob.dataset(activity));
         }
 
     }
@@ -543,7 +551,7 @@ public class APIManager {
                         interstitialCallBack();
                     }
                 });
-                if (!((Activity) activity).isFinishing()) {
+                if (!activity.isFinishing()) {
                     dialog.dismiss();
                     customIntAds.show();
                 }
@@ -701,15 +709,12 @@ public class APIManager {
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getAPPOPENINTER().equalsIgnoreCase("ON")) {
-                showOpenCall(context, new InterCallback() {
-                    @Override
-                    public void onClose() {
-                        if (getInter(false)) {
-                            showInterstitial(callback);
-                        } else {
-                            if (callback != null)
-                                callback.onClose();
-                        }
+                showOpenCall(context, () -> {
+                    if (getInter(false)) {
+                        showInterstitial(callback);
+                    } else {
+                        if (callback != null)
+                            callback.onClose();
                     }
                 });
             } else {
@@ -743,12 +748,7 @@ public class APIManager {
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getAPPOPENINTER().equalsIgnoreCase("ON")) {
-                showOpenCall(context, new InterCallback() {
-                    @Override
-                    public void onClose() {
-                        showInterstitial(callback);
-                    }
-                });
+                showOpenCall(context, () -> showInterstitial(callback));
             } else {
                 showInterstitial(callback);
             }
@@ -770,20 +770,28 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS() == null) {
             return false;
         }
-        if (responseRoot.getAPPSETTINGS().getADTYPE().equals("ON-BACKOFF")) {
-            if (isBack)
-                return false;
-            else {
+        switch (responseRoot.getAPPSETTINGS().getADTYPE()) {
+            case "ON-BACKOFF":
+                if (isBack)
+                    return false;
+                else {
+                    adStatus = 1;
+                }
+                break;
+            case "LWPAd":
+            case "ON":
                 adStatus = 1;
-            }
-        } else if (responseRoot.getAPPSETTINGS().getADTYPE().equals("ON"))
-            adStatus = 1;
-        else if (responseRoot.getAPPSETTINGS().getADTYPE().equals("ON-OFF"))
-            adStatus = 2;
-        else if (responseRoot.getAPPSETTINGS().getADTYPE().equals("ON-OFF-OFF"))
-            adStatus = 3;
-        else if (responseRoot.getAPPSETTINGS().getADTYPE().equals("ON-ON-OFF"))
-            adStatus = 4;
+                break;
+            case "ON-OFF":
+                adStatus = 2;
+                break;
+            case "ON-OFF-OFF":
+                adStatus = 3;
+                break;
+            case "ON-ON-OFF":
+                adStatus = 4;
+                break;
+        }
 
 
         if (adStatus == 4) {
@@ -926,12 +934,10 @@ public class APIManager {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
                 String platform = getPlatFormName("B");
                 String adUnitId = getUnitID(platform, "B", "");
-//                Log.e("TAG", "requestBanner: " + adUnitId + "  " + platform);
                 turnShowBanner(viewGroup, adUnitId);
             } else {
                 String platform = getPlatFormName("BN");
                 String adUnitId = getUnitID(platform, "BN", "");
-//                Log.e("TAG", "requestBanner: " + adUnitId + "  " + platform);
                 turnShowNativeBanner(viewGroup, adUnitId);
             }
         } else {
@@ -1018,18 +1024,16 @@ public class APIManager {
 
             textView.setText(appModal.getApp_name());
             textView2.setText(appModal.getApp_shortDecription());
-            inflate2.findViewById(R.id.cta).setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    String action_str = appModal.getApp_packageName();
-                    if (action_str.contains("http")) {
-                        Uri marketUri = Uri.parse(action_str);
-                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                        activity.startActivity(marketIntent);
-                    } else {
-                        activity.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + action_str)));
-                    }
-
+            inflate2.findViewById(R.id.cta).setOnClickListener(view -> {
+                String action_str = appModal.getApp_packageName();
+                if (action_str.contains("http")) {
+                    Uri marketUri = Uri.parse(action_str);
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                    activity.startActivity(marketIntent);
+                } else {
+                    activity.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + action_str)));
                 }
+
             });
             banner_container.removeAllViews();
             banner_container.addView(inflate2);
@@ -1040,15 +1044,10 @@ public class APIManager {
     void turnShowNativeBanner(ViewGroup banner_container, String admobB) {
 
         final AdLoader adLoader = new AdLoader.Builder(activity, admobB)
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd nativeAd) {
-                        new Inflate_ADS(activity).showSmall(nativeAd, banner_container);
-                    }
-                })
+                .forNativeAd(nativeAd -> new Inflate_ADS(activity).showSmall(nativeAd, banner_container))
                 .withAdListener(new AdListener() {
                     @Override
-                    public void onAdFailedToLoad(LoadAdError adError) {
+                    public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                         showMyCustomNativeBanner(banner_container);
 
                     }
@@ -1066,7 +1065,7 @@ public class APIManager {
         if (appModal != null) {
 
             View inflate2 = LayoutInflater.from(activity).inflate(R.layout.cust_native_banner, nbanner_container, false);
-            ImageView imageView2 = (ImageView) inflate2.findViewById(R.id.icon);
+            ImageView imageView2 = inflate2.findViewById(R.id.icon);
             TextView textView = (TextView) inflate2.findViewById(R.id.primary);
             TextView textView2 = (TextView) inflate2.findViewById(R.id.secondary);
 
@@ -1277,9 +1276,147 @@ public class APIManager {
         return new TinyDB(activity).getBoolean("isUpdateCall");
     }
 
-    public boolean getQureka() {
-        if(responseRoot==null)
-            return false;
-        return responseRoot.getAPPSETTINGS().getQUREKA().equals("ON");
+    public void loadRewardAd() {
+        if (responseRoot == null)
+            return;
+        if (responseRoot.getAPPSETTINGS() == null) {
+            return;
+        }
+        String platform = getPlatFormName("R");
+        String adUnitId = getUnitID(platform, "R", "");
+
+        RewardedAd.load(activity, adUnitId, new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                showCustomreward = true;
+                rewardedAd = null;
+            }
+
+            @Override
+            public void onAdLoaded(@NonNull RewardedAd rewarded) {
+                showCustomreward = false;
+                rewardedAd = rewarded;
+                rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        rewardedAd = null;
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        try {
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                        } catch (Exception e) {
+
+                        }
+                        if (rewardCallback != null)
+                            rewardCallback.onFail();
+                        loadRewardAd();
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        rewardCallback.onClose(booleans[0]);
+                        loadRewardAd();
+                    }
+                });
+
+            }
+        });
+    }
+
+    public void showRewardAd(RewardCallback rewardCallback) {
+        this.rewardCallback = rewardCallback;
+        if (responseRoot == null) {
+            if (rewardCallback != null)
+                rewardCallback.onClose(false);
+            return;
+        }
+        if (responseRoot.getAPPSETTINGS() == null) {
+            if (rewardCallback != null)
+                rewardCallback.onClose(false);
+            return;
+        }
+        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+            dialog = new Dialog(activity);
+            View view = LayoutInflater.from(activity).inflate(R.layout.ad_progress_dialog, null);
+            dialog.setContentView(view);
+            dialog.setCancelable(false);
+            Window window = dialog.getWindow();
+            window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            if (showCustomreward || rewardedAd == null) {
+                showCustomReward(activity);
+            } else {
+                if (responseRoot.getAPPSETTINGS().getAppDialogBeforeAdShow().equals("1")) {
+                    dialog.show();
+                    new CountDownTimer(ad_dialog_time_in_second * 1000L, 10) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            if (rewardedAd != null) {
+                                rewardedAd.show(activity, rewardItem -> booleans[0] = true);
+                                dialog.dismiss();
+                            }
+                        }
+                    }.start();
+                } else {
+                    rewardedAd.show(activity, rewardItem -> booleans[0] = true);
+                    dialog.dismiss();
+                }
+            }
+        } else {
+            CustomiseinterActivity.H(activity, () -> rewardCallback.onClose(true), Glob.dataset(activity));
+        }
+    }
+
+    private void showCustomReward(final Activity activity) {
+        dialog.show();
+        AdvertiseList advertiseList = getMyCustomAd("Interstitial");
+        if (advertiseList != null) {
+            try {
+                final CustomIntAds customIntAds = new CustomIntAds(activity, advertiseList);
+                customIntAds.setCanceledOnTouchOutside(false);
+                customIntAds.setCancelable(false);
+                customIntAds.setOnCloseListener(new CustomIntAds.OnCloseListener() {
+                    public void onAdsCloseClick() {
+                        customIntAds.dismiss();
+                        loadRewardAd();
+                        if (rewardCallback != null)
+                            rewardCallback.onClose(true);
+                    }
+
+                    public void setOnKeyListener() {
+                        customIntAds.dismiss();
+                        loadRewardAd();
+                        if (rewardCallback != null)
+                            rewardCallback.onClose(true);
+                    }
+                });
+                if (!activity.isFinishing()) {
+                    dialog.dismiss();
+                    customIntAds.show();
+                }
+            } catch (Exception e) {
+                dialog.dismiss();
+                e.printStackTrace();
+                loadRewardAd();
+                if (rewardCallback != null)
+                    rewardCallback.onClose(false);
+            }
+        } else {
+            dialog.dismiss();
+            loadRewardAd();
+            if (rewardCallback != null)
+                rewardCallback.onClose(false);
+        }
     }
 }

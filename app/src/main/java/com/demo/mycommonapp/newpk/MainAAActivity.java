@@ -35,7 +35,6 @@ public class MainAAActivity extends AppCompatActivity implements View.OnClickLis
         APIManager.getInstance(MainAAActivity.this).showNative(adContainer);
         APIManager.getInstance(MainAAActivity.this).showSmallNative(adContainer1);
         APIManager.getInstance(MainAAActivity.this).showNative(adContainer2);
-
     }
 
     @Override
@@ -52,9 +51,8 @@ public class MainAAActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        APIManager.getInstance(MainAAActivity.this).showAds(true, () -> {
+        APIManager.getInstance(MainAAActivity.this).showAdsStartExit(this, () -> {
             startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
         });
-
     }
 }
