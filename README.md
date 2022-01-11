@@ -199,6 +199,7 @@ APIManager.getInstance(MainAAActivity.this).showAdsStartExit(this, () -> {
 ```
 
 ### Change Color of Ads Button
+place below line in ```colors.xml```
 ```xml
 <color name="adColor">#E91E63</color>
 ```
