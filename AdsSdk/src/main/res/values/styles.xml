@@ -1,0 +1,15 @@
+<resources>
+    <!-- Base application theme. -->
+
+    <style name="Theme_AppOpen_Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+    <style name="s_td_CustomRatingBarStyle" parent="@style/Widget.AppCompat.RatingBar.Small">
+        <item name="android:maxHeight">30dp</item>
+        <item name="android:minHeight">30dp</item>
+    </style>
+
+</resources>

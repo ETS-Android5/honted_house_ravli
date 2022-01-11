@@ -1,0 +1,3 @@
+include ':AdsSdk'
+include ':app'
+rootProject.name = "Demo Edit"

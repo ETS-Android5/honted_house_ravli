@@ -1,0 +1,70 @@
+{
+  "Advertise_List": [
+    {
+      "ad_id": "1",
+      "app_name": "Qureka Lite/Play Game",
+      "app_logo": "images/icon_1.gif",
+      "app_banner": "images/banner_1.jpg",
+      "banner_image": "images/b_1.jpg",
+      "app_shortDecription": "T20 Quiz Khelo aur Jeeto coins. No install required.",
+      "app_rating": "5",
+      "app_download": "500",
+      "app_AdFormat": "Banner,NativeBanner,Native,Interstitial,AppOpen"
+    },
+    {
+      "ad_id": "2",
+      "app_name": "Preadchamp/Play Game",
+      "app_logo": "images/icon_2.png",
+      "app_banner": "images/banner_2.jpg",
+      "banner_image": "images/b_2.jpg",
+      "app_shortDecription": "Play Bollywood Quizzes  & win coins daily\r\n",
+      "app_rating": "5",
+      "app_download": "200",
+      "app_AdFormat": "Banner,NativeBanner,Native,Interstitial,AppOpen"
+    },
+    {
+      "ad_id": "3",
+      "app_name": "Play & Win Coins Daily.",
+      "app_logo": "images/icon_3.gif",
+      "app_banner": "images/banner_3.jpg",
+      "banner_image": "images/b_3.jpg",
+      "app_shortDecription": "Come play Cricket contests running for 50,000 Coins daily.\r\n",
+      "app_rating": "5",
+      "app_download": "120",
+      "app_AdFormat": "Banner,NativeBanner,Native,Interstitial,AppOpen"
+    },
+    {
+      "ad_id": "4",
+      "app_name": "Qureka Lite/Play Game",
+      "app_logo": "images/icon_4.png",
+      "app_banner": "images/banner_4.jpg",
+      "banner_image": "images/b_4.jpg",
+      "app_shortDecription": " Play T20 contest! Khelo aur jeeto .\r\n ",
+      "app_rating": "5",
+      "app_download": "400000",
+      "app_AdFormat": "Banner,NativeBanner,Native,Interstitial,AppOpen"
+    },
+    {
+      "ad_id": "5",
+      "app_name": "Preadchamp/Play Game",
+      "app_logo": "images/icon_5.png",
+      "app_banner": "images/banner_5.jpg",
+      "banner_image": "images/b_5.jpg",
+      "app_shortDecription": "Play now & win some coins. No install required.\r\n",
+      "app_rating": "5",
+      "app_download": "100",
+      "app_AdFormat": "Banner,NativeBanner,Native,Interstitial,AppOpen"
+    },
+    {
+      "ad_id": "6",
+      "app_name": "MGL/Play Game",
+      "app_logo": "images/icon_6.gif",
+      "app_banner": "images/banner_6.png",
+      "banner_image": "images/b_6.jpg",
+      "app_shortDecription": "Your chance of winning is high here! Play Now\r\n",
+      "app_rating": "5",
+      "app_download": "1000",
+      "app_AdFormat": "Banner,NativeBanner,Native,Interstitial,AppOpen"
+    }
+  ]
+}
