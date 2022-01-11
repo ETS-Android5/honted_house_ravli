@@ -1,6 +1,8 @@
 package com.pesonal.adsdk;
 
 
+import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,11 +13,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,12 +57,15 @@ public class ADS_SplashActivity extends AppCompatActivity {
     private Handler refreshHandler;
     private SharedPreferences mysharedpreferences;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ads_splash);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().getAttributes().layoutInDisplayCutoutMode =
+                    WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public void ADSinit(final Activity activity, final int cversion, final getDataListner myCallback1) {
@@ -327,7 +334,6 @@ public class ADS_SplashActivity extends AppCompatActivity {
         return null;
     }
 
-
     private boolean isNetworkAvailable() {
         ConnectivityManager manager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -345,5 +351,4 @@ public class ADS_SplashActivity extends AppCompatActivity {
         super.onDestroy();
         refreshHandler.removeCallbacks(runnable);
     }
-
 }

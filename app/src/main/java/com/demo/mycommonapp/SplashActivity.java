@@ -37,8 +37,6 @@ public class SplashActivity extends ADS_SplashActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().setFlags(1024, 1024);
         setContentView(R.layout.activity_splash);
 
         ADSinit(SplashActivity.this,getCurrentVersionCode(), new getDataListner() {
