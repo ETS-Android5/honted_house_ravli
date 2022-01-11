@@ -7,13 +7,18 @@ This is AdModule for Aani brothers infotech team members.
 
 This library requires `minSdkVersion` to `19` or above.
 
-## Step #1. Add the JitPack repository to your build file:
+## Step #1. Add this line ```gradle.properties``` file
+```authToken=jp_62qh7p9ium74pbl2t38o2qdahp```
+## Step #1. Add the JitPack repository to your build file
 
 ```gradle
 allprojects {
     repositories {
-	...
-	maven { url "https://jitpack.io" }
+	    ...
+	    maven {
+                url "https://jitpack.io"
+                credentials { username authToken }
+              }
     }
 }
 ```
