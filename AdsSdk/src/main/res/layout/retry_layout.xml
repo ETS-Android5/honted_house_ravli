@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff">
+        android:background="@color/colorAdCard">
 
         <TextView
             android:id="@+id/lable"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="Need Internet"
             android:fontFamily="@font/appfont_bold"
-            android:textColor="@color/appColor"
+            android:textColor="@color/colorAdBlack"
             android:textSize="40dp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="#505050"
+                android:textColor="@color/colorAdGrey"
                 android:textSize="16dp"
                 android:fontFamily="@font/appfont_bold"
                 android:text="Internet is necessary for load all functionality...!!"
@@ -70,9 +70,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="#fff"
                 android:textSize="17dp"
                 android:textStyle="bold">
 
@@ -82,7 +79,7 @@
                     android:layout_margin="8dp"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:textColor="#fff"
+                    android:textColor="@color/colorAdWhite"
                     android:textSize="17dp"
                     android:textStyle="bold">
 
@@ -98,7 +95,7 @@
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="Retry"
-                        android:textColor="#fff"
+                        android:textColor="@color/colorAdWhite"
                         android:textSize="17dp"
                         android:textStyle="bold" />
                 </LinearLayout>

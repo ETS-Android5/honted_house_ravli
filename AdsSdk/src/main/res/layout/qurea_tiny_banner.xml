@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/colorAdCard"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,13 +19,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:background="@color/adColor"
+            android:background="@color/colorAdColor"
             android:paddingLeft="3dp"
             android:paddingTop="2dp"
             android:paddingRight="3dp"
             android:paddingBottom="2dp"
             android:text="@string/ad"
-            android:textColor="#fff"
+            android:textColor="@color/colorAdWhite"
             android:textSize="7dp" />
 
         <ImageView

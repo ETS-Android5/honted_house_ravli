@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff">
+        android:background="@color/colorAdCard">
 
         <TextView
             android:id="@+id/lable"
@@ -26,7 +26,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="Update App"
-            android:textColor="@color/appColor"
+            android:textColor="@color/colorAdBlack"
             android:fontFamily="@font/appfont_bold"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -49,7 +49,7 @@
                 android:fontFamily="@font/appfont_bold"
                 android:paddingRight="7dp"
                 android:text="Install our new app now and enjoy"
-                android:textColor="#505050"
+                android:textColor="@color/colorAdBlack"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
                 android:paddingRight="7dp"
                 android:fontFamily="@font/appfont_bold"
                 android:text="We have transferred our server, so install our new app by clicking the button below to enjoy the new features of app."
-                android:textColor="#505050"
+                android:textColor="@color/colorAdGrey"
                 android:textSize="14dp" />
 
 
@@ -83,9 +83,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="Install Now"
-                android:textColor="#fff"
-                android:textSize="17dp"
                 android:textStyle="bold">
 
                 <LinearLayout
@@ -94,9 +91,6 @@
                     android:layout_margin="8dp"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:text="Install Now"
-                    android:textColor="#fff"
-                    android:textSize="17dp"
                     android:textStyle="bold">
 
                     <TextView
@@ -111,7 +105,7 @@
                         android:fontFamily="@font/appfont_bold"
                         android:paddingRight="20dp"
                         android:text="Install Now"
-                        android:textColor="#fff"
+                        android:textColor="@color/colorAdWhite"
                         android:textSize="17dp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -121,24 +115,14 @@
             <LinearLayout
                 android:id="@+id/layoutLater"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="Install Now"
-                android:textColor="#fff"
-                android:textSize="17dp"
-                android:textStyle="bold">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:gravity="center"
-                    android:maxLines="1"
-                    android:text="Install Now"
-                    android:textColor="#fff"
-                    android:textSize="17dp"
-                    android:textStyle="bold">
+                    >
 
                     <TextView
                         android:id="@+id/later"
@@ -152,7 +136,7 @@
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="   Later   "
-                        android:textColor="#fff"
+                        android:textColor="@color/colorAdWhite"
                         android:textSize="17dp"
                         android:textStyle="bold" />
                 </LinearLayout>

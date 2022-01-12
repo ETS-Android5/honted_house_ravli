@@ -7,7 +7,7 @@
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/white">
+    app:cardBackgroundColor="@color/colorAdCard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,13 +19,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:background="@color/adColor"
+            android:background="@color/colorAdColor"
             android:paddingLeft="3dp"
             android:paddingTop="2dp"
             android:paddingRight="3dp"
             android:paddingBottom="2dp"
             android:text="@string/ad"
-            android:textColor="#fff"
+            android:textColor="@color/colorAdWhite"
             android:textSize="7dp" />
 
         <ImageView
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
 
                         android:maxLines="1"
-                        android:textColor="#0a0a0a"
+                        android:textColor="@color/colorAdBlack"
                         android:textSize="13dp"
                         android:textStyle="bold" />
 
@@ -103,7 +103,7 @@
                             android:layout_marginLeft="4dp"
 
                             android:text="(3.2)"
-                            android:textColor="#6e6e6e"
+                            android:textColor="@color/colorAdGrey"
                             android:textSize="10dp"
                             android:textStyle="bold" />
 
@@ -114,14 +114,14 @@
                             android:layout_marginTop="2dp"
                             android:layout_marginRight="12dp"
                             android:layout_marginBottom="2dp"
-                            android:src="#6e6e6e" />
+                            android:src="@color/colorAdGrey" />
 
                         <ImageView
                             android:layout_width="10dp"
                             android:layout_height="10dp"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_download"
-                            app:tint="#6e6e6e" />
+                            app:tint="@color/colorAdGrey" />
 
                         <TextView
                             android:id="@+id/tv_download"
@@ -130,7 +130,7 @@
                             android:layout_marginLeft="2dp"
 
                             android:text="10000+"
-                            android:textColor="#6e6e6e"
+                            android:textColor="@color/colorAdGrey"
                             android:textSize="10dp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -144,7 +144,7 @@
 
                         android:maxLines="2"
                         android:minLines="2"
-                        android:textColor="#929292"
+                        android:textColor="@color/colorAdGrey"
                         android:textSize="13sp"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -161,12 +161,12 @@
                     android:id="@+id/btn_install"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/adColor"
+                    android:backgroundTint="@color/colorAdColor"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="Install"
                     android:textAllCaps="true"
-                    android:textColor="#fff"
+                    android:textColor="@color/colorAdWhite"
                     android:textSize="18dp"
                     android:textStyle="bold" />
             </FrameLayout>

@@ -5,7 +5,7 @@
     android:id="@+id/int_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/colorAdCard"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:background="@color/colorAdCard"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -44,7 +44,7 @@
                     
                     android:paddingRight="5dp"
                     android:text="@string/ad"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorAdWhite"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -68,7 +68,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:visibility="gone"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="@color/colorAdCard"
                 app:cardCornerRadius="100dp"
                 app:cardElevation="1dp">
 
@@ -83,7 +83,7 @@
                     android:minWidth="20dp"
                     android:minHeight="20dp"
                     android:text="5"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorAdBlack"
                     android:textSize="14dp"
                     android:visibility="gone" />
             </androidx.cardview.widget.CardView>
@@ -135,7 +135,7 @@
                             android:lineSpacingExtra="5dp"
                             android:maxLines="2"
                             android:text="My Photo Phone Dialer - Photo Caller Dialer 2021"
-                            android:textColor="@android:color/black"
+                            android:textColor="@color/colorAdBlack"
                             android:textSize="14dp"
                             android:textStyle="bold" />
 
@@ -147,7 +147,7 @@
                             
                             android:singleLine="true"
                             android:text="Play &amp; Win Coins Daily"
-                            android:textColor="#595959"
+                            android:textColor="@color/colorAdGrey"
                             android:textSize="14dp"
                             android:visibility="gone" />
                     </LinearLayout>
@@ -179,7 +179,7 @@
                             
                             android:gravity="center"
                             android:lines="1"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="@color/colorAdGrey"
                             android:textSize="10dp"
                             android:visibility="gone" />
 
@@ -210,7 +210,7 @@
                             android:gravity="center"
                             android:lineSpacingExtra="5dp"
                             android:lines="2"
-                            android:textColor="#c7c5c5"
+                            android:textColor="@color/colorAdBlack"
                             android:textSize="14dp" />
                     </LinearLayout>
 
@@ -246,7 +246,7 @@
                                     
                                     android:gravity="center"
                                     android:text="4.7"
-                                    android:textColor="#787777"
+                                    android:textColor="@color/colorAdGrey"
                                     android:textSize="14dp" />
 
                                 <ImageView
@@ -254,7 +254,7 @@
                                     android:layout_height="14dp"
                                     android:layout_gravity="center"
                                     android:layout_marginLeft="5dp"
-                                    app:tint="#787777" />
+                                    app:tint="@color/colorAdGrey" />
                             </LinearLayout>
 
                             <RatingBar
@@ -272,7 +272,7 @@
                         <View
                             android:layout_width="2dp"
                             android:layout_height="wrap_content"
-                            android:background="#c7c5c5" />
+                            android:background="@color/colorAdGrey" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -285,7 +285,7 @@
                                 android:layout_height="14dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_download"
-                                app:tint="#787777" />
+                                app:tint="@color/colorAdBlack" />
 
                             <TextView
                                 android:id="@+id/txt_download"
@@ -295,7 +295,7 @@
                                 android:layout_marginTop="7dp"
                                 
                                 android:text="10000+"
-                                android:textColor="#c7c5c5"
+                                android:textColor="@color/colorAdGrey"
                                 android:textSize="14dp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -326,7 +326,7 @@
                     android:layout_marginLeft="5dp"
                     
                     android:text="Google Playstore"
-                    android:textColor="#595959"
+                    android:textColor="@color/colorAdBlack"
                     android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
@@ -358,7 +358,7 @@
                     
                     android:gravity="center"
                     android:text="Close"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorAdBlack"
                     android:textSize="12dp" />
 
                 <TextView
@@ -368,6 +368,7 @@
                     
                     android:gravity="center"
                     android:text="  |  "
+                    android:textColor="@color/colorAdGrey"
                     android:textSize="14dp" />
 
                 <RelativeLayout
@@ -383,7 +384,7 @@
                         
                         android:gravity="center"
                         android:text="5"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorAdBlack"
                         android:textSize="12dp"
                         android:visibility="gone" />
 
@@ -409,7 +410,7 @@
                 android:background="@drawable/button_bg_ad"
                 
                 android:gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAdWhite"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>

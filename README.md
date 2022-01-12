@@ -52,7 +52,7 @@ ADSinit(SplashActivity.this,getCurrentVersionCode(), new getDataListner() {
                             finish();
                         });
                     }
-                },4000);
+                },8000);
 
             }
 
@@ -201,9 +201,11 @@ APIManager.getInstance(MainAAActivity.this).showAdsStartExit(this, () -> {
 ### Change Color of Ads Button
 add below line in ```colors.xml```
 ```xml
-    <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-    <color name="adColor">#E91E63</color>
+   <color name="colorAdWhite">#ffffff</color>
+   <color name="colorAdBlack">#000000</color>
+   <color name="colorAdGrey">#797979</color>
+   <color name="colorAdColor">#E91E63</color>
+   <color name="colorAdCard">#FFFFFF</color>
 ```
 
 ### Privacy Dialog
