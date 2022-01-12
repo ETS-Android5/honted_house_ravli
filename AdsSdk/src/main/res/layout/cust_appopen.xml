@@ -19,7 +19,7 @@
             android:layout_height="56dp"
             android:layout_marginLeft="100dp"
             android:layout_weight="1"
-            android:background="@color/colorAdCard">
+            app:cardBackgroundColor="@color/colorAdCard">
 
             <LinearLayout
                 android:id="@+id/ll_continue_app"
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/colorAdCard">
+        app:cardBackgroundColor="@color/colorAdCard">
 
         <LinearLayout
             android:layout_width="match_parent"
