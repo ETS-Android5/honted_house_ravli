@@ -29,7 +29,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.Aanibrothers-Infotech:honted_house_ravli:1.0.0'
+    implementation 'com.github.Aanibrothers-Infotech:honted_house_ravli:[latest-release]'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0'
