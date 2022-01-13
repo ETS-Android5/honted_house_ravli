@@ -310,7 +310,7 @@ public class APIManager {
                     switch (whichAd) {
                         case "I":
                             if (responseRoot.getPLACEMENT().getAdmob1().getAdLoadAdIdsType().equals("2")) {
-                                returnId = getHigheCPMAdId(whichOneInter);
+                                returnId = getUnitIDForCPM(getHigheCPMAdId(whichOneInter));
                             } else {
                                 returnId = responseRoot.getPLACEMENT().getAdmob1().getInterstitial1();
                             }
@@ -337,7 +337,7 @@ public class APIManager {
                     switch (whichAd) {
                         case "I":
                             if (responseRoot.getPLACEMENT().getAdmob2().getAdLoadAdIdsType().equals("2")) {
-                                returnId = getHigheCPMAdId(whichOneInter);
+                                returnId = getUnitIDForCPM(getHigheCPMAdId(whichOneInter));
                             } else {
                                 returnId = responseRoot.getPLACEMENT().getAdmob2().getInterstitial1();
                             }
@@ -364,7 +364,7 @@ public class APIManager {
                     switch (whichAd) {
                         case "I":
                             if (responseRoot.getPLACEMENT().getAdmob3().getAdLoadAdIdsType().equals("2")) {
-                                returnId = getHigheCPMAdId(whichOneInter); //"First");
+                                returnId = getUnitIDForCPM(getHigheCPMAdId(whichOneInter));
                             } else {
                                 returnId = responseRoot.getPLACEMENT().getAdmob3().getInterstitial1();
                             }
@@ -388,6 +388,29 @@ public class APIManager {
                 break;
         }
 
+        return returnId;
+    }
+
+
+    public String getUnitIDForCPM(String platform) {
+        String returnId = "";
+        switch (platform) {
+            case "Admob1":
+                if (responseRoot.getPLACEMENT().getAdmob1() != null && !responseRoot.getPLACEMENT().getAdmob1().getAdShowAdStatus().equals("0")) {
+                    returnId = responseRoot.getPLACEMENT().getAdmob1().getInterstitial1();
+                }
+                break;
+            case "Admob2":
+                if (responseRoot.getPLACEMENT().getAdmob2() != null && !responseRoot.getPLACEMENT().getAdmob2().getAdShowAdStatus().equals("0")) {
+                    returnId = responseRoot.getPLACEMENT().getAdmob2().getInterstitial1();
+                }
+                break;
+            case "Admob3":
+                if (responseRoot.getPLACEMENT().getAdmob3() != null && !responseRoot.getPLACEMENT().getAdmob3().getAdShowAdStatus().equals("0")) {
+                    returnId = responseRoot.getPLACEMENT().getAdmob3().getInterstitial1();
+                }
+                break;
+        }
         return returnId;
     }
 
@@ -437,8 +460,6 @@ public class APIManager {
         String platform = getPlatFormName("I");
         String adUnitId = getUnitID(platform, "I", whichOne);
 //        Log.e("TAG", "RequestInterstitial: " + adUnitId + "  " + platform);
-
-
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(activity, adUnitId, adRequest, new InterstitialAdLoadCallback() {
             @Override

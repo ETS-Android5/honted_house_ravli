@@ -38,7 +38,7 @@ dependencies {
 
 ## Step #4. Initialization.
 ### Splash Activity
-Extend as Ads_SplashActivity and call below method in ```onCreate()```.
+Extend as ADS_SplashActivity and call below method in ```onCreate()```.
 ```java
 ADSinit(SplashActivity.this,getCurrentVersionCode(), new getDataListner() {
             @Override
