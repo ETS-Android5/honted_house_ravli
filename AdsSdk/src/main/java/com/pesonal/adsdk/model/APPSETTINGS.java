@@ -121,6 +121,18 @@ public class APPSETTINGS{
 	@SerializedName("promoappstatus")
 	private String promoappstatus;
 
+	@SerializedName("EXITSCREEN")
+	private String exitScreen;
+
+
+	public String getExitScreen() {
+		return exitScreen;
+	}
+
+	public void setExitScreen(String exitScreen) {
+		this.exitScreen = exitScreen;
+	}
+
 	public void setAppDialogBeforeAdShow(String appDialogBeforeAdShow){
 		this.appDialogBeforeAdShow = appDialogBeforeAdShow;
 	}
@@ -434,48 +446,48 @@ public class APPSETTINGS{
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"APPSETTINGS{" + 
-			"app_dialogBeforeAdShow = '" + appDialogBeforeAdShow + '\'' + 
-			",aPPOPENINTER = '" + aPPOPENINTER + '\'' + 
-			",app_packageName = '" + appPackageName + '\'' + 
-			",app_redirectOtherAppStatus = '" + appRedirectOtherAppStatus + '\'' + 
-			",app_alernateAdShowInterstitial = '" + appAlernateAdShowInterstitial + '\'' + 
-			",aDTYPE = '" + aDTYPE + '\'' + 
-			",aPPOPENBACK = '" + aPPOPENBACK + '\'' + 
-			",app_logo = '" + appLogo + '\'' + 
-			",app_alernateAdShowBanner = '" + appAlernateAdShowBanner + '\'' + 
-			",app_mainClickCntSwAd = '" + appMainClickCntSwAd + '\'' + 
-			",aFTERSPLASH = '" + aFTERSPLASH + '\'' + 
-			",app_status = '" + appStatus + '\'' + 
-			",app_AppOpenAdStatus = '" + appAppOpenAdStatus + '\'' + 
-			",app_adPlatformSequence = '" + appAdPlatformSequence + '\'' + 
-			",nATIVEBANNER = '" + nATIVEBANNER + '\'' + 
-			",app_needInternet = '" + appNeedInternet + '\'' + 
-			",app_howShowAd = '" + appHowShowAd + '\'' + 
-			",qUREKA = '" + qUREKA + '\'' + 
-			",app_updateAppDialogStatus = '" + appUpdateAppDialogStatus + '\'' + 
-			",app_alernateAdShowNative = '" + appAlernateAdShowNative + '\'' + 
-			",app_adPlatformSequenceBanner = '" + appAdPlatformSequenceBanner + '\'' + 
-			",appopeninter = '" + appopeninter + '\'' + 
-			",app_howShowAdBanner = '" + appHowShowAdBanner + '\'' + 
-			",app_howShowAdInterstitial = '" + appHowShowAdInterstitial + '\'' + 
-			",app_accountLink = '" + appAccountLink + '\'' + 
-			",qUREKALINK = '" + qUREKALINK + '\'' + 
-			",app_name = '" + appName + '\'' + 
-			",app_accountName = '" + appAccountName + '\'' + 
-			",app_versionCode = '" + appVersionCode + '\'' + 
-			",app_adPlatformSequenceNative = '" + appAdPlatformSequenceNative + '\'' + 
-			",app_newPackageName = '" + appNewPackageName + '\'' + 
-			",app_adPlatformSequenceInterstitial = '" + appAdPlatformSequenceInterstitial + '\'' + 
-			",app_adShowStatus = '" + appAdShowStatus + '\'' + 
-			",app_innerClickCntSwAd = '" + appInnerClickCntSwAd + '\'' + 
-			",appopenback = '" + appopenback + '\'' + 
-			",app_alernateAdShow = '" + appAlernateAdShow + '\'' + 
-			",app_privacyPolicyLink = '" + appPrivacyPolicyLink + '\'' + 
-			",app_howShowAdNative = '" + appHowShowAdNative + '\'' + 
-			",promoappstatus = '" + promoappstatus + '\'' + 
-			"}";
-		}
+	public String toString(){
+		return
+				"APPSETTINGS{" +
+						"app_dialogBeforeAdShow = '" + appDialogBeforeAdShow + '\'' +
+						",aPPOPENINTER = '" + aPPOPENINTER + '\'' +
+						",app_packageName = '" + appPackageName + '\'' +
+						",app_redirectOtherAppStatus = '" + appRedirectOtherAppStatus + '\'' +
+						",app_alernateAdShowInterstitial = '" + appAlernateAdShowInterstitial + '\'' +
+						",aDTYPE = '" + aDTYPE + '\'' +
+						",aPPOPENBACK = '" + aPPOPENBACK + '\'' +
+						",app_logo = '" + appLogo + '\'' +
+						",app_alernateAdShowBanner = '" + appAlernateAdShowBanner + '\'' +
+						",app_mainClickCntSwAd = '" + appMainClickCntSwAd + '\'' +
+						",aFTERSPLASH = '" + aFTERSPLASH + '\'' +
+						",app_status = '" + appStatus + '\'' +
+						",app_AppOpenAdStatus = '" + appAppOpenAdStatus + '\'' +
+						",app_adPlatformSequence = '" + appAdPlatformSequence + '\'' +
+						",nATIVEBANNER = '" + nATIVEBANNER + '\'' +
+						",app_needInternet = '" + appNeedInternet + '\'' +
+						",app_howShowAd = '" + appHowShowAd + '\'' +
+						",qUREKA = '" + qUREKA + '\'' +
+						",app_updateAppDialogStatus = '" + appUpdateAppDialogStatus + '\'' +
+						",app_alernateAdShowNative = '" + appAlernateAdShowNative + '\'' +
+						",app_adPlatformSequenceBanner = '" + appAdPlatformSequenceBanner + '\'' +
+						",appopeninter = '" + appopeninter + '\'' +
+						",app_howShowAdBanner = '" + appHowShowAdBanner + '\'' +
+						",app_howShowAdInterstitial = '" + appHowShowAdInterstitial + '\'' +
+						",app_accountLink = '" + appAccountLink + '\'' +
+						",qUREKALINK = '" + qUREKALINK + '\'' +
+						",app_name = '" + appName + '\'' +
+						",app_accountName = '" + appAccountName + '\'' +
+						",app_versionCode = '" + appVersionCode + '\'' +
+						",app_adPlatformSequenceNative = '" + appAdPlatformSequenceNative + '\'' +
+						",app_newPackageName = '" + appNewPackageName + '\'' +
+						",app_adPlatformSequenceInterstitial = '" + appAdPlatformSequenceInterstitial + '\'' +
+						",app_adShowStatus = '" + appAdShowStatus + '\'' +
+						",app_innerClickCntSwAd = '" + appInnerClickCntSwAd + '\'' +
+						",appopenback = '" + appopenback + '\'' +
+						",app_alernateAdShow = '" + appAlernateAdShow + '\'' +
+						",app_privacyPolicyLink = '" + appPrivacyPolicyLink + '\'' +
+						",app_howShowAdNative = '" + appHowShowAdNative + '\'' +
+						",promoappstatus = '" + promoappstatus + '\'' +
+						"}";
+	}
 }

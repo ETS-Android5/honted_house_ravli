@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
@@ -120,6 +122,12 @@ public class APIManager {
         if (responseRoot == null)
             return false;
         return responseRoot.getAPPSETTINGS().getQUREKA().equals("ON");
+    }
+
+    public boolean isExitScreen() {
+        if (responseRoot == null)
+            return false;
+        return responseRoot.getAPPSETTINGS().getExitScreen().equalsIgnoreCase("ON");
     }
 
     public static int getApp_adShowStatus() {
@@ -428,6 +436,8 @@ public class APIManager {
                 adId = intA_list[0];
                 ADMOB_I_list = implode(intA_list);
                 new TinyDB(activity).putString("ADMOB_I", ADMOB_I_list);
+            }else {
+                adId = ADMOB_I[0];
             }
         }
         return adId;
@@ -1439,5 +1449,18 @@ public class APIManager {
             if (rewardCallback != null)
                 rewardCallback.onClose(false);
         }
+    }
+
+    public BottomSheetDialog showExitDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_exit_dialog);
+        RelativeLayout adContainerBack = bottomSheetDialog.findViewById(R.id.adContainerBack);
+        TextView update = bottomSheetDialog.findViewById(R.id.update);
+        TextView later = bottomSheetDialog.findViewById(R.id.later);
+        showSmallNative(adContainerBack);
+        bottomSheetDialog.show();
+        later.setOnClickListener(view -> bottomSheetDialog.dismiss());
+        update.setOnClickListener(view -> activity.finish());
+        return bottomSheetDialog;
     }
 }

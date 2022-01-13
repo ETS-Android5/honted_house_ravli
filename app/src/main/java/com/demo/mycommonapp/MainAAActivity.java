@@ -50,8 +50,14 @@ public class MainAAActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        APIManager.getInstance(MainAAActivity.this).showAdsStartExit(this, () -> {
-            startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
-        });
+        if(APIManager.getInstance(this).isExitScreen()){
+            APIManager.getInstance(this).showAdsStartExit( this, () -> {
+                startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
+                finish();
+            });
+        }else {
+            APIManager.getInstance(MainAAActivity.this ).showExitDialog();
+        }
+
     }
 }

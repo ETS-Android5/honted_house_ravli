@@ -193,9 +193,14 @@ APIManager.getInstance(MainActivity2.this).showRewardAd(new RewardCallback() {
 ### Exit
 Call this method when exit app in ```onBackPressed()```
 ```java
-APIManager.getInstance(MainAAActivity.this).showAdsStartExit(this, () -> {
-    startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
-});
+if(APIManager.getInstance(this).isExitScreen()){
+   APIManager.getInstance(this).showAdsStartExit( this, () -> {
+       startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
+       finish();
+   });
+}else {
+   APIManager.getInstance(MainAAActivity.this).showExitDialog();
+}
 ```
 
 ### Change Color of Ads Button
