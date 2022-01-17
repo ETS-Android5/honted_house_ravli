@@ -149,7 +149,7 @@
         android:textSize="14sp"
         android:text="Heloo asdf asdad adfas asd asd e  asdas a asdf asda dasd asdasd asd"/>
 
-    <Button
+    <TextView
         android:id="@+id/native_ad_call_to_action"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -161,6 +161,7 @@
         android:background="@drawable/button_bg"
         android:gravity="center"
         android:minHeight="45dp"
+        android:textStyle="bold"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
         android:text="Install"

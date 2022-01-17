@@ -41,7 +41,7 @@ public class CustomAppOpenAds extends Dialog  {
     private ImageView iv_myapp_logo;
     private ImageView media_view;
     private ImageView iv_ad_icon;
-    private Button btn_call_to_action;
+    private TextView btn_call_to_action;
 
     public  SharedPreferences mysharedpreferences;
     private TextView txt_myapp_name;

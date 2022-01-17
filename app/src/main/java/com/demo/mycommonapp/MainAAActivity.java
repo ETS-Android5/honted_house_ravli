@@ -32,8 +32,8 @@ public class MainAAActivity extends AppCompatActivity implements View.OnClickLis
         adContainer1 = (RelativeLayout) findViewById(R.id.adContainer1);
         adContainer2 = (RelativeLayout) findViewById(R.id.adContainer2);
         APIManager.getInstance(MainAAActivity.this).showNative(adContainer);
-        APIManager.getInstance(MainAAActivity.this).showSmallNative(adContainer1);
-        APIManager.getInstance(MainAAActivity.this).showNative(adContainer2);
+        APIManager.getInstance(MainAAActivity.this).showBanner(adContainer1);
+        APIManager.getInstance(MainAAActivity.this).showSmallNative(adContainer2);
     }
 
     @Override

@@ -436,7 +436,7 @@ public class APIManager {
                 adId = intA_list[0];
                 ADMOB_I_list = implode(intA_list);
                 new TinyDB(activity).putString("ADMOB_I", ADMOB_I_list);
-            }else {
+            } else {
                 adId = ADMOB_I[0];
             }
         }
@@ -1091,6 +1091,62 @@ public class APIManager {
         adLoader.loadAd(new AdRequest.Builder().build());
     }
 
+    private void showMyCustomSmallNative(final ViewGroup nbanner_container) {
+        final AdvertiseList appModal = getMyCustomAd("NativeBanner");
+        if (appModal != null) {
+
+            View inflate2 = LayoutInflater.from(activity).inflate(R.layout.cust_small_native, nbanner_container, false);
+            ImageView imageView2 = inflate2.findViewById(R.id.icon);
+            TextView textView = (TextView) inflate2.findViewById(R.id.primary);
+            TextView textView2 = (TextView) inflate2.findViewById(R.id.secondary);
+
+            TextView txt_rate = (TextView) inflate2.findViewById(R.id.txt_rate);
+            TextView txt_download = (TextView) inflate2.findViewById(R.id.txt_download);
+
+
+            Glide
+                    .with(activity)
+                    .load(appModal.getApp_logo())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            nbanner_container.removeAllViews();
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(imageView2);
+
+            textView.setText(appModal.getApp_name());
+            textView2.setText(appModal.getApp_shortDecription());
+            txt_rate.setText(appModal.getApp_rating());
+            txt_download.setText(appModal.getApp_download());
+
+            inflate2.findViewById(R.id.cta).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+
+                    String action_str = appModal.getApp_packageName();
+                    if (action_str.contains("http")) {
+                        Uri marketUri = Uri.parse(action_str);
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                        activity.startActivity(marketIntent);
+                    } else {
+                        activity.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + action_str)));
+                    }
+
+                }
+            });
+            nbanner_container.removeAllViews();
+            nbanner_container.addView(inflate2);
+            count_custNBAd++;
+        }
+    }
+
     private void showMyCustomNativeBanner(final ViewGroup nbanner_container) {
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
         if (appModal != null) {
@@ -1200,7 +1256,10 @@ public class APIManager {
                     @Override
                     public void onAdFailedToLoad(LoadAdError adError) {
                         Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
-                        showMyCustomNative(nativeAdContainer, small);
+                        if (!small)
+                            showMyCustomNative(nativeAdContainer);
+                        else
+                            showMyCustomSmallNative(nativeAdContainer);
                     }
                 })
                 .withNativeAdOptions(new NativeAdOptions.Builder()
@@ -1209,11 +1268,8 @@ public class APIManager {
         adLoader.loadAd(new AdRequest.Builder().build());
     }
 
-    private void showMyCustomNative(final ViewGroup nativeAdContainer, boolean small) {
-        if (small) {
-            showMyCustomNativeBanner(nativeAdContainer);
-            return;
-        }
+    private void showMyCustomNative(final ViewGroup nativeAdContainer) {
+
         final AdvertiseList appModal = getMyCustomAd("Native");
         if (appModal != null) {
             final View inflate = LayoutInflater.from(activity).inflate(R.layout.cust_native, nativeAdContainer, false);

@@ -1,30 +1,18 @@
 package com.pesonal.adsdk.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.pesonal.adsdk.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Inflate_ADS {
     Context activity;
@@ -38,7 +26,7 @@ public class Inflate_ADS {
         cardView.setVisibility(View.VISIBLE);
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = (View) inflater
-                .inflate(R.layout.ad_unified_big, null);
+                .inflate(R.layout.admob_big, null);
         cardView.removeAllViews();
         cardView.addView(view);
 
@@ -52,7 +40,7 @@ public class Inflate_ADS {
         cardView.setVisibility(View.VISIBLE);
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = (View) inflater
-                .inflate(R.layout.ad_unified_small, null);
+                .inflate(R.layout.admob_small, null);
         cardView.removeAllViews();
         cardView.addView(view);
 
