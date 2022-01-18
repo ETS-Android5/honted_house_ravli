@@ -194,10 +194,8 @@ APIManager.getInstance(MainActivity2.this).showRewardAd(new RewardCallback() {
 Call this method when exit app in ```onBackPressed()```
 ```java
 if(APIManager.getInstance(this).isExitScreen()){
-   APIManager.getInstance(this).showAdsStartExit( this, () -> {
-       startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
-       finish();
-   });
+  startActivity(new Intent(MainAAActivity.this, ExitActivity.class));
+  finish();
 }else {
    APIManager.getInstance(MainAAActivity.this).showExitDialog();
 }

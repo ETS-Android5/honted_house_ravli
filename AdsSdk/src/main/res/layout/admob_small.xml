@@ -144,18 +144,19 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <Button
+                        <TextView
                             android:id="@+id/ad_call_to_action"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
-                            android:backgroundTint="@color/colorAdColor"
+                            android:background="@drawable/button_bg_ad"
                             android:gravity="center"
+                            android:padding="13dp"
                             android:textAllCaps="true"
                             android:textColor="@color/colorAdWhite"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
