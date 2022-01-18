@@ -1213,8 +1213,23 @@ public class APIManager {
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
-//            Log.e("TAG", "showNative: " + adUnitId + "  " + platform);
-            showAdmobNative(nativeAdContainer, false, adUnitId);
+            showAdmobNative(nativeAdContainer, false, adUnitId, null);
+        } else {
+            Nativeutils.mediam(nativeAdContainer, activity);
+        }
+    }
+
+    public void showNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
+        if (responseRoot == null) {
+            return;
+        }
+        if (responseRoot.getAPPSETTINGS() == null) {
+            return;
+        }
+        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+            String platform = getPlatFormName("N");
+            String adUnitId = getUnitID(platform, "N", "");
+            showAdmobNative(nativeAdContainer, false, adUnitId, nativeCallback);
         } else {
             Nativeutils.mediam(nativeAdContainer, activity);
         }
@@ -1230,27 +1245,42 @@ public class APIManager {
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
-            showAdmobNative(nativeAdContainer, true, adUnitId);
+            showAdmobNative(nativeAdContainer, true, adUnitId, null);
         } else {
             Nativeutils.small(nativeAdContainer, activity);
         }
     }
 
-    private void showAdmobNative(final ViewGroup nativeAdContainer, boolean small, String id) {
+    public void showSmallNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
+        if (responseRoot == null) {
+            return;
+        }
+        if (responseRoot.getAPPSETTINGS() == null) {
+            return;
+        }
+        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+            String platform = getPlatFormName("N");
+            String adUnitId = getUnitID(platform, "N", "");
+            showAdmobNative(nativeAdContainer, true, adUnitId, nativeCallback);
+        } else {
+            Nativeutils.small(nativeAdContainer, activity);
+        }
+    }
+
+    private void showAdmobNative(final ViewGroup nativeAdContainer, boolean small, String id, NativeCallback nativeCallback) {
         if (id.isEmpty()) {
             return;
         }
 
         final AdLoader adLoader = new AdLoader.Builder(activity, id)
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd nativeAd) {
-                        if (!small)
-                            new Inflate_ADS(activity).inflate_NATIV_ADMOB(nativeAd, nativeAdContainer);
-                        else
-                            new Inflate_ADS(activity).inflate_NATIV_ADMOB_SMALL(nativeAd, nativeAdContainer);
+                .forNativeAd(nativeAd -> {
+                    if (!small)
+                        new Inflate_ADS(activity).inflate_NATIV_ADMOB(nativeAd, nativeAdContainer);
+                    else
+                        new Inflate_ADS(activity).inflate_NATIV_ADMOB_SMALL(nativeAd, nativeAdContainer);
+                    if (nativeCallback != null)
+                        nativeCallback.onLoad(false);
 
-                    }
                 })
                 .withAdListener(new AdListener() {
                     @Override
@@ -1260,6 +1290,8 @@ public class APIManager {
                             showMyCustomNative(nativeAdContainer);
                         else
                             showMyCustomSmallNative(nativeAdContainer);
+                        if (nativeCallback != null)
+                            nativeCallback.onLoad(true);
                     }
                 })
                 .withNativeAdOptions(new NativeAdOptions.Builder()
