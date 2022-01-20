@@ -35,7 +35,7 @@ dependencies {
 
 ## Step #4. Initialization.
 ### Splash Activity
-Extend as BaseAdsActivity and call below method in ```onCreate()```.
+Extend as ```BaseAdsActivity``` and call below method in ```onCreate()```.
 ```java
  initializeSplash(SplashActivity.this, new SplashListner() {
             @Override
@@ -93,7 +93,7 @@ APIManager.getInstance(StartSecondActivity.this).get_SPLASHMoreAppData();
 ```
 
 ### MainActivity
-Extend as TubeVpnActivity and call below method in ```onCreate()```.
+Extend as ```TubeVpnActivity``` and call below method in ```onCreate()```.
 ```java
 if (APIManager.getInstance(this).getVpnStatus())
    addView(iVPN);
