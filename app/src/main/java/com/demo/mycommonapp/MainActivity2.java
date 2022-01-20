@@ -32,7 +32,7 @@ public class MainActivity2 extends AppCompatActivity {
         adContainer2 = (RelativeLayout) findViewById(R.id.adContainer2);
         adContainer3 = (RelativeLayout) findViewById(R.id.adContainer3);
         APIManager.getInstance(MainActivity2.this).showBanner(adContainer);
-        APIManager.getInstance(MainActivity2.this).showBanner(adContainer2);
+        APIManager.getInstance(MainActivity2.this).showSmallNative(adContainer2);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,19 +9,19 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
+import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.remote.TinyDB;
 
 import java.util.Date;
 
 
-public class AppOpenManager implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
+public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
     private static final String LOG_TAG = "AppOpenManager";
     private AppOpenAd appOpenAd = null;
     public static boolean isShowingAd = false;
@@ -36,7 +36,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             this.myApplication.registerActivityLifecycleCallbacks(this);
         }
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
 
     public interface splshADlistner {
@@ -73,13 +72,11 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
             appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
             appOpenAd.show(currentActivity);
-
-
         } else {
             listner.onError("");
         }
     }
-    /** Request an ad */
+
     public void fetchAd(final splshADlistner listner) {
         if (isAdAvailable()) {
             return;
@@ -91,27 +88,32 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 super.onAdLoaded(appOpenAd);
                 AppOpenManager.this.appOpenAd = appOpenAd;
                 AppOpenManager.this.loadTime = (new Date()).getTime();
-                Log.e("my_log", "onAppOpenAdToLoad: " );
+                if (APIManager.isLog)
+                    Log.e("my_log", "onAppOpenAdToLoad: ");
                 listner.onSuccess();
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
-                Log.e("my_log", "onAppOpenAdFailedToLoad: "+loadAdError.getMessage() );
+                if (APIManager.isLog)
+                    Log.e("my_log", "onAppOpenAdFailedToLoad: " + loadAdError.getMessage());
                 listner.onError(loadAdError.getMessage());
             }
         };
 
         AdRequest request = getAdRequest();
         String appOpenID = new TinyDB(myApplication).getString("AppOpenID");
-        Log.e("TAG", "AppOpenManager:appOpenID "+appOpenID );
+        if (APIManager.isLog)
+            Log.e("TAG", "AppOpenManager:appOpenID " + appOpenID);
 
         AppOpenAd.load(myApplication, new TinyDB(myApplication).getString("AppOpenID"), request,
                 AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
     }
 
-    /** Creates and returns ad request. */
+    /**
+     * Creates and returns ad request.
+     */
     private AdRequest getAdRequest() {
         return new AdRequest.Builder().build();
     }
@@ -132,7 +134,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    }
 
     @Override
     public void onActivityPostCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
@@ -175,7 +178,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     @Override
-    public void onActivityStopped(Activity activity) {}
+    public void onActivityStopped(Activity activity) {
+    }
 
     @Override
     public void onActivityPostStopped(@NonNull Activity activity) {
@@ -188,7 +192,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     @Override
-    public void onActivityPaused(Activity activity) {}
+    public void onActivityPaused(Activity activity) {
+    }
 
     @Override
     public void onActivityPostPaused(@NonNull Activity activity) {
@@ -201,7 +206,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {}
+    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+    }
 
     @Override
     public void onActivityPostSaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {

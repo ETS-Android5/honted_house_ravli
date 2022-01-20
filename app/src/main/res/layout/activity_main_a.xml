@@ -15,6 +15,12 @@
         android:gravity="center"
         android:text="Next" />
 
+
+    <FrameLayout
+        android:id="@+id/iVPN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -27,21 +33,21 @@
             <RelativeLayout
                 android:id="@+id/adContainer"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/_15dp" />
 
             <RelativeLayout
                 android:id="@+id/adContainer1"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/_15dp" />
 
             <RelativeLayout
                 android:id="@+id/adContainer2"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/_15dp" />
         </LinearLayout>

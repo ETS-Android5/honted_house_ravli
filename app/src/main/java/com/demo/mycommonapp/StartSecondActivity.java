@@ -59,7 +59,7 @@ public class StartSecondActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View v) {
                 APIManager.getInstance(StartSecondActivity.this).showAdsStart(StartSecondActivity.this, () -> {
-                    Intent intent = new Intent(StartSecondActivity.this, MainAAActivity.class);
+                    Intent intent = new Intent(StartSecondActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 });

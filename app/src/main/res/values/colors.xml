@@ -6,10 +6,8 @@
 
 
     <color name="textColor">#000</color>
-    <color name="adsBg">#CDCDCD</color>
 
     <color name="themeColor">#fff</color>
     <color name="themeDarkColor">#fff</color>
-    <color name="iconColor">#000</color>
     <color name="appColor">#E54C41</color>
 </resources>

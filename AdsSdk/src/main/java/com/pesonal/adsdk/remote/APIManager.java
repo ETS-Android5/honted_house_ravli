@@ -40,7 +40,6 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -67,6 +66,8 @@ import java.util.Random;
 
 public class APIManager {
 
+
+    public static boolean isLog = false;
     public String ADMOB = "Admob";
     public static String QUREKALINK = "Admob";
     public static String[] ADMOB_B = new String[]{};
@@ -110,6 +111,10 @@ public class APIManager {
         APIManager.activity = activity;
     }
 
+    public static void setIsLog(boolean isLog) {
+        APIManager.isLog = isLog;
+    }
+
     public static APIManager getInstance(Activity activity) {
         APIManager.activity = activity;
         if (mInstance == null) {
@@ -122,6 +127,20 @@ public class APIManager {
         if (responseRoot == null)
             return false;
         return responseRoot.getAPPSETTINGS().getQUREKA().equals("ON");
+    }
+
+    public boolean getVpnStatus() {
+        if (responseRoot == null)
+            return false;
+        if (isLog)
+            Log.e(TAG, "getVpnStatus: " + responseRoot.getAPPSETTINGS().getVpnStatus().equals("ON"));
+        return responseRoot.getAPPSETTINGS().getVpnStatus().equals("ON");
+    }
+
+    public String getVpnLocation() {
+        if (responseRoot == null)
+            return "United States - US";
+        return responseRoot.getAPPSETTINGS().getVpnLocation();
     }
 
     public boolean isExitScreen() {
@@ -218,6 +237,7 @@ public class APIManager {
                 new TinyDB(activity).putBoolean("isUpdateCall", true);
             }
             listner.onSuccess();
+            listner.onGetExtradata(responseRoot.getEXTRADATA());
             MobileAds.initialize(activity, initializationStatus -> {
             });
 
@@ -469,7 +489,8 @@ public class APIManager {
         }
         String platform = getPlatFormName("I");
         String adUnitId = getUnitID(platform, "I", whichOne);
-//        Log.e("TAG", "RequestInterstitial: " + adUnitId + "  " + platform);
+        if (isLog)
+            Log.e("TAG", "RequestInterstitial: " + adUnitId + "  " + platform);
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(activity, adUnitId, adRequest, new InterstitialAdLoadCallback() {
             @Override
@@ -790,7 +811,8 @@ public class APIManager {
 
     private boolean getInter(boolean isBack) {
         boolean ad = getAd(isBack);
-        Log.e(TAG, "getInter: " + ad);
+        if (isLog)
+            Log.e(TAG, "getInter: " + ad);
         return ad;
     }
 
@@ -965,10 +987,14 @@ public class APIManager {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
                 String platform = getPlatFormName("B");
                 String adUnitId = getUnitID(platform, "B", "");
+                if (isLog)
+                    Log.e(TAG, "showBanner: " + adUnitId + "  " + platform);
                 turnShowBanner(viewGroup, adUnitId);
             } else {
                 String platform = getPlatFormName("BN");
                 String adUnitId = getUnitID(platform, "BN", "");
+                if (isLog)
+                    Log.e(TAG, "showBanner:BN  " + adUnitId + "  " + platform);
                 turnShowNativeBanner(viewGroup, adUnitId);
             }
         } else {
@@ -1213,6 +1239,8 @@ public class APIManager {
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
+            if (isLog)
+                Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, false, adUnitId, null);
         } else {
             Nativeutils.mediam(nativeAdContainer, activity);
@@ -1229,6 +1257,8 @@ public class APIManager {
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
+            if (isLog)
+                Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, false, adUnitId, nativeCallback);
         } else {
             Nativeutils.mediam(nativeAdContainer, activity);
@@ -1245,6 +1275,8 @@ public class APIManager {
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
+            if (isLog)
+                Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, true, adUnitId, null);
         } else {
             Nativeutils.small(nativeAdContainer, activity);
@@ -1261,6 +1293,7 @@ public class APIManager {
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
+
             showAdmobNative(nativeAdContainer, true, adUnitId, nativeCallback);
         } else {
             Nativeutils.small(nativeAdContainer, activity);
@@ -1285,7 +1318,8 @@ public class APIManager {
                 .withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(LoadAdError adError) {
-                        Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
+                        if (isLog)
+                            Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
                         if (!small)
                             showMyCustomNative(nativeAdContainer);
                         else
@@ -1403,7 +1437,8 @@ public class APIManager {
         }
         String platform = getPlatFormName("R");
         String adUnitId = getUnitID(platform, "R", "");
-
+        if (isLog)
+            Log.e(TAG, "loadRewardAd: " + adUnitId + "  " + platform);
         RewardedAd.load(activity, adUnitId, new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {

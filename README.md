@@ -18,9 +18,8 @@ allprojects {
     repositories {
 	    ...
 	    maven {
-                url "https://jitpack.io"
-                credentials { username authToken }
-              }
+            url "https://jitpack.io"
+        }
     }
 }
 ```
@@ -30,105 +29,42 @@ allprojects {
 ```groovy
 dependencies {
     implementation 'com.github.Aanibrothers-Infotech:honted_house_ravli:[latest-release]'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0'
+    implementation 'com.github.AnchorFreePartner.hydra-sdk-android:sdk:3.3.3'
 }
 ```
 
 ## Step #4. Initialization.
 ### Splash Activity
-Extend as ADS_SplashActivity and call below method in ```onCreate()```.
+Extend as BaseAdsActivity and call below method in ```onCreate()```.
 ```java
-ADSinit(SplashActivity.this,getCurrentVersionCode(), new getDataListner() {
+ initializeSplash(SplashActivity.this, new SplashListner() {
             @Override
             public void onSuccess() {
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, () -> {
-                            Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
-                            startActivity(intent);
-                            finish();
-                        });
-                    }
-                },8000);
-
+                APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, () -> {
+                    Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
             }
 
             @Override
-            public void onUpdate(String url) {
+            public void onExtra(String extraData) {
 
-            }
-
-            @Override
-            public void onRedirect(String url) {
-                showRedirectDialog(url);
-            }
-
-            @Override
-            public void onReload() {
-                startActivity(new Intent(SplashActivity.this, SplashActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onGetExtradata(JSONObject extraData) {
             }
         });
 ```
 
 ### Application class
-In ```onMoveToForeground()``` method replace SplashActivity.class with your launcher activity.
+In ```setClass()``` method replace SplashActivity.class with your launcher activity.
 ```java
-public class MyApplication extends Application
-        implements ActivityLifecycleCallbacks, LifecycleObserver {
-
-    private Activity currentActivity;
+public class MyApp extends AppClass {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        this.registerActivityLifecycleCallbacks(this);
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-    }
-
-
-    @OnLifecycleEvent(Event.ON_START)
-    protected void onMoveToForeground() {
-        if (APIManager.getApp_adShowStatus() == 1 && !APIManager.getInstance(currentActivity).getQureka() && !SplashActivity.class.getName().contains(currentActivity.getLocalClassName()))
-            APIManager.getInstance(currentActivity).showOpenCall(currentActivity, () -> {
-            });
-    }
-
-
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-    }
-
-    @Override
-    public void onActivityStarted(@NonNull Activity activity) {
-        currentActivity = activity;
-    }
-
-    @Override
-    public void onActivityResumed(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivityPaused(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivityStopped(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-    }
-
-    @Override
-    public void onActivityDestroyed(@NonNull Activity activity) {
+        if(BuildConfig.DEBUG)
+            APIManager.setIsLog(true);
+        setClass(SplashActivity.class);
     }
 }
 ```
@@ -154,6 +90,13 @@ if(APIManager.getInstance(StartSecondActivity.this).isUpdate()){
 Fetch Promo Apps list for ```StartActivity```.
 ```java
 APIManager.getInstance(StartSecondActivity.this).get_SPLASHMoreAppData();
+```
+
+### MainActivity
+Extend as TubeVpnActivity and call below method in ```onCreate()```.
+```java
+if (APIManager.getInstance(this).getVpnStatus())
+   addView(iVPN);
 ```
 
 ### NativeAd

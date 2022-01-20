@@ -12,5 +12,5 @@ public interface getDataListner {
 
     void onReload();
 
-    void onGetExtradata(JSONObject extraData);
+    void onGetExtradata(String extraData);
 }
