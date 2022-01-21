@@ -95,9 +95,50 @@ APIManager.getInstance(StartSecondActivity.this).get_SPLASHMoreAppData();
 ### MainActivity
 Extend as ```TubeVpnActivity``` and call below method in ```onCreate()```.
 ```java
-if (APIManager.getInstance(this).getVpnStatus())
-   addView(iVPN);
+ if (APIManager.getInstance(this).getVpnStatus()) {
+    rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
+    guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
+    guideVpn.setOnClickListener(view -> {
+        setConnect();
+        rootViewGuide.setVisibility(View.GONE);
+    });
+    if(isItFirstTime()){
+        rootViewGuide.setVisibility(View.VISIBLE);
+    }else {
+        rootViewGuide.setVisibility(View.GONE);
+    }
+    addView(iVPN);
+ }
 ```
+And put below layout in your ```xml```.
+```xml
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootViewGuide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#9D000000"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <include
+            android:id="@+id/layoutGuideVPN"
+            layout="@layout/layout_vpn" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/guideVpn"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_guide" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+```
+
 
 ### NativeAd
 ```java

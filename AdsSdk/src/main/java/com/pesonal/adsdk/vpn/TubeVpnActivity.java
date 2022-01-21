@@ -40,6 +40,7 @@ import com.anchorfree.vpnsdk.transporthydra.HydraVpnTransportException;
 import com.anchorfree.vpnsdk.vpnservice.VPNState;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.remote.APIManager;
+import com.pesonal.adsdk.remote.TinyDB;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -143,15 +144,9 @@ public abstract class TubeVpnActivity extends AppCompatActivity implements Traff
 
                         @Override
                         public void complete() {
+                            new TinyDB(TubeVpnActivity.this).putBoolean("firstTimeVPN", true);
                             Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Connected", Toast.LENGTH_SHORT).show();
                             startUIUpdateTask();
-//                            APIManager.getInstance(TubeVpnActivity.this).showAds(false, () -> {
-//                                Intent intent = new Intent(TubeVpnActivity.this, CreateSuccessActivity.class);
-//                                intent.putExtra("selectedCountry", selectedCountry);
-//                                intent.putExtra("isConnected", true);
-//                                startActivity(intent);
-//                            });
-
                         }
 
                         @Override
@@ -175,15 +170,6 @@ public abstract class TubeVpnActivity extends AppCompatActivity implements Traff
             public void complete() {
                 Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Disconnected", Toast.LENGTH_SHORT).show();
                 stopUIUpdateTask();
-
-
-//                APIManager.getInstance(TubeVpnActivity.this).showAds(false, () -> {
-//                    Intent intent = new Intent(TubeVpnActivity.this, CreateSuccessActivity.class);
-//                    intent.putExtra("selectedCountry", selectedCountry);
-//                    intent.putExtra("isConnected", false);
-//                    startActivity(intent);
-//                });
-
             }
 
             @Override
@@ -398,33 +384,44 @@ public abstract class TubeVpnActivity extends AppCompatActivity implements Traff
 
     private void initView() {
         iv_bg.setOnClickListener(view -> {
+            setConnect();
+        });
+    }
 
-            isConnected(new Callback<Boolean>() {
-                @Override
-                public void failure(@NonNull VpnException vpnException) {
-                    Log.e(TAG, "failure: " + vpnException.getMessage());
-                }
+    public boolean isItFirstTime() {
+        if (!new TinyDB(this).getBoolean("firstTimeVPN")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-                public void success(@NonNull Boolean bool) {
-                    if (bool) {
-                        disconnectFromVnp();
-                    } else {
-                        isConnected(new Callback<Boolean>() {
-                            @Override
-                            public void failure(@NonNull VpnException vpnException) {
+    public void setConnect() {
+        isConnected(new Callback<Boolean>() {
+            @Override
+            public void failure(@NonNull VpnException vpnException) {
+                Log.e(TAG, "failure: " + vpnException.getMessage());
+            }
+
+            public void success(@NonNull Boolean bool) {
+                if (bool) {
+                    disconnectFromVnp();
+                } else {
+                    isConnected(new Callback<Boolean>() {
+                        @Override
+                        public void failure(@NonNull VpnException vpnException) {
+                        }
+
+                        public void success(@NonNull Boolean bool) {
+                            if (bool) {
+                                disconnectFromVnp();
+                            } else {
+                                connectToVpn();
                             }
-
-                            public void success(@NonNull Boolean bool) {
-                                if (bool) {
-                                    disconnectFromVnp();
-                                } else {
-                                    connectToVpn();
-                                }
-                            }
-                        });
-                    }
+                        }
+                    });
                 }
-            });
+            }
         });
     }
 
