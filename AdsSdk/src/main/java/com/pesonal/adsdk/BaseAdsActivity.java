@@ -49,8 +49,6 @@ import com.pesonal.adsdk.utils.AESSUtils;
 import com.pesonal.adsdk.utils.SplashListner;
 import com.pesonal.adsdk.utils.getDataListner;
 
-import org.w3c.dom.Text;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -106,7 +104,7 @@ public class BaseAdsActivity extends BaseActivity {
             public void onReload() {
                 need_internet = true;
                 dialog.dismiss();
-                sendRequest(activity,getCurrentVersionCode(),myCallback1);
+                sendRequest(activity, getCurrentVersionCode(), myCallback1);
             }
 
             @Override
@@ -132,7 +130,9 @@ public class BaseAdsActivity extends BaseActivity {
 
         if (!isNetworkAvailable() && need_internet) {
             is_retry = false;
-            dialog.show();
+            if (!activity.isFinishing()) {
+                dialog.show();
+            }
         }
 
         mysharedpreferences = activity.getSharedPreferences(activity.getPackageName(), Context.MODE_PRIVATE);
@@ -146,7 +146,10 @@ public class BaseAdsActivity extends BaseActivity {
                     is_retry = true;
                     retry_buttton.setText(activity.getString(R.string.retry));
                 } else if (need_internet) {
-                    dialog.show();
+                    if (!activity.isFinishing()) {
+                        dialog.show();
+                    }
+
                     is_retry = false;
                     retry_buttton.setText(activity.getString(R.string.connect_internet));
                 }
@@ -171,12 +174,12 @@ public class BaseAdsActivity extends BaseActivity {
             }
         });
 
-        sendRequest(activity,getCurrentVersionCode(),myCallback1);
+        sendRequest(activity, getCurrentVersionCode(), myCallback1);
 
 
     }
 
-    public void sendRequest(Activity activity, int currentVersionCode, getDataListner myCallback1){
+    public void sendRequest(Activity activity, int currentVersionCode, getDataListner myCallback1) {
         this.myCallback1 = myCallback1;
         final SharedPreferences preferences = activity.getSharedPreferences("ad_pref", 0);
         final SharedPreferences.Editor editor_AD_PREF = preferences.edit();
@@ -279,7 +282,9 @@ public class BaseAdsActivity extends BaseActivity {
                                             is_retry = true;
                                             retry_buttton.setText(activity.getString(R.string.retry));
                                         } else {
-                                            dialog.show();
+                                            if (!activity.isFinishing()) {
+                                                dialog.show();
+                                            }
                                             is_retry = false;
                                             retry_buttton.setText(activity.getString(R.string.connect_internet));
                                         }
@@ -343,7 +348,9 @@ public class BaseAdsActivity extends BaseActivity {
                                         is_retry = true;
                                         retry_buttton.setText(activity.getString(R.string.retry));
                                     } else {
-                                        dialog.show();
+                                        if (!activity.isFinishing()) {
+                                            dialog.show();
+                                        }
                                         is_retry = false;
                                         retry_buttton.setText(activity.getString(R.string.connect_internet));
                                     }
