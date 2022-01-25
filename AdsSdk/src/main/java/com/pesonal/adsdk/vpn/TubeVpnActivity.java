@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.WorkRequest;
 
 import com.anchorfree.partner.api.response.RemainingTraffic;
@@ -444,45 +443,40 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
         handleError(vpnException);
     }
 
-    public void handleError(Throwable th) {
-        Log.w(TAG, th);
-        if (th instanceof NetworkRelatedException) {
+    public void handleError(Throwable e) {
+        Log.w(TAG, e);
+        if (e instanceof NetworkRelatedException) {
             showMessage("Check internet connection");
-        } else if (th instanceof VpnException) {
-            if (th instanceof VpnPermissionRevokedException) {
+        } else if (e instanceof VpnException) {
+            if (e instanceof VpnPermissionRevokedException) {
                 showMessage("User revoked vpn permissions");
-            } else if (th instanceof VpnPermissionDeniedException) {
+            } else if (e instanceof VpnPermissionDeniedException) {
                 showMessage("User canceled to grant vpn permissions");
-            } else if (th instanceof HydraVpnTransportException) {
-                HydraVpnTransportException hydraVpnTransportException = (HydraVpnTransportException) th;
-                if (hydraVpnTransportException.getCode() == 181) {
+            } else if (e instanceof HydraVpnTransportException) {
+                HydraVpnTransportException hydraVpnTransportException = (HydraVpnTransportException) e;
+                if (hydraVpnTransportException.getCode() == HydraVpnTransportException.HYDRA_ERROR_BROKEN) {
                     showMessage("Connection with vpn server was lost");
-                } else if (hydraVpnTransportException.getCode() == 191) {
+                } else if (hydraVpnTransportException.getCode() == HydraVpnTransportException.HYDRA_DCN_BLOCKED_BW) {
                     showMessage("Client traffic exceeded");
                 } else {
                     showMessage("Error in VPN transport");
                 }
-            } else {
-                showMessage("Error in VPN Service");
-            }
-        } else if (th instanceof PartnerApiException) {
-            String content = ((PartnerApiException) th).getContent();
-            char c = 65535;
-            int hashCode = content.hashCode();
-            if (hashCode != -1928371114) {
-                if (hashCode == -157160793 && content.equals("NOT_AUTHORIZED")) {
-                    c = 0;
+            } else if (e instanceof PartnerApiException) {
+                switch (((PartnerApiException) e).getContent()) {
+                    case PartnerApiException.CODE_NOT_AUTHORIZED:
+                        showMessage("User unauthorized");
+                        break;
+                    case PartnerApiException.CODE_TRAFFIC_EXCEED:
+                        showMessage("Server unavailable");
+                        break;
+                    default:
+                        showMessage("Other error. Check PartnerApiException constants");
+                        break;
                 }
-            } else if (content.equals("TRAFFIC_EXCEED")) {
-                c = 1;
             }
-            if (c == 0) {
-                showMessage("User unauthorized");
-            } else if (c != 1) {
-                showMessage("Other error. Check PartnerApiException constants");
-            } else {
-                showMessage("Server unavailable");
-            }
+        } else {
+            showMessage("Error in VPN Service");
+            Log.e(TAG, "handleError: " + e.getMessage());
         }
     }
 }

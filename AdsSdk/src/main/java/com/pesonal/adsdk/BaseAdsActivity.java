@@ -99,13 +99,14 @@ public class BaseAdsActivity extends BaseActivity {
 
             @Override
             public void onReload() {
-                need_internet=true;
-                initializeSplash(activity,listner);
+                need_internet = true;
+                initializeSplash(activity, listner);
             }
 
             @Override
             public void onGetExtradata(String extraData) {
-                listner.onExtra(extraData);
+                if (listner != null)
+                    listner.onExtra(extraData);
             }
         });
     }
