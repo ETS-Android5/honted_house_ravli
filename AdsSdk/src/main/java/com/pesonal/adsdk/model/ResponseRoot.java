@@ -10,7 +10,7 @@ public class ResponseRoot{
 	private String mSG;
 
 	@SerializedName("EXTRA_DATA")
-	private String eXTRADATA;
+	private String eXTRADATA="";
 
 	@SerializedName("STATUS")
 	private boolean sTATUS;
