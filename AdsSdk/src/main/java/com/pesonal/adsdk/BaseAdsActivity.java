@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.anchorfree.partner.api.auth.AuthMethod;
 import com.anchorfree.partner.api.response.User;
@@ -60,7 +58,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class BaseAdsActivity extends AppCompatActivity {
+public class BaseAdsActivity extends BaseActivity {
 
     public static boolean need_internet = false;
     String bytemode = "";
@@ -92,7 +90,6 @@ public class BaseAdsActivity extends AppCompatActivity {
 
             @Override
             public void onUpdate(String url) {
-
             }
 
             @Override
@@ -102,8 +99,8 @@ public class BaseAdsActivity extends AppCompatActivity {
 
             @Override
             public void onReload() {
-                startActivity(new Intent(activity, activity.getClass()));
-                finish();
+                need_internet=true;
+                initializeSplash(activity,listner);
             }
 
             @Override

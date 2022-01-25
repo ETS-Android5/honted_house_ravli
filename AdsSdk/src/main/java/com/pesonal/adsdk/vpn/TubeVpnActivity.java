@@ -38,6 +38,7 @@ import com.anchorfree.vpnsdk.exceptions.VpnPermissionDeniedException;
 import com.anchorfree.vpnsdk.exceptions.VpnPermissionRevokedException;
 import com.anchorfree.vpnsdk.transporthydra.HydraVpnTransportException;
 import com.anchorfree.vpnsdk.vpnservice.VPNState;
+import com.pesonal.adsdk.BaseActivity;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.remote.TinyDB;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 
-public abstract class TubeVpnActivity extends AppCompatActivity implements TrafficListener, VpnStateListener {
+public abstract class TubeVpnActivity extends BaseActivity implements TrafficListener, VpnStateListener {
 
     protected static final String TAG = TubeVpnActivity.class.getSimpleName();
     private Handler mUIHandler = new Handler(Looper.getMainLooper());
