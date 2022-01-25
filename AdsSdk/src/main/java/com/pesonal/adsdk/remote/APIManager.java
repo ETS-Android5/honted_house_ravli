@@ -126,7 +126,7 @@ public class APIManager {
     public boolean getQureka() {
         if (responseRoot == null)
             return false;
-        if(responseRoot.getAPPSETTINGS().getQUREKA()==null)
+        if (responseRoot.getAPPSETTINGS().getQUREKA() == null)
             return false;
         return responseRoot.getAPPSETTINGS().getQUREKA().equals("ON");
     }
@@ -136,17 +136,23 @@ public class APIManager {
             return false;
         if (isLog)
             Log.e(TAG, "getVpnStatus: " + responseRoot.getAPPSETTINGS().getVpnStatus().equals("ON"));
+        if (responseRoot.getAPPSETTINGS().getVpnStatus() == null)
+            return false;
         return responseRoot.getAPPSETTINGS().getVpnStatus().equals("ON");
     }
 
     public String getVpnLocation() {
         if (responseRoot == null)
             return "United States - US";
+        if (responseRoot.getAPPSETTINGS().getVpnLocation() == null)
+            return "United States - US";
         return responseRoot.getAPPSETTINGS().getVpnLocation();
     }
 
     public boolean isExitScreen() {
         if (responseRoot == null)
+            return false;
+        if (responseRoot.getAPPSETTINGS().getExitScreen() == null)
             return false;
         return responseRoot.getAPPSETTINGS().getExitScreen().equalsIgnoreCase("ON");
     }

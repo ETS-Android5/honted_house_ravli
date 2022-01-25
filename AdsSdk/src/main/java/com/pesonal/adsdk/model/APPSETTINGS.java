@@ -295,6 +295,8 @@ public class APPSETTINGS {
     }
 
     public String getQUREKA() {
+        if(qUREKA==null)
+            return "";
         return qUREKA;
     }
 

@@ -49,6 +49,8 @@ import com.pesonal.adsdk.utils.AESSUtils;
 import com.pesonal.adsdk.utils.SplashListner;
 import com.pesonal.adsdk.utils.getDataListner;
 
+import org.w3c.dom.Text;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -67,6 +69,9 @@ public class BaseAdsActivity extends BaseActivity {
     private Handler refreshHandler;
     private SharedPreferences mysharedpreferences;
     int doubleBackToExitPressedOnce = 0;
+    private Dialog dialog;
+    private TextView retry_buttton;
+    private getDataListner myCallback1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +105,8 @@ public class BaseAdsActivity extends BaseActivity {
             @Override
             public void onReload() {
                 need_internet = true;
-                initializeSplash(activity, listner);
+                dialog.dismiss();
+                sendRequest(activity,getCurrentVersionCode(),myCallback1);
             }
 
             @Override
@@ -112,11 +118,12 @@ public class BaseAdsActivity extends BaseActivity {
     }
 
     private void ADSinit(final Activity activity, final int cversion, final getDataListner myCallback1) {
-        final Dialog dialog = new Dialog(activity);
+        dialog = new Dialog(activity);
+        dialog.dismiss();
         dialog.setCancelable(false);
         View view = getLayoutInflater().inflate(R.layout.retry_layout, null);
         dialog.setContentView(view);
-        final TextView retry_buttton = view.findViewById(R.id.retry_buttton);
+        retry_buttton = view.findViewById(R.id.retry_buttton);
 
         final SharedPreferences preferences = activity.getSharedPreferences("ad_pref", 0);
         final SharedPreferences.Editor editor_AD_PREF = preferences.edit();
@@ -164,7 +171,15 @@ public class BaseAdsActivity extends BaseActivity {
             }
         });
 
+        sendRequest(activity,getCurrentVersionCode(),myCallback1);
 
+
+    }
+
+    public void sendRequest(Activity activity, int currentVersionCode, getDataListner myCallback1){
+        this.myCallback1 = myCallback1;
+        final SharedPreferences preferences = activity.getSharedPreferences("ad_pref", 0);
+        final SharedPreferences.Editor editor_AD_PREF = preferences.edit();
         Calendar calender = Calendar.getInstance();
         calender.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
@@ -208,7 +223,7 @@ public class BaseAdsActivity extends BaseActivity {
                 @Override
                 public void onGetExtradata(String extraData) {
                 }
-            }, cversion);
+            }, currentVersionCode);
         }
 
         String akbsvl679056 = "A7DB10BCE241120B24959FE3F8DF8C2F5AE65D58CB42376D8BC644E3771D93326905B81FB6BB7A8D10FCFCFCA361E8A6";
@@ -312,7 +327,7 @@ public class BaseAdsActivity extends BaseActivity {
                                 myCallback1.onGetExtradata(extraData);
 
                             }
-                        }, cversion);
+                        }, currentVersionCode);
                     }
                 },
                 new Response.ErrorListener() {
@@ -360,7 +375,6 @@ public class BaseAdsActivity extends BaseActivity {
 
         strRequest.setShouldCache(false);
         requestQueue.add(strRequest);
-
     }
 
     private String getKeyHash(Activity activity) {
