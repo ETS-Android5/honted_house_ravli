@@ -5,130 +5,130 @@ import com.google.gson.annotations.SerializedName;
 public class APPSETTINGS {
 
     @SerializedName("app_dialogBeforeAdShow")
-    private String appDialogBeforeAdShow;
+    private String appDialogBeforeAdShow="";
 
     @SerializedName("APPOPENINTER")
-    private String aPPOPENINTER;
+    private String aPPOPENINTER="";
 
     @SerializedName("app_packageName")
-    private String appPackageName;
+    private String appPackageName="";
 
     @SerializedName("app_redirectOtherAppStatus")
-    private String appRedirectOtherAppStatus;
+    private String appRedirectOtherAppStatus="";
 
     @SerializedName("app_alernateAdShowInterstitial")
-    private String appAlernateAdShowInterstitial;
+    private String appAlernateAdShowInterstitial="";
 
     @SerializedName("ADTYPE")
-    private String aDTYPE;
+    private String aDTYPE="";
 
     @SerializedName("APPOPENBACK")
-    private String aPPOPENBACK;
+    private String aPPOPENBACK="";
 
     @SerializedName("app_logo")
-    private String appLogo;
+    private String appLogo="";
 
     @SerializedName("app_alernateAdShowBanner")
-    private String appAlernateAdShowBanner;
+    private String appAlernateAdShowBanner="";
 
     @SerializedName("app_mainClickCntSwAd")
-    private String appMainClickCntSwAd;
+    private String appMainClickCntSwAd="";
 
     @SerializedName("AFTERSPLASH")
-    private String aFTERSPLASH;
+    private String aFTERSPLASH="";
 
     @SerializedName("app_status")
-    private String appStatus;
+    private String appStatus="";
 
     @SerializedName("app_AppOpenAdStatus")
-    private String appAppOpenAdStatus;
+    private String appAppOpenAdStatus="";
 
     @SerializedName("app_adPlatformSequence")
-    private String appAdPlatformSequence;
+    private String appAdPlatformSequence="";
 
     @SerializedName("NATIVEBANNER")
-    private String nATIVEBANNER;
+    private String nATIVEBANNER="";
 
     @SerializedName("app_needInternet")
-    private String appNeedInternet;
+    private String appNeedInternet="";
 
     @SerializedName("app_howShowAd")
-    private String appHowShowAd;
+    private String appHowShowAd="";
 
     @SerializedName("QUREKA")
-    private String qUREKA;
+    private String qUREKA="";
 
     @SerializedName("app_updateAppDialogStatus")
-    private String appUpdateAppDialogStatus;
+    private String appUpdateAppDialogStatus="";
 
     @SerializedName("app_alernateAdShowNative")
-    private String appAlernateAdShowNative;
+    private String appAlernateAdShowNative="";
 
     @SerializedName("app_adPlatformSequenceBanner")
-    private String appAdPlatformSequenceBanner;
+    private String appAdPlatformSequenceBanner="";
 
     @SerializedName("appopeninter")
-    private String appopeninter;
+    private String appopeninter="";
 
     @SerializedName("app_howShowAdBanner")
-    private String appHowShowAdBanner;
+    private String appHowShowAdBanner="";
 
     @SerializedName("app_howShowAdInterstitial")
-    private String appHowShowAdInterstitial;
+    private String appHowShowAdInterstitial="";
 
     @SerializedName("app_accountLink")
-    private String appAccountLink;
+    private String appAccountLink="";
 
     @SerializedName("QUREKALINK")
-    private String qUREKALINK;
+    private String qUREKALINK="";
 
     @SerializedName("app_name")
-    private String appName;
+    private String appName="";
 
     @SerializedName("app_accountName")
-    private String appAccountName;
+    private String appAccountName="";
 
     @SerializedName("app_versionCode")
-    private String appVersionCode;
+    private String appVersionCode="";
 
     @SerializedName("app_adPlatformSequenceNative")
-    private String appAdPlatformSequenceNative;
+    private String appAdPlatformSequenceNative="";
 
     @SerializedName("app_newPackageName")
-    private String appNewPackageName;
+    private String appNewPackageName="";
 
     @SerializedName("app_adPlatformSequenceInterstitial")
-    private String appAdPlatformSequenceInterstitial;
+    private String appAdPlatformSequenceInterstitial="";
 
     @SerializedName("app_adShowStatus")
-    private String appAdShowStatus;
+    private String appAdShowStatus="";
 
     @SerializedName("app_innerClickCntSwAd")
-    private String appInnerClickCntSwAd;
+    private String appInnerClickCntSwAd="";
 
     @SerializedName("appopenback")
-    private String appopenback;
+    private String appopenback="";
 
     @SerializedName("app_alernateAdShow")
-    private String appAlernateAdShow;
+    private String appAlernateAdShow="";
 
     @SerializedName("app_privacyPolicyLink")
-    private String appPrivacyPolicyLink;
+    private String appPrivacyPolicyLink="";
 
     @SerializedName("app_howShowAdNative")
-    private String appHowShowAdNative;
+    private String appHowShowAdNative="";
 
     @SerializedName("promoappstatus")
-    private String promoappstatus;
+    private String promoappstatus="";
 
     @SerializedName("EXITSCREEN")
-    private String exitScreen;
+    private String exitScreen="";
 
     @SerializedName("VPNSTATUS")
-    private String vpnStatus;
+    private String vpnStatus="";
 
     @SerializedName("VPNLOCATION")
-    private String vpnLocation;
+    private String vpnLocation="";
 
     public String getVpnStatus() {
         return vpnStatus;

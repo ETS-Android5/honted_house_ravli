@@ -126,6 +126,8 @@ public class APIManager {
     public boolean getQureka() {
         if (responseRoot == null)
             return false;
+        if(responseRoot.getAPPSETTINGS().getQUREKA()==null)
+            return false;
         return responseRoot.getAPPSETTINGS().getQUREKA().equals("ON");
     }
 
@@ -237,7 +239,8 @@ public class APIManager {
                 new TinyDB(activity).putBoolean("isUpdateCall", true);
             }
             listner.onSuccess();
-            listner.onGetExtradata(responseRoot.getEXTRADATA());
+            if (responseRoot.getEXTRADATA() != null)
+                listner.onGetExtradata(responseRoot.getEXTRADATA());
             MobileAds.initialize(activity, initializationStatus -> {
             });
 
