@@ -1,6 +1,7 @@
 package com.pesonal.adsdk.utils;
 
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.pesonal.adsdk.R;
+
+import java.util.Objects;
 
 public class Inflate_ADS {
     Context activity;
@@ -74,6 +77,7 @@ public class Inflate_ADS {
         } else {
             unifiedNativeAdView.getBodyView().setVisibility(View.VISIBLE);
             ((TextView) unifiedNativeAdView.getBodyView()).setText(unifiedNativeAd.getBody());
+            ((TextView) Objects.requireNonNull(unifiedNativeAdView.getBodyView())).setMovementMethod(new ScrollingMovementMethod());
         }
         if (unifiedNativeAd.getCallToAction() == null) {
             unifiedNativeAdView.getCallToActionView().setVisibility(View.INVISIBLE);

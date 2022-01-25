@@ -152,7 +152,7 @@ public abstract class TubeVpnActivity extends AppCompatActivity implements Traff
                         @Override
                         public void error(VpnException vpnException) {
                             updateUI();
-                            Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Error Connecting", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Error Connecting", Toast.LENGTH_SHORT).show();
                             handleError(vpnException);
                         }
                     });
