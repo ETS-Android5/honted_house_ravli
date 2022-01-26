@@ -19,7 +19,10 @@ allprojects {
         jcenter()
         mavenCentral()
         gradlePluginPortal()
-        maven { url 'https://jitpack.io' }
+        maven {
+            url "https://jitpack.io"
+            credentials { username authToken }
+        }
         maven {
             url "https://dl.appnext.com/"
         }
