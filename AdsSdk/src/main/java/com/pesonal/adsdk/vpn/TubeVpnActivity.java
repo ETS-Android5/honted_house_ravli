@@ -401,7 +401,7 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
             return false;
         }
     }
-    interface ConnectListener{
+    public interface ConnectListener{
          void onConnect(boolean success);
     }
 
