@@ -13,21 +13,21 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        gradlePluginPortal()
-        maven {
-            url "https://jitpack.io"
-            credentials { username authToken }
-        }
-        maven {
-            url "https://dl.appnext.com/"
-        }
-    }
-}
+//allprojects {
+//    repositories {
+//        google()
+//        jcenter()
+//        mavenCentral()
+//        gradlePluginPortal()
+//        maven {
+//            url "https://jitpack.io"
+//            credentials { username authToken }
+//        }
+//        maven {
+//            url "https://dl.appnext.com/"
+//        }
+//    }
+//}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

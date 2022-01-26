@@ -29,7 +29,7 @@ allprojects {
 ```groovy
 dependencies {
     implementation 'com.github.Aanibrothers-Infotech:honted_house_ravli:[latest-release]'
-    implementation 'com.github.AnchorFreePartner.hydra-sdk-android:sdk:3.3.3'
+    implementation 'com.github.AnchorFreePartner.hydra-sdk-android:sdk:3.6.1'
 }
 ```
 
