@@ -127,7 +127,7 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
     }
 
 
-    public void connectToVpn() {
+    public void connectToVpn(ConnectListener connectListener) {
         isLoggedIn(new Callback<Boolean>() {
             @Override
             public void failure(VpnException vpnException) {
@@ -147,14 +147,18 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
                             new TinyDB(TubeVpnActivity.this).putBoolean("firstTimeVPN", true);
                             Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Connected", Toast.LENGTH_SHORT).show();
                             startUIUpdateTask();
+                            if(connectListener!=null)
+                                connectListener.onConnect(true);
                         }
 
                         @Override
                         public void error(VpnException vpnException) {
                             updateUI();
-//                            Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Error Connecting", Toast.LENGTH_SHORT).show();
                             handleError(vpnException);
+                            if(connectListener!=null)
+                                connectListener.onConnect(false);
                         }
+
                     });
                     return;
                 }
@@ -163,19 +167,23 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
         });
     }
 
-    public void disconnectFromVnp() {
+    public void disconnectFromVnp(ConnectListener connectListener) {
 
         UnifiedSDK.getInstance().getVPN().stop(TrackingConstants.GprReasons.M_UI, new CompletableCallback() {
             @Override
             public void complete() {
                 Toast.makeText((Context) TubeVpnActivity.this, (CharSequence) "Disconnected", Toast.LENGTH_SHORT).show();
                 stopUIUpdateTask();
+                if(connectListener!=null)
+                    connectListener.onConnect(false);
             }
 
             @Override
             public void error(VpnException vpnException) {
                 updateUI();
                 handleError(vpnException);
+                if(connectListener!=null)
+                    connectListener.onConnect(false);
             }
         });
     }
@@ -383,9 +391,7 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
 
 
     private void initView() {
-        iv_bg.setOnClickListener(view -> {
-            setConnect();
-        });
+        iv_bg.setOnClickListener(view -> setConnect());
     }
 
     public boolean isItFirstTime() {
@@ -394,6 +400,38 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
         } else {
             return false;
         }
+    }
+    interface ConnectListener{
+         void onConnect(boolean success);
+    }
+
+    public void setConnect(ConnectListener connectListener) {
+        isConnected(new Callback<Boolean>() {
+            @Override
+            public void failure(@NonNull VpnException vpnException) {
+                Log.e(TAG, "failure: " + vpnException.getMessage());
+            }
+
+            public void success(@NonNull Boolean bool) {
+                if (bool) {
+                    disconnectFromVnp(connectListener);
+                } else {
+                    isConnected(new Callback<Boolean>() {
+                        @Override
+                        public void failure(@NonNull VpnException vpnException) {
+                        }
+
+                        public void success(@NonNull Boolean bool) {
+                            if (bool) {
+                                disconnectFromVnp(connectListener);
+                            } else {
+                                connectToVpn(connectListener);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void setConnect() {
@@ -405,7 +443,7 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
 
             public void success(@NonNull Boolean bool) {
                 if (bool) {
-                    disconnectFromVnp();
+                    disconnectFromVnp(null);
                 } else {
                     isConnected(new Callback<Boolean>() {
                         @Override
@@ -414,9 +452,9 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
 
                         public void success(@NonNull Boolean bool) {
                             if (bool) {
-                                disconnectFromVnp();
+                                disconnectFromVnp(null);
                             } else {
-                                connectToVpn();
+                                connectToVpn(null);
                             }
                         }
                     });
