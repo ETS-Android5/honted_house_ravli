@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.circularreveal.CircularRevealLinearLayout;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 
+import com.pesonal.adsdk.BaseActivity;
 import com.pesonal.adsdk.model.MOREAPPEXIT;
 import com.pesonal.adsdk.remote.APIManager;
 
 import java.util.List;
 
 
-public class ExitActivity extends AppCompatActivity implements View.OnClickListener {
+public class ExitActivity extends BaseActivity implements View.OnClickListener {
 
     CircularRevealCardView yes, no;
     Intent intent;

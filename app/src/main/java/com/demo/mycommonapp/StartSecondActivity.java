@@ -10,18 +10,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.pesonal.adsdk.BaseActivity;
 import com.pesonal.adsdk.dialog.PrivacyDialog;
 import com.pesonal.adsdk.model.MOREAPPSPLASH;
 import com.pesonal.adsdk.remote.APIManager;
@@ -29,7 +27,7 @@ import com.pesonal.adsdk.remote.APIManager;
 import java.util.List;
 
 
-public class StartSecondActivity extends AppCompatActivity implements View.OnClickListener {
+public class StartSecondActivity extends BaseActivity implements View.OnClickListener {
 
     private Button ivPlayer;
     private ImageView ivShare;
@@ -41,10 +39,7 @@ public class StartSecondActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_start_second);
-
         initView();
     }
 
@@ -79,7 +74,7 @@ public class StartSecondActivity extends AppCompatActivity implements View.OnCli
             txtMoreApp.setVisibility(View.INVISIBLE);
         }
 
-        if(APIManager.getInstance(StartSecondActivity.this).isUpdate()){
+        if (APIManager.getInstance(StartSecondActivity.this).isUpdate()) {
             showUpdateDialog("https://play.google.com/store/apps/details?id=" + getPackageName());
         }
 
@@ -97,7 +92,7 @@ public class StartSecondActivity extends AppCompatActivity implements View.OnCli
                 startActivity(Intent.createChooser(share, "Share Application"));
                 break;
             case R.id.ivPrivacy:
-                    PrivacyDialog.show(StartSecondActivity.this,getResources().getStringArray(R.array.terms_of_service));
+                PrivacyDialog.show(StartSecondActivity.this, getResources().getStringArray(R.array.terms_of_service));
                 return;
 
         }

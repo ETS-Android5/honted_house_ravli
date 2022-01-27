@@ -5,9 +5,10 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pesonal.adsdk.BaseActivity;
 import com.pesonal.adsdk.remote.APIManager;
 
-public class MainActivity3 extends AppCompatActivity {
+public class MainActivity3 extends BaseActivity {
 
     private RelativeLayout adContainer;
 
