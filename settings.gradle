@@ -7,7 +7,6 @@ dependencyResolutionManagement {
         gradlePluginPortal()
         maven {
             url "https://jitpack.io"
-            credentials { username authToken }
         }
         maven {
             url "https://dl.appnext.com/"
