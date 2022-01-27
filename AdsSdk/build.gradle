@@ -32,6 +32,31 @@ android {
 //    }
 }
 
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.github.Aanibrothers-Infotech'
+                artifactId = 'honted_house_ravli'
+                version = '1.0.35'
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+
+                groupId = 'com.github.Aanibrothers-Infotech'
+                artifactId = 'honted_house_ravli'
+                version = '1.0.35'
+            }
+        }
+    }}
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.4.1'
