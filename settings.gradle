@@ -1,18 +1,18 @@
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        gradlePluginPortal()
-        maven {
-            url "https://jitpack.io"
-        }
-        maven {
-            url "https://dl.appnext.com/"
-        }
-    }
-}
 include ':AdsSdk'
 include ':app'
 rootProject.name = "Demo Edit"
+//dependencyResolutionManagement {
+////    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//    repositories {
+//        google()
+//        jcenter()
+//        mavenCentral()
+//        gradlePluginPortal()
+//        maven {
+//            url "https://jitpack.io"
+//        }
+//        maven {
+//            url "https://dl.appnext.com/"
+//        }
+//    }
+//}
