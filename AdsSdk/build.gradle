@@ -44,7 +44,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.Aanibrothers-Infotech'
                 artifactId = 'honted_house_ravli'
-                version = '1.0.35'
+                version = '1.0.37'
             }
             // Creates a Maven publication called “debug”.
             debug(MavenPublication) {
@@ -53,7 +53,7 @@ afterEvaluate {
 
                 groupId = 'com.github.Aanibrothers-Infotech'
                 artifactId = 'honted_house_ravli'
-                version = '1.0.35'
+                version = '1.0.37'
             }
         }
     }}

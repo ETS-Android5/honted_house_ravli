@@ -85,14 +85,15 @@ public class AppClass extends Application
 
     @OnLifecycleEvent(Event.ON_START)
     protected void onMoveToForeground() {
-        if (APIManager.getApp_adShowStatus() == 1 && !APIManager.getInstance(currentActivity).getQureka())
-            if (aClass != null) {
-                if (APIManager.isLog)
-                    Log.e("TAG", "onMoveToForeground: " + aClass.getName() + "  " + currentActivity.getLocalClassName());
-                if (!aClass.getName().contains(currentActivity.getLocalClassName()))
-                    APIManager.getInstance(currentActivity).showOpenCall(currentActivity, () -> {
-                    });
-            }
+        if (currentActivity != null)
+            if (APIManager.getApp_adShowStatus() == 1 && !APIManager.getInstance(currentActivity).getQureka())
+                if (aClass != null) {
+                    if (APIManager.isLog)
+                        Log.e("TAG", "onMoveToForeground: " + aClass.getName() + "  " + currentActivity.getLocalClassName());
+                    if (!aClass.getName().contains(currentActivity.getLocalClassName()))
+                        APIManager.getInstance(currentActivity).showOpenCall(currentActivity, () -> {
+                        });
+                }
     }
 
 
