@@ -390,6 +390,25 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
     }
 
 
+    public void vpnHandle(ConnectListener connectListener) {
+        isConnected(new Callback<>() {
+            @Override
+            public void failure(VpnException vpnException) {
+            }
+
+            public void success(Boolean bool) {
+                if (bool) {
+                    if (connectListener != null)
+                        connectListener.onConnect(true);
+                } else {
+                    if (connectListener != null)
+                        connectListener.onConnect(false);
+                }
+            }
+        });
+    }
+
+
     private void initView() {
         iv_bg.setOnClickListener(view -> setConnect());
     }
