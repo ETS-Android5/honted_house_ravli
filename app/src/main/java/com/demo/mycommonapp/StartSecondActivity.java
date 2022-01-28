@@ -39,6 +39,8 @@ public class StartSecondActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHideStatusBar(false);
+        setLightTheme(false);
         setContentView(R.layout.activity_start_second);
         initView();
     }
