@@ -157,6 +157,23 @@ public class APIManager {
         return responseRoot.getAPPSETTINGS().getExitScreen().equalsIgnoreCase("ON");
     }
 
+    public boolean getScreenStatus() {
+        if (responseRoot == null)
+            return false;
+        if (responseRoot.getAPPSETTINGS().getStartScreen() == null)
+            return true;
+        return responseRoot.getAPPSETTINGS().getStartScreen().equalsIgnoreCase("ON");
+    }
+
+    public boolean getBottomAd() {
+        if (responseRoot == null)
+            return false;
+        if (responseRoot.getAPPSETTINGS().getBottomAd() == null)
+            return true;
+        return responseRoot.getAPPSETTINGS().getBottomAd().equalsIgnoreCase("ON");
+    }
+
+
     public static int getApp_adShowStatus() {
         try {
             return Integer.parseInt(responseRoot.getAPPSETTINGS().getAppAdShowStatus());
@@ -992,6 +1009,9 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS() == null) {
             return;
         }
+        if (!getBottomAd())
+            return;
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
                 String platform = getPlatFormName("B");

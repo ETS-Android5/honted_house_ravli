@@ -27,6 +27,15 @@
             android:gravity="center"
             android:text="Next" />
 
+        <Button
+            android:id="@+id/btnOpenVpnScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:backgroundTint="@color/appColor"
+            android:gravity="center"
+            android:text="Open Vpn Screen" />
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

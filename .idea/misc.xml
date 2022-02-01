@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_card.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_on_off.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_strok.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_vpn.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_active.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_circle_image.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_circle_image_off.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_connect_download.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_connect_upload.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_off.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_on.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/image_bg.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/image_bg_blink.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/image_bg_connected.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/activity_vpn.xml" value="0.33" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/bottom_sheet.xml" value="0.3333333333333333" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/region_list_item.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main_a.xml" value="0.31354166666666666" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

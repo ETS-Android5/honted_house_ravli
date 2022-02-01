@@ -130,6 +130,28 @@ public class APPSETTINGS {
     @SerializedName("VPNLOCATION")
     private String vpnLocation="";
 
+    @SerializedName("STARTSCREEN")
+    private String startScreen="";
+
+    @SerializedName("BOTTOMAD")
+    private String bottomAd="";
+
+    public String getStartScreen() {
+        return startScreen;
+    }
+
+    public void setStartScreen(String startScreen) {
+        this.startScreen = startScreen;
+    }
+
+    public String getBottomAd() {
+        return bottomAd;
+    }
+
+    public void setBottomAd(String bottomAd) {
+        this.bottomAd = bottomAd;
+    }
+
     public String getVpnStatus() {
         return vpnStatus;
     }

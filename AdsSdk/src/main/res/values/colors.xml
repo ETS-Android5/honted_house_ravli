@@ -6,4 +6,10 @@
     <color name="colorAdGrey">#797979</color>
     <color name="colorAdColor">#E91E63</color>
     <color name="colorAdCard">#FFFFFF</color>
+
+
+    <color name="colorVpnDeActive">#AFAFAF</color>
+    <color name="colorVpnDeActiveTransparent">#80AFAFAF</color>
+    <color name="colorVpnActive">#00a861</color>
+    <color name="colorVpnActiveTransparent">#8000A861</color>
 </resources>

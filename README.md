@@ -40,11 +40,17 @@ Extend as ```BaseAdsActivity``` and call below method in ```onCreate()```.
  initializeSplash(SplashActivity.this, new SplashListner() {
             @Override
             public void onSuccess() {
-                APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, () -> {
-                    Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
-                    startActivity(intent);
-                    finish();
-                });
+                 APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, () -> {
+                     if (APIManager.getInstance(SplashActivity.this).getScreenStatus()) {
+                         Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
+                         startActivity(intent);
+                         finish();
+                     } else {
+                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                         startActivity(intent);
+                         finish();
+                     }
+                 });
             }
 
             @Override
@@ -82,8 +88,8 @@ If you have Start Button Activity then use below method to goto ```MainActivity.
 
 Check for app update.
 ```java
-if(APIManager.getInstance(StartSecondActivity.this).isUpdate()){
-    showUpdateDialog("https://play.google.com/store/apps/details?id=" + getPackageName());
+if (APIManager.getInstance(StartSecondActivity.this).isUpdate()) {
+            new DialogUtils().showUpdateDialog(this, "https://play.google.com/store/apps/details?id=" + getPackageName());
 }
 ```
 
@@ -139,6 +145,10 @@ And put below layout in your ```xml```.
     </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
+### For VPN Screen
+```java
+   startActivity(new Intent(MainActivity.this, VpnActivity.class));
+```
 
 ### NativeAd
 ```java

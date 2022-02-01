@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.airbnb.lottie.LottieAnimationView;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.vpn.TubeVpnActivity;
+import com.pesonal.adsdk.vpn.VpnActivity;
 
 public class MainActivity extends TubeVpnActivity implements View.OnClickListener {
 
@@ -22,6 +23,7 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
     private FrameLayout iVPN;
     private ConstraintLayout rootViewGuide;
     private LottieAnimationView guideVpn;
+    private Button btnOpenVpnScreen;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
     }
 
     private void initView() {
+        btnOpenVpnScreen = (Button) findViewById(R.id.btnOpenVpnScreen);
 
         iVPN = (FrameLayout) findViewById(R.id.iVPN);
         if (APIManager.getInstance(this).getVpnStatus()) {
@@ -41,9 +44,9 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
                 setConnect();
                 rootViewGuide.setVisibility(View.GONE);
             });
-            if(isItFirstTime()){
+            if (isItFirstTime()) {
                 rootViewGuide.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 rootViewGuide.setVisibility(View.GONE);
             }
             addView(iVPN);
@@ -56,7 +59,12 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
         APIManager.getInstance(MainActivity.this).showNative(adContainer);
         APIManager.getInstance(MainActivity.this).showBanner(adContainer1);
         APIManager.getInstance(MainActivity.this).showSmallNative(adContainer2);
-
+        btnOpenVpnScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, VpnActivity.class));
+            }
+        });
     }
 
     @Override
@@ -66,20 +74,17 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
                 APIManager.getInstance(MainActivity.this).showAds(false, () -> {
                     startActivity(new Intent(MainActivity.this, MainActivity2.class));
                 });
-
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        if(rootViewGuide.getVisibility()==View.VISIBLE)
+        if (rootViewGuide.getVisibility() == View.VISIBLE)
             return;
         if (APIManager.getInstance(this).isExitScreen()) {
-            APIManager.getInstance(this).showAdsStartExit(this, () -> {
-                startActivity(new Intent(MainActivity.this, ExitActivity.class));
-                finish();
-            });
+            startActivity(new Intent(MainActivity.this, ExitActivity.class));
+            finish();
         } else {
             APIManager.getInstance(MainActivity.this).showExitDialog();
         }

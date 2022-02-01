@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application>
+        <activity
+            android:name=".vpn.VpnActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -18,7 +21,6 @@
             android:name=".qureka.CustomiseinterActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".vpn.TubeVpnActivity"
             android:exported="true"

@@ -1,18 +1,11 @@
 package com.demo.mycommonapp;
 
 
-import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pesonal.adsdk.BaseActivity;
+import com.pesonal.adsdk.dialog.DialogUtils;
 import com.pesonal.adsdk.dialog.PrivacyDialog;
 import com.pesonal.adsdk.model.MOREAPPSPLASH;
 import com.pesonal.adsdk.remote.APIManager;
@@ -77,7 +71,7 @@ public class StartSecondActivity extends BaseActivity implements View.OnClickLis
         }
 
         if (APIManager.getInstance(StartSecondActivity.this).isUpdate()) {
-            showUpdateDialog("https://play.google.com/store/apps/details?id=" + getPackageName());
+            new DialogUtils().showUpdateDialog(this, "https://play.google.com/store/apps/details?id=" + getPackageName());
         }
 
     }
@@ -104,49 +98,5 @@ public class StartSecondActivity extends BaseActivity implements View.OnClickLis
     public void onBackPressed() {
     }
 
-    public void showUpdateDialog(final String url) {
-
-        final Dialog dialog = new Dialog(StartSecondActivity.this);
-        dialog.setCancelable(false);
-        View view = getLayoutInflater().inflate(R.layout.installnewappdialog, null);
-        dialog.setContentView(view);
-        TextView update = view.findViewById(R.id.update);
-        TextView later = view.findViewById(R.id.later);
-        TextView txt_title = view.findViewById(R.id.txt_title);
-        TextView txt_decription = view.findViewById(R.id.txt_decription);
-
-        update.setText("Update Now");
-        txt_title.setText("Looks Like you have an older \n version of the app.");
-        txt_decription.setText("");
-        txt_decription.setVisibility(View.GONE);
-
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Uri marketUri = Uri.parse(url);
-                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                    startActivity(marketIntent);
-                } catch (ActivityNotFoundException ignored1) {
-                }
-            }
-        });
-        later.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialog.create();
-        }
-
-        dialog.show();
-        Window window = dialog.getWindow();
-        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-    }
 
 }
