@@ -169,6 +169,16 @@ public class VpnActivity extends AppCompatActivity implements TrafficListener, V
                     ivConnectionStatus.setImageResource(R.drawable.icon_active);
                     frameOn.setBackgroundResource(R.drawable.bg_on);
                     ivConnect.setImageResource(R.drawable.icon_on);
+                    getCurrentServer(new Callback<String>() {
+                        @Override
+                        public void failure(VpnException vpnException) {
+                        }
+
+                        public void success(final String str) {
+                            selectedCountry = str;
+                            updateTextViews(true);
+                        }
+                    });
                 } else {
                     ivBgBlink.clearAnimation();
                     ivBgBlink.setImageResource(R.drawable.image_bg);
