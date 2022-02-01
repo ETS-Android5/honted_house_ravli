@@ -89,7 +89,7 @@ If you have Start Button Activity then use below method to goto ```MainActivity.
 Check for app update.
 ```java
 if (APIManager.getInstance(StartSecondActivity.this).isUpdate()) {
-            new DialogUtils().showUpdateDialog(this, "https://play.google.com/store/apps/details?id=" + getPackageName());
+   new DialogUtils().showUpdateDialog(this, "https://play.google.com/store/apps/details?id=" + getPackageName());
 }
 ```
 
