@@ -71,7 +71,15 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
         super.onCreate(savedInstanceState);
         this.selectedCountry = "us";
 
+        String[] s = APIManager.getInstance(this).getVpnLocation().split(" ");
+        for (String s1 : s) {
+            if (s1.length() == 2)
+                selectedCountry = s1.toLowerCase();
+        }
+        if (APIManager.isLog)
+            Log.e(TAG, "addView:selectedCountry onCreate " + selectedCountry);
     }
+
 
     public void addView(ViewGroup viewGroup) {
         String[] s = APIManager.getInstance(this).getVpnLocation().split(" ");
