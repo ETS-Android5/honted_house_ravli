@@ -18,16 +18,32 @@
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/image_bg_blink.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/image_bg_connected.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/activity_vpn.xml" value="0.33" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/ad_progress_dialog.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/admob_big.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/admob_small.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/admob_tiny.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/bottom_sheet.xml" value="0.3333333333333333" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/bottom_sheet_exit_dialog.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/cust_appopen.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/cust_banner.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/cust_int.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/cust_native.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/cust_native_banner.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/cust_small_native.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/installnewappdialog.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/inter_1.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/inter_2.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/inter_3.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/layout_vpn.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/policy_dialog.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_medium_native.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_small_native.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_tiny_banner.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_tiny_native.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/region_list_item.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/retry_layout.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/row_item_privacy_policy.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/small_banner.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main2.xml" value="0.2755208333333333" />
         <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main3.xml" value="0.2755208333333333" />
         <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main_a.xml" value="0.31354166666666666" />

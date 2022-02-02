@@ -168,9 +168,9 @@ public class APIManager {
     public boolean getBottomAd() {
         if (responseRoot == null)
             return false;
-//        if (responseRoot.getAPPSETTINGS().getBottomAd() == null)
+        if (responseRoot.getAPPSETTINGS().getBottomAd() == null)
             return true;
-//        return responseRoot.getAPPSETTINGS().getBottomAd().equalsIgnoreCase("ON");
+        return responseRoot.getAPPSETTINGS().getBottomAd().equalsIgnoreCase("ON");
     }
 
 
