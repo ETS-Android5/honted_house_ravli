@@ -91,6 +91,7 @@
                         android:background="@drawable/button_bg"
                         android:gravity="center"
                         android:maxLines="1"
+                        android:backgroundTint="#FF6C64"
                         android:fontFamily="@font/appfont_bold"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_65sdp"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
     app:cardBackgroundColor="@color/colorAdCard"
@@ -32,6 +32,7 @@
             android:id="@+id/iv_banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
