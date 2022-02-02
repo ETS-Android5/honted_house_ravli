@@ -20,7 +20,7 @@
         android:id="@+id/adContainer"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_65sdp"
         android:text="Hello" />
 
     <RelativeLayout
@@ -35,7 +35,7 @@
         android:id="@+id/adContainer2"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_130sdp"
         android:text="Hello" />
 
     <RelativeLayout

@@ -1,5 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+
+    <style name="AppThemeVPN" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#34353C</item>
+        <item name="colorPrimaryDark">#34353C</item>
+        <item name="colorAccent">#34353C</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#34353C</item>
+    </style>
 
     <style name="Theme_AppOpen_Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>

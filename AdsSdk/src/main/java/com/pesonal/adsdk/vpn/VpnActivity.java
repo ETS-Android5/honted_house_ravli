@@ -46,6 +46,7 @@ import com.anchorfree.vpnsdk.exceptions.VpnPermissionRevokedException;
 import com.anchorfree.vpnsdk.transporthydra.HydraVpnTransportException;
 import com.anchorfree.vpnsdk.vpnservice.VPNState;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.pesonal.adsdk.BaseActivity;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.remote.APIManager;
 
@@ -59,7 +60,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class VpnActivity extends AppCompatActivity implements TrafficListener, VpnStateListener {
+public class VpnActivity extends BaseActivity implements TrafficListener, VpnStateListener {
 
     protected static final String TAG = VpnActivity.class.getSimpleName();
     private ImageView ivConnect;
