@@ -340,9 +340,7 @@ public abstract class TubeVpnActivity extends BaseActivity implements TrafficLis
             }
 
             public void success(Boolean bool) {
-                if (bool.booleanValue()) {
-                    startUIUpdateTask();
-                }
+                startUIUpdateTask();
             }
         });
     }
