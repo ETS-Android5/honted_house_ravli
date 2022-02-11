@@ -121,6 +121,12 @@ Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
       }
   }
 ```
+
+And call below in ```onBackPressed()```.
+```java
+ if (rootViewGuide.getVisibility() == View.VISIBLE)
+    return;
+```
 And put below layout in your ```xml```.
 ```xml
 
