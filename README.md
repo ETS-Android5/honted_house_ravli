@@ -29,7 +29,6 @@ allprojects {
 ```groovy
 dependencies {
     implementation 'com.github.Aanibrothers-Infotech:honted_house_ravli:[latest-release]'
-    implementation 'com.github.AnchorFreePartner.hydra-sdk-android:sdk:3.6.1'
 }
 ```
 
@@ -99,25 +98,37 @@ APIManager.getInstance(StartSecondActivity.this).get_SPLASHMoreAppData();
 ```
 
 ### MainActivity
-Extend as ```TubeVpnActivity``` and call below method in ```onCreate()```.
+Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
 ```java
- if (APIManager.getInstance(this).getVpnStatus()) {
-    rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
-    guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
-    guideVpn.setOnClickListener(view -> {
-        setConnect();
-        rootViewGuide.setVisibility(View.GONE);
-    });
-    if(isItFirstTime()){
-        rootViewGuide.setVisibility(View.VISIBLE);
-    }else {
-        rootViewGuide.setVisibility(View.GONE);
-    }
-    addView(iVPN);
- }
+
+ if(APIManager.getInstance(this).getVpnMenuStatus()){
+     btnOpenVpnScreen.setVisibility(View.VISIBLE);
+ }else btnOpenVpnScreen.setVisibility(View.GONE);
+
+  iVPN = (FrameLayout) findViewById(R.id.iVPN);
+  if (APIManager.getInstance(this).getVpnStatus()) {
+      setBannerView(iVPN);
+      rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
+      guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
+      guideVpn.setOnClickListener(view -> {
+          connectVpn();
+          rootViewGuide.setVisibility(View.GONE);
+      });
+      if (getConnection()) {
+          rootViewGuide.setVisibility(View.GONE);
+      } else {
+          rootViewGuide.setVisibility(View.VISIBLE);
+      }
+  }
 ```
 And put below layout in your ```xml```.
 ```xml
+
+   <FrameLayout
+        android:id="@+id/iVPN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootViewGuide"
         android:layout_width="match_parent"
@@ -147,7 +158,7 @@ And put below layout in your ```xml```.
 
 ### For VPN Screen
 ```java
-   startActivity(new Intent(MainActivity.this, VpnActivity.class));
+   startActivity(new Intent(MainActivity.this, VanishVPNActivity.class));
 ```
 
 ### NativeAd
