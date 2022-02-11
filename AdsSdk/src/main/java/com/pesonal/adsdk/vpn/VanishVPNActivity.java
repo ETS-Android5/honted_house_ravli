@@ -91,8 +91,8 @@ public class VanishVPNActivity extends AppCompatActivity {
         server = new Server(new TinyDB(this).getString("vpnServer", "United Status"),
                 vpnServerFlag,
                 APIManager.getInstance(this).getVpnServer(),
-                "guideapp369@gmail.com",
-                "guiDe$%^123");
+                APIManager.getInstance(this).getVpnUser(),
+                APIManager.getInstance(this).getVpnPass());
         initView();
         isServiceRunning();
     }
@@ -199,8 +199,8 @@ public class VanishVPNActivity extends AppCompatActivity {
                             Log.e("TAG", "progress onDownloadComplete: downloadConfigFile  ");
                         server = new Server(serverListItem.getCityName(), countryListItem1.getFlagUrl(),
                                 new File(getCacheDir().getAbsolutePath(), "server.ovpn").getAbsolutePath(),
-                                "guideapp369@gmail.com",
-                                "guiDe$%^123");
+                                APIManager.getInstance(VanishVPNActivity.this).getVpnUser(),
+                                APIManager.getInstance(VanishVPNActivity.this).getVpnPass());
                         startVpn();
                     }
 

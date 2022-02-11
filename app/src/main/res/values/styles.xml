@@ -9,5 +9,4 @@
         <item name="android:statusBarColor" tools:targetApi="lollipop">#000000</item>
     </style>
 
-    <style name="blinkt.dialog" parent="android:Theme.DeviceDefault.Light.Dialog" />
 </resources>

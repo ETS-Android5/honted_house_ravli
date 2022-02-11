@@ -142,6 +142,28 @@ public class APPSETTINGS {
     @SerializedName("VPNMENU")
     private String VPNMENU ="ON";
 
+    @SerializedName("VPNUSER")
+    private String vpnUser ="ON";
+
+    @SerializedName("VPNPASS")
+    private String vpnPass ="ON";
+
+    public String getVpnUser() {
+        return vpnUser;
+    }
+
+    public void setVpnUser(String vpnUser) {
+        this.vpnUser = vpnUser;
+    }
+
+    public String getVpnPass() {
+        return vpnPass;
+    }
+
+    public void setVpnPass(String vpnPass) {
+        this.vpnPass = vpnPass;
+    }
+
     public String getVpnLocation() {
         return vpnLocation;
     }

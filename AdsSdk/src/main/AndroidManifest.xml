@@ -12,12 +12,7 @@
         <activity
             android:name=".vpn.VanishVPNActivity"
             android:exported="false"
-            android:theme="@style/AppThemeVPN"/>
-        <activity
-            android:name=".vpn.VpnActivity"
-            android:exported="false"
             android:theme="@style/AppThemeVPN" />
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
@@ -26,15 +21,11 @@
             android:name=".qureka.CustomiseinterActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".vpn.TubeVpnActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
-            android:permission="android.permission.BIND_VPN_SERVICE"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>

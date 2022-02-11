@@ -56,8 +56,8 @@ public class BannerVpnActivity extends BaseActivity {
     public void setBannerView(ViewGroup viewGroup) {
         server = new Server(new TinyDB(this).getString("vpnServer", "United Status"), "",
                 APIManager.getInstance(this).getVpnServer(),
-                "guideapp369@gmail.com",
-                "guiDe$%^123");
+                APIManager.getInstance(this).getVpnUser(),
+                APIManager.getInstance(this).getVpnPass());
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = (View) inflater.inflate(R.layout.layout_vpn, null);
         viewGroup.removeAllViews();

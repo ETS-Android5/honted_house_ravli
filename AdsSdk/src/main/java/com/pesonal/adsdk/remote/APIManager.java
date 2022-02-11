@@ -159,6 +159,23 @@ public class APIManager {
         return responseRoot.getAPPSETTINGS().getVpnLocation();
     }
 
+    public String getVpnUser() {
+        if (responseRoot == null)
+            return "US";
+        if (responseRoot.getAPPSETTINGS().getVpnUser() == null)
+            return "US";
+        return responseRoot.getAPPSETTINGS().getVpnUser();
+    }
+
+    public String getVpnPass() {
+        if (responseRoot == null)
+            return "US";
+        if (responseRoot.getAPPSETTINGS().getVpnPass() == null)
+            return "US";
+        return responseRoot.getAPPSETTINGS().getVpnPass();
+    }
+
+
     public boolean getVpnMenuStatus() {
         if (responseRoot == null)
             return false;
