@@ -28,13 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.anchorfree.partner.api.auth.AuthMethod;
-import com.anchorfree.partner.api.response.User;
-import com.anchorfree.sdk.UnifiedSDK;
-import com.anchorfree.vpnsdk.callbacks.Callback;
-import com.anchorfree.vpnsdk.exceptions.VpnException;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -88,7 +81,7 @@ public class BaseAdsActivity extends BaseActivity {
         ADSinit(activity, getCurrentVersionCode(), new getDataListner() {
             @Override
             public void onSuccess() {
-                loginUser(listner);
+                new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
             }
 
             @Override
@@ -501,27 +494,29 @@ public class BaseAdsActivity extends BaseActivity {
         return 0;
     }
 
-    private void loginUser(SplashListner listner) {
-        try {
-            ((AppClass) getApplication()).setNewHostAndCarrier("https://d2isj403unfbyl.cloudfront.net", "samuy_vpn22");
-            UnifiedSDK.getInstance().getBackend().login(AuthMethod.anonymous(), new Callback<User>() {
-                        @Override
-                        public void success(@NonNull User user) {
-                            if (APIManager.isLog)
-                                Log.e("TAG", "success: login");
-                            new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
-                        }
+//    private void loginUser(SplashListner listner) {
+//        try {
+//            ((AppClass) getApplication()).setNewHostAndCarrier("https://d2isj403unfbyl.cloudfront.net", "samuy_vpn22");
+//            UnifiedSDK.getInstance().getBackend().login(AuthMethod.anonymous(), new Callback<User>() {
+//                        @Override
+//                        public void success(@NonNull User user) {
+//                            if (APIManager.isLog)
+//                                Log.e("TAG", "success: login");
+//                            new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
+//                        }
+//
+//                        @Override
+//                        public void failure(@NonNull VpnException e) {
+//                            if (APIManager.isLog)
+//                                Log.e("TAG", "success: fail " + e.getMessage());
+//                            new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
+//                        }
+//                    }
+//            );
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-                        @Override
-                        public void failure(@NonNull VpnException e) {
-                            if (APIManager.isLog)
-                                Log.e("TAG", "success: fail" + e.getMessage());
-                            new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
-                        }
-                    }
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }

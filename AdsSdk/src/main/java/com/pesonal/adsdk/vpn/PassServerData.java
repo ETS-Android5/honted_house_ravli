@@ -1,7 +1,10 @@
 package com.pesonal.adsdk.vpn;
 
-import com.anchorfree.partner.api.data.Country;
+import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
+import com.pesonal.adsdk.model.vpnmodel.ServerListItem;
+
+import java.util.List;
 
 public interface PassServerData {
-    void getSelectedServer(Country country);
+    void getSelectedServer(List<ServerListItem> country, CountryListItem countryListItem);
 }

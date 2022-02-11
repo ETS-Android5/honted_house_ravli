@@ -28,6 +28,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.PRDownloader;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -44,6 +47,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.customAd.CustomAppOpenAds;
@@ -52,6 +56,8 @@ import com.pesonal.adsdk.model.AdvertiseList;
 import com.pesonal.adsdk.model.MOREAPPEXIT;
 import com.pesonal.adsdk.model.MOREAPPSPLASH;
 import com.pesonal.adsdk.model.ResponseRoot;
+import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
+import com.pesonal.adsdk.model.vpnmodel.ResponseVpn;
 import com.pesonal.adsdk.qureka.BannerUtils;
 import com.pesonal.adsdk.qureka.CustomiseinterActivity;
 import com.pesonal.adsdk.qureka.Glob;
@@ -59,6 +65,10 @@ import com.pesonal.adsdk.qureka.Nativeutils;
 import com.pesonal.adsdk.utils.Inflate_ADS;
 import com.pesonal.adsdk.utils.getDataListner;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -143,10 +153,42 @@ public class APIManager {
 
     public String getVpnLocation() {
         if (responseRoot == null)
-            return "United States - US";
+            return "US";
         if (responseRoot.getAPPSETTINGS().getVpnLocation() == null)
-            return "United States - US";
+            return "US";
         return responseRoot.getAPPSETTINGS().getVpnLocation();
+    }
+
+    public boolean getVpnMenuStatus() {
+        if (responseRoot == null)
+            return false;
+        if (responseRoot.getAPPSETTINGS().getVPNMENU() == null)
+            return true;
+        return responseRoot.getAPPSETTINGS().getVPNMENU().equalsIgnoreCase("ON");
+    }
+
+    public String getVpnServer() {
+        if (responseRoot == null)
+            return "";
+        File file = new File(activity.getCacheDir(), "server.ovpn");
+        if (file.exists()) {
+            return file.getAbsolutePath();
+        }
+        return "";
+    }
+
+
+    public List<CountryListItem> getVpnServerList() {
+        if (responseRoot == null)
+            return new ArrayList<>();
+        File file = new File(activity.getCacheDir(), "vpnList.json");
+        if (file.exists()) {
+            String jsonFromFile = loadJsonFromFile(file);
+            Gson gson = new GsonBuilder().create();
+            ResponseVpn responseVpnList = gson.fromJson(jsonFromFile, ResponseVpn.class);
+            return responseVpnList.getCountryList();
+        }
+        return new ArrayList<>();
     }
 
     public boolean isExitScreen() {
@@ -182,6 +224,112 @@ public class APIManager {
         }
     }
 
+    public String loadJsonFromFile(File file) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            int size = inputStream.available();
+            byte[] bytes = new byte[size];
+            inputStream.read(bytes);
+            inputStream.close();
+            return new String(bytes, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void downloadVpn(String url) {
+        if (APIManager.isLog)
+            Log.e("TAG", "progress url json: " + url);
+//        File file = new File(activity.getCacheDir().getAbsolutePath(), "vpnList.json");
+//        if (file.exists())
+//            file.delete();
+        PRDownloader.download(url, activity.getCacheDir().getAbsolutePath(), "vpnList.json")
+                .build()
+                .setOnStartOrResumeListener(() -> {
+                })
+                .setOnPauseListener(() -> {
+                })
+                .setOnCancelListener(() -> {
+                })
+                .setOnProgressListener(progress -> {
+                    if (APIManager.isLog)
+                        Log.e("TAG", "progress: " + progress);
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onDownloadComplete: json  " + activity.getCacheDir().getAbsolutePath() + "/vpnList.json");
+
+                        File file = new File(activity.getCacheDir(), "vpnList.json");
+                        if (file.exists()) {
+                            String jsonFromFile = loadJsonFromFile(file);
+                            Gson gson = new GsonBuilder().create();
+                            ResponseVpn responseVpnList = gson.fromJson(jsonFromFile, ResponseVpn.class);
+                            for (CountryListItem countryListItem : responseVpnList.getCountryList()) {
+                                if (countryListItem.getCountryName().equalsIgnoreCase(getVpnLocation())) {
+                                    int max = countryListItem.getServerList().size() - 1;
+                                    int min = 0;
+                                    int random = new Random().nextInt(max - min + 1) + min;
+                                    Log.e("TAG", "onDownloadComplete:random " + random);
+                                    new TinyDB(activity).putString("vpnServer", countryListItem.getServerList().get(random).getCityName());
+                                    new TinyDB(activity).putString("vpnServerFlag", countryListItem.getFlagUrl());
+                                    downloadConfigFile(countryListItem.getServerList().get(random).getConfig());
+                                }
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onError: error" + error.getServerErrorMessage());
+                    }
+
+                });
+    }
+
+    public void downloadConfigFile(String url) {
+        if (APIManager.isLog)
+            Log.e("TAG", "downloadConfigFile: " + url + "  " + getFileNameFromUrl(url));
+        PRDownloader.download(url, activity.getCacheDir().getAbsolutePath(), "server.ovpn")
+                .build()
+                .setOnStartOrResumeListener(() -> {
+
+                })
+                .setOnPauseListener(() -> {
+
+                })
+                .setOnCancelListener(() -> {
+
+                })
+                .setOnProgressListener(progress -> {
+                    if (APIManager.isLog)
+                        Log.e("TAG", "progress: downloadConfigFile" + progress);
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onDownloadComplete: downloadConfigFile  ");
+
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onError: downloadConfigFile" + error.getServerErrorMessage());
+                    }
+
+                });
+    }
+
+    public static String getFileNameFromUrl(String url) {
+        return url.substring(url.lastIndexOf('/') + 1);
+    }
+
     public void init(getDataListner listner, int cversion) {
         new TinyDB(activity).putBoolean("isUpdateCall", false);
         String response = new TinyDB(activity).getString("response");
@@ -190,6 +338,7 @@ public class APIManager {
             return;
         if (!responseRoot.isSTATUS())
             return;
+        downloadVpn(responseRoot.getAPPSETTINGS().getVpnLink());
         new TinyDB(activity).putString("app_name", responseRoot.getAPPSETTINGS().getAppName());
         new TinyDB(activity).putString("app_logo", responseRoot.getAPPSETTINGS().getAppLogo());
         QUREKALINK = responseRoot.getAPPSETTINGS().getQUREKALINK();

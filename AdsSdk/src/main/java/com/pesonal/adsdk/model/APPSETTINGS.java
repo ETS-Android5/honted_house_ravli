@@ -136,6 +136,36 @@ public class APPSETTINGS {
     @SerializedName("BOTTOMAD")
     private String bottomAd="";
 
+    @SerializedName("VPNLINK")
+    private String vpnLink="";
+
+    @SerializedName("VPNMENU")
+    private String VPNMENU ="ON";
+
+    public String getVpnLocation() {
+        return vpnLocation;
+    }
+
+    public void setVpnLocation(String vpnLocation) {
+        this.vpnLocation = vpnLocation;
+    }
+
+    public String getVPNMENU() {
+        return VPNMENU;
+    }
+
+    public void setVPNMENU(String VPNMENU) {
+        this.VPNMENU = VPNMENU;
+    }
+
+    public String getVpnLink() {
+        return vpnLink;
+    }
+
+    public void setVpnLink(String vpnLink) {
+        this.vpnLink = vpnLink;
+    }
+
     public String getStartScreen() {
         return startScreen;
     }
@@ -158,14 +188,6 @@ public class APPSETTINGS {
 
     public void setVpnStatus(String vpnStatus) {
         this.vpnStatus = vpnStatus;
-    }
-
-    public String getVpnLocation() {
-        return vpnLocation;
-    }
-
-    public void setVpnLocation(String vpnLocation) {
-        this.vpnLocation = vpnLocation;
     }
 
     public String getExitScreen() {

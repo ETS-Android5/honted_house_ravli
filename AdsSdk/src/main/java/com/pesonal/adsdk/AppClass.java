@@ -9,7 +9,6 @@ import android.app.NotificationManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,11 +18,11 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-import com.anchorfree.partner.api.ClientInfo;
-import com.anchorfree.sdk.NotificationConfig;
-import com.anchorfree.sdk.UnifiedSDK;
-import com.anchorfree.sdk.UnifiedSDKConfig;
+import com.downloader.PRDownloader;
+import com.downloader.PRDownloaderConfig;
 import com.pesonal.adsdk.remote.APIManager;
+
+import de.blinkt.openvpn.core.OpenVPNService;
 
 public class AppClass extends Application
         implements ActivityLifecycleCallbacks, LifecycleObserver {
@@ -36,39 +35,46 @@ public class AppClass extends Application
 
     public void setClass(Class aClass) {
         this.aClass = aClass;
+        OpenVPNService.setNotificationActivityClass(aClass);
     }
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initHydraSdk();
+//        initHydraSdk();
+
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
+                .setDatabaseEnabled(true)
+                .build();
+        PRDownloader.initialize(this, config);
+
         this.registerActivityLifecycleCallbacks(this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
 
-    public void initHydraSdk() {
-        createNotificationChannel();
-        SharedPreferences prefs = getPrefs();
-        UnifiedSDK.getInstance(ClientInfo.newBuilder().baseUrl(prefs.getString(STORED_HOST_URL_KEY, "https://d2isj403unfbyl.cloudfront.net")).carrierId(prefs.getString(STORED_CARRIER_ID_KEY, "samuy_vpn22")).build(), UnifiedSDKConfig.newBuilder().build());
-        UnifiedSDK.update(NotificationConfig.newBuilder().title(getResources().getString(R.string.app_name)).channelId("vpn").build());
-        UnifiedSDK.setLoggingLevel(2);
-    }
+//    public void initHydraSdk() {
+//        createNotificationChannel();
+//        SharedPreferences prefs = getPrefs();
+//        UnifiedSDK.getInstance(ClientInfo.newBuilder().baseUrl(prefs.getString(STORED_HOST_URL_KEY, "https://d2isj403unfbyl.cloudfront.net")).carrierId(prefs.getString(STORED_CARRIER_ID_KEY, "samuy_vpn22")).build(), UnifiedSDKConfig.newBuilder().build());
+//        UnifiedSDK.update(NotificationConfig.newBuilder().title(getResources().getString(R.string.app_name)).channelId("vpn").build());
+//        UnifiedSDK.setLoggingLevel(2);
+//    }
 
-    public void setNewHostAndCarrier(String str, String str2) {
-        SharedPreferences prefs = getPrefs();
-        if (TextUtils.isEmpty(str)) {
-            prefs.edit().remove(STORED_HOST_URL_KEY).apply();
-        } else {
-            prefs.edit().putString(STORED_HOST_URL_KEY, str).apply();
-        }
-        if (TextUtils.isEmpty(str2)) {
-            prefs.edit().remove(STORED_CARRIER_ID_KEY).apply();
-        } else {
-            prefs.edit().putString(STORED_CARRIER_ID_KEY, str2).apply();
-        }
-        initHydraSdk();
-    }
+//    public void setNewHostAndCarrier(String str, String str2) {
+//        SharedPreferences prefs = getPrefs();
+//        if (TextUtils.isEmpty(str)) {
+//            prefs.edit().remove(STORED_HOST_URL_KEY).apply();
+//        } else {
+//            prefs.edit().putString(STORED_HOST_URL_KEY, str).apply();
+//        }
+//        if (TextUtils.isEmpty(str2)) {
+//            prefs.edit().remove(STORED_CARRIER_ID_KEY).apply();
+//        } else {
+//            prefs.edit().putString(STORED_CARRIER_ID_KEY, str2).apply();
+//        }
+//        initHydraSdk();
+//    }
 
     public SharedPreferences getPrefs() {
         return getSharedPreferences(SHARED_PREFS, 0);

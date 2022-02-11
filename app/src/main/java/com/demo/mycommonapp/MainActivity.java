@@ -11,10 +11,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.pesonal.adsdk.remote.APIManager;
-import com.pesonal.adsdk.vpn.TubeVpnActivity;
-import com.pesonal.adsdk.vpn.VpnActivity;
+import com.pesonal.adsdk.vpn.BannerVpnActivity;
+import com.pesonal.adsdk.vpn.VanishVPNActivity;
 
-public class MainActivity extends TubeVpnActivity implements View.OnClickListener {
+public class MainActivity extends BannerVpnActivity implements View.OnClickListener {
 
     private Button btnNext;
     private RelativeLayout adContainer;
@@ -29,27 +29,29 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_a);
-
         initView();
     }
 
     private void initView() {
         btnOpenVpnScreen = (Button) findViewById(R.id.btnOpenVpnScreen);
+        if(APIManager.getInstance(this).getVpnMenuStatus()){
+            btnOpenVpnScreen.setVisibility(View.VISIBLE);
+        }else btnOpenVpnScreen.setVisibility(View.GONE);
 
         iVPN = (FrameLayout) findViewById(R.id.iVPN);
         if (APIManager.getInstance(this).getVpnStatus()) {
+            setBannerView(iVPN);
             rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
             guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
             guideVpn.setOnClickListener(view -> {
-                setConnect();
+                connectVpn();
                 rootViewGuide.setVisibility(View.GONE);
             });
-            if (isItFirstTime()) {
-                rootViewGuide.setVisibility(View.VISIBLE);
-            } else {
+            if (getConnection()) {
                 rootViewGuide.setVisibility(View.GONE);
+            } else {
+                rootViewGuide.setVisibility(View.VISIBLE);
             }
-            addView(iVPN);
         }
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(this);
@@ -62,7 +64,7 @@ public class MainActivity extends TubeVpnActivity implements View.OnClickListene
         btnOpenVpnScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, VpnActivity.class));
+                startActivity(new Intent(MainActivity.this, VanishVPNActivity.class));
             }
         });
     }

@@ -10,22 +10,30 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.anchorfree.partner.api.data.Country;
+import com.bumptech.glide.Glide;
 import com.pesonal.adsdk.R;
+import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
+import com.pesonal.adsdk.model.vpnmodel.ServerListItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 public class FreeServersAdapter extends RecyclerView.Adapter<FreeServersAdapter.FreeServersViewHolder> {
 
-    private List<Country> list = new ArrayList();
+    private final ArrayList<String> strings;
     Context context;
+    private Map<String, List<ServerListItem>> countryListItem;
+    private CountryListItem country;
     private PassServerData mCallback;
 
-    public FreeServersAdapter(Context context, List<Country> list, PassServerData passServerData) {
+
+
+    public FreeServersAdapter(Context context, Map<String, List<ServerListItem>> countryListItem, CountryListItem country,PassServerData passServerData) {
         this.context = context;
-        this.list = list;
+        this.countryListItem =countryListItem ;
+        strings = new ArrayList<>(countryListItem.keySet());
+        this.country = country;
         mCallback = passServerData;
     }
 
@@ -37,13 +45,15 @@ public class FreeServersAdapter extends RecyclerView.Adapter<FreeServersAdapter.
     }
 
     public void onBindViewHolder(FreeServersViewHolder freeServersViewHolder, int i) {
-        freeServersViewHolder.populateView((Country) list.get(i));
-        freeServersViewHolder.mRegionImage.setImageResource(context.getResources().getIdentifier("drawable/" + list.get(i).getCountry(), null, context.getPackageName()));
+        freeServersViewHolder.mRegionTitle.setText(strings.get(i));
+        Glide.with(context).load(country.getFlagUrl()).into(freeServersViewHolder.mRegionImage);
+        List<ServerListItem> serverListItems = countryListItem.get(strings.get(i));
+        freeServersViewHolder.btnChange.setOnClickListener(view -> mCallback.getSelectedServer(serverListItems,country));
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return strings.size();
     }
 
     public class FreeServersViewHolder extends RecyclerView.ViewHolder {
@@ -59,13 +69,6 @@ public class FreeServersAdapter extends RecyclerView.Adapter<FreeServersAdapter.
             this.mRegionImage = (ImageView) view.findViewById(R.id.region_image);
             this.btnChange = (TextView) view.findViewById(R.id.btnChange);
             this.mItemView = (LinearLayout) view.findViewById(R.id.itemView);
-        }
-
-        public void populateView(final Country country) {
-            this.mRegionTitle.setText(new Locale("", country.getCountry()).getDisplayCountry());
-            ImageView imageView = this.mRegionImage;
-            imageView.setImageResource(0);
-            this.btnChange.setOnClickListener(view -> mCallback.getSelectedServer(country));
         }
     }
 }
