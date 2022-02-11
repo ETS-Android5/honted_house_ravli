@@ -198,9 +198,10 @@ public class BannerVpnActivity extends BaseActivity {
             if (APIManager.isLog) {
                 Log.e("TAG", "setStatus: " + connectionState);
             }
-            switch (connectionState) {
-                case "CONNECTED":
-                    vpnStart = true;
+        switch (connectionState) {
+            case "CONNECTED":
+                vpnStart = true;
+                if (tvTitle != null) {
                     tvTitle.setVisibility(View.VISIBLE);
                     tvTitle.setText("Protected");
                     ivBGImage.setImageResource(R.drawable.bg_green_vpn);
@@ -208,15 +209,17 @@ public class BannerVpnActivity extends BaseActivity {
                     ivConnecting.setVisibility(View.GONE);
                     ivConnected.setVisibility(View.VISIBLE);
                     ivUnconnected.setVisibility(View.GONE);
-                    break;
-                case "WAIT":
-                case "RECONNECTING":
-                case "AUTH":
-                case "VPN_GENERATE_CONFIG":
-                case "NOPROCESS":
-                case "GET_CONFIG":
-                case "ASSIGN_IP":
-                case "RESOLVE":
+                }
+                break;
+            case "WAIT":
+            case "RECONNECTING":
+            case "AUTH":
+            case "VPN_GENERATE_CONFIG":
+            case "NOPROCESS":
+            case "GET_CONFIG":
+            case "ASSIGN_IP":
+            case "RESOLVE":
+                if (tvTitle != null) {
                     tvTitle.setText("Connecting..");
                     ivConnecting.setVisibility(View.VISIBLE);
                     ivConnected.setVisibility(View.GONE);
@@ -227,8 +230,10 @@ public class BannerVpnActivity extends BaseActivity {
                     ofFloat.setInterpolator(new LinearInterpolator());
                     ofFloat.setDuration(800L);
                     ofFloat.start();
-                    break;
-                case "NONETWORK":
+                }
+                break;
+            case "NONETWORK":
+                if (tvTitle != null) {
                     tvTitle.setVisibility(View.VISIBLE);
                     tvTitle.setText("Protect Your\nNetwork");
                     ivBGImage.setImageResource(R.drawable.bg_red_vpn);
@@ -236,9 +241,11 @@ public class BannerVpnActivity extends BaseActivity {
                     ivConnecting.setVisibility(View.GONE);
                     ivConnected.setVisibility(View.GONE);
                     ivUnconnected.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    vpnStart = false;
+                }
+                break;
+            default:
+                vpnStart = false;
+                if (tvTitle != null) {
                     tvTitle.setVisibility(View.VISIBLE);
                     tvTitle.setText("Protect Your\nNetwork");
                     ivBGImage.setImageResource(R.drawable.bg_red_vpn);
@@ -247,6 +254,7 @@ public class BannerVpnActivity extends BaseActivity {
                     ivConnected.setVisibility(View.GONE);
                     ivUnconnected.setVisibility(View.VISIBLE);
                     OpenVPNService.setDefaultStatus();
-            }
+                }
+        }
     }
 }
