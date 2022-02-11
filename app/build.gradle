@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "module.demomodule"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 31
         versionCode 3
         versionName "1.0.31"
