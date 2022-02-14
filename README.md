@@ -5,11 +5,19 @@ This is AdModule for Aani brothers infotech team members.
 
 # Setup
 
-This library requires `minSdkVersion` to `19` or above.
+This library requires `minSdkVersion` to `24` or above.
 
 ## Step #1. Add this line ```gradle.properties``` file
 
-```authToken=jp_62qh7p9ium74pbl2t38o2qdahp```
+```android.bundle.enableUncompressedNativeLibs=false```
+
+and Add below line `application` tag in `AndroidManifest.xml`
+```
+android:extractNativeLibs="true"
+tools:replace="android:extractNativeLibs"
+```
+
+android.bundle.enableUncompressedNativeLibs=false
 
 ## Step #2. Add the JitPack repository to your build file
 
