@@ -4,17 +4,17 @@
     android:layout_width="wrap_content"
     android:layout_height="@dimen/_130sdp">
 
-    <com.google.android.gms.ads.nativead.NativeAdView
-        android:id="@+id/unified"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="@color/colorAdCard"
+        app:cardCornerRadius="4dp">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.gms.ads.nativead.NativeAdView
+            android:id="@+id/unified"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            app:cardBackgroundColor="@color/colorAdCard"
-            app:cardCornerRadius="4dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,6 +161,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </com.google.android.gms.ads.nativead.NativeAdView>
+        </com.google.android.gms.ads.nativead.NativeAdView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
