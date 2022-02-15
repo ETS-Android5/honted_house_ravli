@@ -9,6 +9,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,30 +29,32 @@ public class VPNLaunchHelper {
 
     private static String writeMiniVPN(Context context) {
         String nativeAPI = NativeUtils.getNativeAPI();
+        Log.e("TAG", "writeMiniVPN: "+nativeAPI );
         /* Q does not allow executing binaries written in temp directory anymore */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             return new File(context.getApplicationInfo().nativeLibraryDir, "libovpnexec.so").getPath();
-        String[] abis;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            abis = getSupportedABIsLollipop();
-        else
-            //noinspection deprecation
-            abis = new String[]{Build.CPU_ABI, Build.CPU_ABI2};
-
-        if (!nativeAPI.equals(abis[0])) {
-            VpnStatus.logWarning(R.string.abi_mismatch, Arrays.toString(abis), nativeAPI);
-            abis = new String[]{nativeAPI};
-        }
-
-        for (String abi : abis) {
-
-            File vpnExecutable = new File(context.getCacheDir(), "c_" + getMiniVPNExecutableName() + "." + abi);
-            if ((vpnExecutable.exists() && vpnExecutable.canExecute()) || writeMiniVPNBinary(context, abi, vpnExecutable)) {
-                return vpnExecutable.getPath();
-            }
-        }
-
-        throw new RuntimeException("Cannot find any execulte for this device's ABIs " + abis.toString());
+//        String[] abis;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+//            abis = getSupportedABIsLollipop();
+//        else
+//            //noinspection deprecation
+//            abis = new String[]{Build.CPU_ABI, Build.CPU_ABI2};
+//
+//        Log.e("TAG", "writeMiniVPN: "+Arrays.toString(abis) );
+//        if (!nativeAPI.equals(abis[0])) {
+//            VpnStatus.logWarning(R.string.abi_mismatch, Arrays.toString(abis), nativeAPI);
+//            abis = new String[]{nativeAPI};
+//        }
+//
+//        for (String abi : abis) {
+//
+//            File vpnExecutable = new File(context.getCacheDir(), "c_" + getMiniVPNExecutableName() + "." + abi);
+//            if ((vpnExecutable.exists() && vpnExecutable.canExecute()) || writeMiniVPNBinary(context, abi, vpnExecutable)) {
+//                return vpnExecutable.getPath();
+//            }
+//        }
+//
+//        throw new RuntimeException("Cannot find any execulte for this device's ABIs " +Arrays.toString(abis));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
