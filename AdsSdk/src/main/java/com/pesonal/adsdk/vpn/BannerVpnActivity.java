@@ -29,6 +29,7 @@ import com.pesonal.adsdk.model.vpnmodel.Server;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.remote.TinyDB;
 import com.pesonal.adsdk.utils.CheckInternetConnection;
+import com.pesonal.adsdk.utils.ConnectionListener;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -50,14 +51,9 @@ public class BannerVpnActivity extends BaseActivity {
     private ImageView iv_icon;
     private ImageView ivBGImage;
     boolean vpnStart = false;
-    private CheckInternetConnection connection;
-    private Server server;
+    private ConnectionListener connectionListener = null;
 
     public void setBannerView(ViewGroup viewGroup) {
-        server = new Server(new TinyDB(this).getString("vpnServer", "United Status"), "",
-                APIManager.getInstance(this).getVpnServer(),
-                APIManager.getInstance(this).getVpnUser(),
-                APIManager.getInstance(this).getVpnPass());
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = (View) inflater.inflate(R.layout.layout_vpn, null);
         viewGroup.removeAllViews();
@@ -68,7 +64,6 @@ public class BannerVpnActivity extends BaseActivity {
         iv_bg = (ImageView) view.findViewById(R.id.iv_bg);
         iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
         ivBGImage = (ImageView) view.findViewById(R.id.ivBGImage);
-        connection = new CheckInternetConnection();
         iv_bg.setOnClickListener(view1 -> {
             if (vpnStart) {
                 confirmDisconnect();
@@ -104,6 +99,11 @@ public class BannerVpnActivity extends BaseActivity {
         }
     };
 
+    public void connectVpnListen(ConnectionListener connectionListener) {
+        this.connectionListener = connectionListener;
+        connectVpn();
+    }
+
     public void connectVpn() {
         if (!vpnStart) {
             if (getInternetStatus()) {
@@ -132,10 +132,15 @@ public class BannerVpnActivity extends BaseActivity {
             });
 
     public boolean getInternetStatus() {
-        return connection.netCheck(this);
+        return new CheckInternetConnection().netCheck(this);
     }
 
     private void startVpn() {
+        Server server = new Server(new TinyDB(this).getString("vpnServer", "United Status"), "",
+                APIManager.getInstance(this).getVpnServer(),
+                APIManager.getInstance(this).getVpnUser(),
+                APIManager.getInstance(this).getVpnPass());
+        
         try {
             InputStream conf = new FileInputStream(server.getOvpn());
             InputStreamReader isr = new InputStreamReader(conf);
@@ -194,6 +199,8 @@ public class BannerVpnActivity extends BaseActivity {
     }
 
     public void setStatus(String connectionState) {
+        if (connectionListener != null)
+            connectionListener.onStatus(connectionState);
         if (connectionState != null)
             if (APIManager.isLog) {
                 Log.e("TAG", "setStatus: " + connectionState);
