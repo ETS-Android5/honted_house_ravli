@@ -71,6 +71,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -194,6 +195,11 @@ public class APIManager {
         return "";
     }
 
+    public HashMap<String, Object> getAllAppSettingsData() {
+        String response = new TinyDB(activity).getString("response");
+        HashMap<String, Object> yourHashMap = new Gson().fromJson(response, HashMap.class);
+        return (HashMap<String, Object>) yourHashMap.get("APP_SETTINGS");
+    }
 
     public List<CountryListItem> getVpnServerList() {
         if (responseRoot == null)
@@ -1247,6 +1253,8 @@ public class APIManager {
     }
 
     private void showMyCustomBanner(final ViewGroup banner_container) {
+        if(activity.isFinishing())
+            return;
         final AdvertiseList appModal = getMyCustomAd("Banner");
         if (appModal != null) {
             View inflate2 = LayoutInflater.from(activity).inflate(R.layout.cust_banner, banner_container, false);
@@ -1313,6 +1321,8 @@ public class APIManager {
     }
 
     private void showMyCustomSmallNative(final ViewGroup nbanner_container) {
+        if(activity.isFinishing())
+            return;
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
         if (appModal != null) {
 
@@ -1369,6 +1379,8 @@ public class APIManager {
     }
 
     private void showMyCustomNativeBanner(final ViewGroup nbanner_container) {
+        if(activity.isFinishing())
+            return;
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
         if (appModal != null) {
 
@@ -1530,7 +1542,8 @@ public class APIManager {
     }
 
     private void showMyCustomNative(final ViewGroup nativeAdContainer) {
-
+        if(activity.isFinishing())
+            return;
         final AdvertiseList appModal = getMyCustomAd("Native");
         if (appModal != null) {
             final View inflate = LayoutInflater.from(activity).inflate(R.layout.cust_native, nativeAdContainer, false);
@@ -1728,6 +1741,8 @@ public class APIManager {
     }
 
     private void showCustomReward(final Activity activity) {
+        if(activity.isFinishing())
+            return;
         dialog.show();
         AdvertiseList advertiseList = getMyCustomAd("Interstitial");
         if (advertiseList != null) {
