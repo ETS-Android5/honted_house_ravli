@@ -33,6 +33,8 @@ allprojects {
 ```
 
 ## Step #3. Add the dependency.
+![Release](https://jitpack.io/v/Aanibrothers-Infotech/honted_house_ravli.svg)
+
 
 ```groovy
 dependencies {
