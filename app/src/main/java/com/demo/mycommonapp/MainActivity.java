@@ -73,10 +73,9 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnNext:
-                APIManager.getInstance(MainActivity.this).getAllAppSettingsData();
-//                APIManager.getInstance(MainActivity.this).showAds(false, () -> {
-//                    startActivity(new Intent(MainActivity.this, MainActivity2.class));
-//                });
+                APIManager.getInstance(MainActivity.this).showAds(false, () -> {
+                    startActivity(new Intent(MainActivity.this, MainActivity2.class));
+                });
                 break;
         }
     }
