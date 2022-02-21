@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -195,8 +196,8 @@ public class APIManager {
         return "";
     }
 
-    public HashMap<String, Object> getAllAppSettingsData() {
-        String response = new TinyDB(activity).getString("response");
+    public static HashMap<String, Object> getAllAppSettingsData(Context context) {
+        String response = new TinyDB(context).getString("response");
         HashMap<String, Object> yourHashMap = new Gson().fromJson(response, HashMap.class);
         return (HashMap<String, Object>) yourHashMap.get("APP_SETTINGS");
     }
