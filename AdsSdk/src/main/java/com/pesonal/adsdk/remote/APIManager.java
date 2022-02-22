@@ -49,6 +49,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.customAd.CustomAppOpenAds;
@@ -198,8 +199,11 @@ public class APIManager {
 
     public static HashMap<String, Object> getAllAppSettingsData(Context context) {
         String response = new TinyDB(context).getString("response");
-        HashMap<String, Object> yourHashMap = new Gson().fromJson(response, HashMap.class);
-        return (HashMap<String, Object>) yourHashMap.get("APP_SETTINGS");
+//        HashMap<String, Object> yourHashMap = new Gson().fromJson(response, HashMap.class);
+
+        JsonObject jsonObject= new Gson().fromJson(response, JsonObject.class).getAsJsonObject("APP_SETTINGS");
+        HashMap<String, Object> yourHashMap = new Gson().fromJson(jsonObject.toString(), HashMap.class);
+        return yourHashMap;
     }
 
     public List<CountryListItem> getVpnServerList() {
