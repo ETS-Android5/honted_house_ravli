@@ -137,7 +137,7 @@ public class APIManager {
     }
 
     public boolean getQureka() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return false;
         if (responseRoot.getAPPSETTINGS().getQUREKA() == null)
             return false;
@@ -145,7 +145,7 @@ public class APIManager {
     }
 
     public boolean getVpnStatus() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return false;
         if (isLog)
             Log.e(TAG, "getVpnStatus: " + responseRoot.getAPPSETTINGS().getVpnStatus().equals("ON"));
@@ -155,7 +155,7 @@ public class APIManager {
     }
 
     public String getVpnLocation() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return "US";
         if (responseRoot.getAPPSETTINGS().getVpnLocation() == null)
             return "US";
@@ -163,7 +163,7 @@ public class APIManager {
     }
 
     public String getVpnUser() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return "US";
         if (responseRoot.getAPPSETTINGS().getVpnUser() == null)
             return "US";
@@ -171,7 +171,7 @@ public class APIManager {
     }
 
     public String getVpnPass() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return "US";
         if (responseRoot.getAPPSETTINGS().getVpnPass() == null)
             return "US";
@@ -180,7 +180,7 @@ public class APIManager {
 
 
     public boolean getVpnMenuStatus() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return false;
         if (responseRoot.getAPPSETTINGS().getVPNMENU() == null)
             return true;
@@ -188,7 +188,7 @@ public class APIManager {
     }
 
     public String getVpnServer() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return "";
         File file = new File(activity.getCacheDir(), "server.ovpn");
         if (file.exists()) {
@@ -201,13 +201,13 @@ public class APIManager {
         String response = new TinyDB(context).getString("response");
 //        HashMap<String, Object> yourHashMap = new Gson().fromJson(response, HashMap.class);
 
-        JsonObject jsonObject= new Gson().fromJson(response, JsonObject.class).getAsJsonObject("APP_SETTINGS");
+        JsonObject jsonObject = new Gson().fromJson(response, JsonObject.class).getAsJsonObject("APP_SETTINGS");
         HashMap<String, Object> yourHashMap = new Gson().fromJson(jsonObject.toString(), HashMap.class);
         return yourHashMap;
     }
 
     public List<CountryListItem> getVpnServerList() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return new ArrayList<>();
         File file = new File(activity.getCacheDir(), "vpnList.json");
         if (file.exists()) {
@@ -220,7 +220,7 @@ public class APIManager {
     }
 
     public boolean isExitScreen() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return false;
         if (responseRoot.getAPPSETTINGS().getExitScreen() == null)
             return false;
@@ -228,7 +228,7 @@ public class APIManager {
     }
 
     public boolean getScreenStatus() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return false;
         if (responseRoot.getAPPSETTINGS().getStartScreen() == null)
             return true;
@@ -236,7 +236,7 @@ public class APIManager {
     }
 
     public boolean getBottomAd() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return false;
         if (responseRoot.getAPPSETTINGS().getBottomAd() == null)
             return true;
@@ -358,8 +358,22 @@ public class APIManager {
         return url.substring(url.lastIndexOf('/') + 1);
     }
 
+    public boolean setResponseRoot() {
+        if (responseRoot == null) {
+            if (activity != null && !activity.isFinishing()) {
+                init(null, -1);
+                if (responseRoot == null)
+                    return false;
+                else
+                    return true;
+            }
+        }
+        return true;
+    }
+
     public void init(getDataListner listner, int cversion) {
-        new TinyDB(activity).putBoolean("isUpdateCall", false);
+        if (cversion != -1)
+            new TinyDB(activity).putBoolean("isUpdateCall", false);
         String response = new TinyDB(activity).getString("response");
         responseRoot = new Gson().fromJson(response, ResponseRoot.class);
         if (responseRoot == null)
@@ -433,14 +447,19 @@ public class APIManager {
         }
         if (responseRoot.getAPPSETTINGS().getAppRedirectOtherAppStatus().equals("1")) {
             String redirectNewPackage = responseRoot.getAPPSETTINGS().getAppNewPackageName();
-            listner.onRedirect(redirectNewPackage);
+            if (listner != null)
+                listner.onRedirect(redirectNewPackage);
         } else {
-            if (responseRoot.getAPPSETTINGS().getAppUpdateAppDialogStatus().equals("1") && checkUpdate(cversion)) {
-                new TinyDB(activity).putBoolean("isUpdateCall", true);
+            if (cversion != -1)
+                if (responseRoot.getAPPSETTINGS().getAppUpdateAppDialogStatus().equals("1") && checkUpdate(cversion)) {
+                    new TinyDB(activity).putBoolean("isUpdateCall", true);
+                }
+            if (listner != null)
+                listner.onSuccess();
+            if (responseRoot.getEXTRADATA() != null) {
+                if (listner != null)
+                    listner.onGetExtradata(responseRoot.getEXTRADATA());
             }
-            listner.onSuccess();
-            if (responseRoot.getEXTRADATA() != null)
-                listner.onGetExtradata(responseRoot.getEXTRADATA());
             MobileAds.initialize(activity, initializationStatus -> {
             });
 
@@ -685,7 +704,7 @@ public class APIManager {
     }
 
     public void requestInterstitial(String whichOne) {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return;
         if (responseRoot.getAPPSETTINGS() == null) {
             return;
@@ -731,7 +750,7 @@ public class APIManager {
 
     public void showInterstitial(InterCallback interCallback) {
         this.interCallback = interCallback;
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (interCallback != null)
                 interCallback.onClose();
             return;
@@ -878,7 +897,7 @@ public class APIManager {
     }
 
     public void showAds(boolean isBack, final InterCallback callback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (callback != null)
                 callback.onClose();
             return;
@@ -917,7 +936,7 @@ public class APIManager {
     }
 
     public void showSplashAD(final Activity context, final InterCallback callback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (callback != null)
                 callback.onClose();
             return;
@@ -952,7 +971,7 @@ public class APIManager {
     }
 
     public void showAdsStart(final Activity context, final InterCallback callback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (callback != null)
                 callback.onClose();
             return;
@@ -991,7 +1010,7 @@ public class APIManager {
     }
 
     public void showAdsStartExit(final Activity context, final InterCallback callback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (callback != null)
                 callback.onClose();
             return;
@@ -1020,7 +1039,7 @@ public class APIManager {
     }
 
     boolean getAd(boolean isBack) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             return false;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
@@ -1126,7 +1145,7 @@ public class APIManager {
     }
 
     public void showCustomAppOpenAd(InterCallback myCallback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (myCallback != null)
                 myCallback.onClose();
             return;
@@ -1180,7 +1199,7 @@ public class APIManager {
     }
 
     public void showBanner(ViewGroup viewGroup) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
@@ -1258,7 +1277,7 @@ public class APIManager {
     }
 
     private void showMyCustomBanner(final ViewGroup banner_container) {
-        if(activity.isFinishing())
+        if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("Banner");
         if (appModal != null) {
@@ -1326,7 +1345,7 @@ public class APIManager {
     }
 
     private void showMyCustomSmallNative(final ViewGroup nbanner_container) {
-        if(activity.isFinishing())
+        if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
         if (appModal != null) {
@@ -1384,7 +1403,7 @@ public class APIManager {
     }
 
     private void showMyCustomNativeBanner(final ViewGroup nbanner_container) {
-        if(activity.isFinishing())
+        if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
         if (appModal != null) {
@@ -1442,7 +1461,7 @@ public class APIManager {
     }
 
     public void showNative(ViewGroup nativeAdContainer) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
@@ -1460,7 +1479,7 @@ public class APIManager {
     }
 
     public void showNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
@@ -1478,7 +1497,7 @@ public class APIManager {
     }
 
     public void showSmallNative(ViewGroup nativeAdContainer) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
@@ -1496,7 +1515,7 @@ public class APIManager {
     }
 
     public void showSmallNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
@@ -1547,7 +1566,7 @@ public class APIManager {
     }
 
     private void showMyCustomNative(final ViewGroup nativeAdContainer) {
-        if(activity.isFinishing())
+        if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("Native");
         if (appModal != null) {
@@ -1627,13 +1646,13 @@ public class APIManager {
     }
 
     public List<MOREAPPEXIT> get_EXITMoreAppData() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return new ArrayList<>();
         return responseRoot.getMOREAPPEXIT();
     }
 
     public List<MOREAPPSPLASH> get_SPLASHMoreAppData() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return new ArrayList<>();
         return responseRoot.getMOREAPPSPLASH();
     }
@@ -1643,7 +1662,7 @@ public class APIManager {
     }
 
     public void loadRewardAd() {
-        if (responseRoot == null)
+        if (!setResponseRoot())
             return;
         if (responseRoot.getAPPSETTINGS() == null) {
             return;
@@ -1699,7 +1718,7 @@ public class APIManager {
 
     public void showRewardAd(RewardCallback rewardCallback) {
         this.rewardCallback = rewardCallback;
-        if (responseRoot == null) {
+        if (!setResponseRoot()) {
             if (rewardCallback != null)
                 rewardCallback.onClose(false);
             return;
@@ -1746,7 +1765,7 @@ public class APIManager {
     }
 
     private void showCustomReward(final Activity activity) {
-        if(activity.isFinishing())
+        if (activity.isFinishing())
             return;
         dialog.show();
         AdvertiseList advertiseList = getMyCustomAd("Interstitial");
