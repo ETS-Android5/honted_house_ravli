@@ -772,7 +772,8 @@ public class APIManager {
                 showCustomInter(activity);
             } else {
                 if (responseRoot.getAPPSETTINGS().getAppDialogBeforeAdShow().equals("1")) {
-                    dialog.show();
+                    if (!activity.isFinishing())
+                        dialog.show();
                     new CountDownTimer(ad_dialog_time_in_second * 1000L, 10) {
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -782,7 +783,8 @@ public class APIManager {
                         public void onFinish() {
                             if (mInterstitialAd != null) {
                                 mInterstitialAd.show(activity);
-                                dialog.dismiss();
+                                if (!activity.isFinishing() && dialog != null && dialog.isShowing())
+                                    dialog.dismiss();
                             }
                         }
                     }.start();
@@ -805,7 +807,8 @@ public class APIManager {
     }
 
     private void showCustomInter(final Activity activity) {
-        dialog.show();
+        if (!activity.isFinishing())
+            dialog.show();
         AdvertiseList advertiseList = getMyCustomAd("Interstitial");
         if (advertiseList != null) {
             try {
@@ -1740,7 +1743,8 @@ public class APIManager {
                 showCustomReward(activity);
             } else {
                 if (responseRoot.getAPPSETTINGS().getAppDialogBeforeAdShow().equals("1")) {
-                    dialog.show();
+                    if (!activity.isFinishing())
+                        dialog.show();
                     new CountDownTimer(ad_dialog_time_in_second * 1000L, 10) {
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -1765,9 +1769,13 @@ public class APIManager {
     }
 
     private void showCustomReward(final Activity activity) {
-        if (activity.isFinishing())
+        if (activity.isFinishing()) {
+            if (rewardCallback != null)
+                rewardCallback.onClose(false);
             return;
-        dialog.show();
+        }
+        if (!activity.isFinishing())
+            dialog.show();
         AdvertiseList advertiseList = getMyCustomAd("Interstitial");
         if (advertiseList != null) {
             try {
