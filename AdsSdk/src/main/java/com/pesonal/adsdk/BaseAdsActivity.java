@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -235,7 +236,10 @@ public class BaseAdsActivity extends BaseActivity {
 
 
         final String sdfsdf;
-        if (BuildConfig.DEBUG) {
+        boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+        if (APIManager.isLog)
+            Log.e("TAG", "sendRequest:isDebuggable " + isDebuggable);
+        if (isDebuggable) {
             sdfsdf = "TRSOFTAG12789I";
         } else {
             sdfsdf = "TRSOFTAG82382I";
