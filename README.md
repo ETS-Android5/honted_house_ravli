@@ -25,6 +25,7 @@ android.bundle.enableUncompressedNativeLibs=false
 allprojects {
     repositories {
 	    ...
+	    jcenter()
 	    maven {
             url "https://jitpack.io"
         }
@@ -116,10 +117,10 @@ Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
  }else btnOpenVpnScreen.setVisibility(View.GONE);
 
   iVPN = (FrameLayout) findViewById(R.id.iVPN);
+  rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
+  guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
   if (APIManager.getInstance(this).getVpnStatus()) {
       setBannerView(iVPN);
-      rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
-      guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
       guideVpn.setOnClickListener(view -> {
           connectVpn();
           rootViewGuide.setVisibility(View.GONE);
