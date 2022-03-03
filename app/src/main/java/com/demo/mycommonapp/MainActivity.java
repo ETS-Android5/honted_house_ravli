@@ -10,8 +10,10 @@ import android.widget.RelativeLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.vpn.BannerVpnActivity;
+import com.pesonal.adsdk.vpn.CONNECTION_STATE;
 import com.pesonal.adsdk.vpn.VanishVPNActivity;
 
 public class MainActivity extends BannerVpnActivity implements View.OnClickListener {
@@ -21,7 +23,8 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
     private RelativeLayout adContainer1;
     private RelativeLayout adContainer2;
     private FrameLayout iVPN;
-    private ConstraintLayout rootViewGuide;
+    private CircularRevealRelativeLayout rootViewGuide;
+    private FrameLayout layoutGuideVPN;
     private LottieAnimationView guideVpn;
     private Button btnOpenVpnScreen;
 
@@ -34,18 +37,25 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
 
     private void initView() {
         btnOpenVpnScreen = (Button) findViewById(R.id.btnOpenVpnScreen);
-        if(APIManager.getInstance(this).getVpnMenuStatus()){
+        if (APIManager.getInstance(this).getVpnMenuStatus()) {
             btnOpenVpnScreen.setVisibility(View.VISIBLE);
-        }else btnOpenVpnScreen.setVisibility(View.GONE);
+        } else btnOpenVpnScreen.setVisibility(View.GONE);
 
         iVPN = (FrameLayout) findViewById(R.id.iVPN);
+        rootViewGuide = (CircularRevealRelativeLayout) findViewById(R.id.rootViewGuide);
+        guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
+        layoutGuideVPN = (FrameLayout) findViewById(R.id.layoutGuideVPN);
         if (APIManager.getInstance(this).getVpnStatus()) {
             setBannerView(iVPN);
-            rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
-            guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
             guideVpn.setOnClickListener(view -> {
-                connectVpn();
-                rootViewGuide.setVisibility(View.GONE);
+                connectVpnListener((isConnect, connectionState) -> {
+                    if (isConnect == CONNECTION_STATE.CONNECTED)
+                        rootViewGuide.setVisibility(View.GONE);
+                    else if (isConnect == CONNECTION_STATE.CONNECTING) {
+                        guideVpn.setVisibility(View.GONE);
+                        layoutGuideVPN.setVisibility(View.INVISIBLE);
+                    }
+                });
             });
             if (getConnection()) {
                 rootViewGuide.setVisibility(View.GONE);

@@ -22,7 +22,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +31,7 @@ import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.pesonal.adsdk.BaseActivity;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
 import com.pesonal.adsdk.model.vpnmodel.Server;
@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,10 +58,9 @@ import de.blinkt.openvpn.OpenVpnApi;
 import de.blinkt.openvpn.core.OpenVPNService;
 import de.blinkt.openvpn.core.OpenVPNThread;
 
-public class VanishVPNActivity extends AppCompatActivity {
+public class VanishVPNActivity extends BaseActivity {
 
     private ImageView ivBgBlink;
-    private ImageView ivProgress;
     private FrameLayout frameOn;
     private ImageView ivConnect;
     private ImageView ivConnectionStatus;
@@ -82,6 +80,7 @@ public class VanishVPNActivity extends AppCompatActivity {
     private Server server;
     boolean vpnStart = false;
     private CheckInternetConnection connection;
+    boolean isProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +98,6 @@ public class VanishVPNActivity extends AppCompatActivity {
 
     private void initView() {
         ivBgBlink = (ImageView) findViewById(R.id.ivBgBlink);
-        ivProgress = (ImageView) findViewById(R.id.ivProgress);
         frameOn = (FrameLayout) findViewById(R.id.frameOn);
         ivConnect = (ImageView) findViewById(R.id.ivConnect);
         bottomSheet = (LinearLayout) findViewById(R.id.layout_sheet);
@@ -133,22 +131,9 @@ public class VanishVPNActivity extends AppCompatActivity {
             if (countryListItem.getCountryName().equalsIgnoreCase(APIManager.getInstance(this).getVpnLocation())) {
                 List<ServerListItem> serverList = countryListItem.getServerList();
                 Map<String, List<ServerListItem>> collect = new HashMap<>();
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    collect = serverList.stream().collect(Collectors.groupingBy(ServerListItem::getCityName));
-                }else{
-                    for (ServerListItem student : serverList) {
-                        String key  = student.getCityName();
-                        if(collect.containsKey(key)){
-                            List<ServerListItem> list = collect.get(key);
-                            list.add(student);
-                        }else{
-                            List<ServerListItem> list = new ArrayList<ServerListItem>();
-                            list.add(student);
-                            collect.put(key, list);
-                        }
-
-                    }
-                }
+                collect = serverList.stream().collect(Collectors.groupingBy(ServerListItem::getCityName));
+                if (APIManager.isLog)
+                    Log.e("TAG", "initView:serverList " + serverList.size());
                 recyclerServer.setAdapter(new FreeServersAdapter(this, collect, countryListItem, (country, countryListItem1) -> {
                     sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     downloadConfigFile(country, countryListItem1);
@@ -190,7 +175,7 @@ public class VanishVPNActivity extends AppCompatActivity {
                 })
                 .setOnProgressListener(progress -> {
                     if (APIManager.isLog)
-                        Log.e("TAG", "progress: downloadConfigFile" + progress);
+                        Log.e("TAG", "progress: downloadConfigFile  " + (progress.currentBytes * 100 / progress.totalBytes));
                 })
                 .start(new OnDownloadListener() {
                     @Override
@@ -217,60 +202,89 @@ public class VanishVPNActivity extends AppCompatActivity {
         setStatus(OpenVPNService.getStatus());
     }
 
+
     public void setStatus(String connectionState) {
         if (connectionState != null)
             if (APIManager.isLog) {
-                Log.e("TAG", "setStatus: " + connectionState);
+                Log.e("TAG", "setStatus:Vanish " + connectionState);
             }
-        switch (connectionState) {
-            case "CONNECTED":
-                vpnStart = true;
-                ivBgBlink.clearAnimation();
-                ivBgBlink.setImageResource(R.drawable.image_bg_connected);
-                tvConnectionTitle.setVisibility(View.VISIBLE);
-                tvConnectionTitle.setText("Protected");
-                ivConnectionStatus.setImageResource(R.drawable.icon_active);
-                frameOn.setBackgroundResource(R.drawable.bg_on);
-                ivConnect.setImageResource(R.drawable.icon_on);
-                break;
-            case "WAIT":
-            case "RECONNECTING":
-            case "AUTH":
-            case "VPN_GENERATE_CONFIG":
-            case "NOPROCESS":
-            case "GET_CONFIG":
-            case "ASSIGN_IP":
-            case "RESOLVE":
-                tvConnectionTitle.setText("Connecting..");
-                ivBgBlink.setImageResource(R.drawable.image_bg_blink);
-                Animation anim = new AlphaAnimation(0.0f, 1.0f);
-                anim.setDuration(800);
-                anim.setStartOffset(0);
-                ivConnectionStatus.setImageResource(R.drawable.icon_active);
-                frameOn.setBackgroundResource(R.drawable.bg_on);
-                ivConnect.setImageResource(R.drawable.icon_on);
-                anim.setRepeatMode(Animation.REVERSE);
-                anim.setRepeatCount(Animation.INFINITE);
-                ivBgBlink.setAnimation(anim);
-                break;
-            case "NONETWORK":
-                ivBgBlink.clearAnimation();
-                ivBgBlink.setImageResource(R.drawable.image_bg);
-                tvConnectionTitle.setText("Protect Your Network");
-                ivConnectionStatus.setImageResource(R.drawable.icon_deactive);
-                frameOn.setBackgroundResource(R.drawable.bg_off);
-                ivConnect.setImageResource(R.drawable.icon_off);
-                break;
-            default:
-                vpnStart = false;
-                ivBgBlink.clearAnimation();
-                ivBgBlink.setImageResource(R.drawable.image_bg);
-                tvConnectionTitle.setText("Protect Your Network");
-                ivConnectionStatus.setImageResource(R.drawable.icon_deactive);
-                frameOn.setBackgroundResource(R.drawable.bg_off);
-                ivConnect.setImageResource(R.drawable.icon_off);
-                OpenVPNService.setDefaultStatus();
+        if (connectionState != null) {
+            switch (connectionState) {
+                case "CONNECTED":
+                    vpnStart = true;
+                    uiConnect();
+                    break;
+                case "WAIT":
+                case "CONNECTRETRY":
+                case "RECONNECTING":
+                case "AUTH":
+                case "VPN_GENERATE_CONFIG":
+                case "NOPROCESS":
+                case "GET_CONFIG":
+                case "ASSIGN_IP":
+                case "RESOLVE":
+                case "EXITING":
+                case "TCP_CONNECT":
+                case "AUTH_PENDING":
+                case "ADD_ROUTES":
+                    if (!isProgress) {
+                        uiProgress();
+                    }
+                    break;
+                case "NONETWORK":
+                    if (isProgress) {
+                        uiProgress();
+                    } else {
+                        uiDisconnect();
+                    }
+                    break;
+                case "AUTH_FAILED":
+                case "DISCONNECTED":
+                    uiDisconnect();
+                    break;
+                default:
+                    uiDisconnect();
+                    break;
+            }
         }
+    }
+
+
+    public void uiProgress() {
+        isProgress = true;
+        tvConnectionTitle.setText("Connecting..");
+        ivBgBlink.setImageResource(R.drawable.ic_bg_blink);
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(800);
+        anim.setStartOffset(0);
+        ivConnectionStatus.setImageResource(R.drawable.icon_active);
+        frameOn.setBackgroundResource(R.drawable.bg_on);
+        ivConnect.setImageResource(R.drawable.icon_on);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        ivBgBlink.setAnimation(anim);
+    }
+
+
+    public void uiConnect() {
+        ivBgBlink.clearAnimation();
+        ivBgBlink.setImageResource(R.drawable.ic_bg_connected);
+        tvConnectionTitle.setVisibility(View.VISIBLE);
+        tvConnectionTitle.setText("Protected");
+        ivConnectionStatus.setImageResource(R.drawable.icon_active);
+        frameOn.setBackgroundResource(R.drawable.bg_on);
+        ivConnect.setImageResource(R.drawable.icon_on);
+    }
+
+    public void uiDisconnect() {
+        isProgress = false;
+        ivBgBlink.clearAnimation();
+        ivBgBlink.setImageResource(R.drawable.ic_bg);
+        tvConnectionTitle.setText("Protect Your Network");
+        ivConnectionStatus.setImageResource(R.drawable.icon_deactive);
+        frameOn.setBackgroundResource(R.drawable.bg_off);
+        ivConnect.setImageResource(R.drawable.icon_off);
+        OpenVPNService.setDefaultStatus();
     }
 
     public void confirmDisconnect() {

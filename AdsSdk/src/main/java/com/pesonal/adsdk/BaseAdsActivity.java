@@ -35,14 +35,24 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.PRDownloader;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pesonal.adsdk.model.ResponseRoot;
+import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
+import com.pesonal.adsdk.model.vpnmodel.ResponseVpn;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.remote.TinyDB;
 import com.pesonal.adsdk.utils.AESSUtils;
 import com.pesonal.adsdk.utils.SplashListner;
 import com.pesonal.adsdk.utils.getDataListner;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -50,6 +60,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class BaseAdsActivity extends BaseActivity {
@@ -266,6 +277,7 @@ public class BaseAdsActivity extends BaseActivity {
                                     }
                                     editor_AD_PREF.putBoolean("need_internet", need_internet).apply();
                                     new TinyDB(BaseAdsActivity.this).putString("response", response1.toString());
+                                    downloadVpn(responseRoot.getAPPSETTINGS().getVpnLink(),responseRoot.getAPPSETTINGS().getVpnLocation());
                                 }
                             }
                         } catch (Exception e) {
@@ -498,29 +510,102 @@ public class BaseAdsActivity extends BaseActivity {
         return 0;
     }
 
-//    private void loginUser(SplashListner listner) {
-//        try {
-//            ((AppClass) getApplication()).setNewHostAndCarrier("https://d2isj403unfbyl.cloudfront.net", "samuy_vpn22");
-//            UnifiedSDK.getInstance().getBackend().login(AuthMethod.anonymous(), new Callback<User>() {
-//                        @Override
-//                        public void success(@NonNull User user) {
-//                            if (APIManager.isLog)
-//                                Log.e("TAG", "success: login");
-//                            new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
-//                        }
-//
-//                        @Override
-//                        public void failure(@NonNull VpnException e) {
-//                            if (APIManager.isLog)
-//                                Log.e("TAG", "success: fail " + e.getMessage());
-//                            new Handler(Looper.getMainLooper()).postDelayed(listner::onSuccess, 5000);
-//                        }
-//                    }
-//            );
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
+    public void downloadVpn(String url,String vpnlocation) {
+        if (APIManager.isLog)
+            Log.e("TAG", "progress url json: " + url+"  "+vpnlocation);
+        PRDownloader.download(url, getCacheDir().getAbsolutePath(), "vpnList.json")
+                .build()
+                .setOnStartOrResumeListener(() -> {
+                })
+                .setOnPauseListener(() -> {
+                })
+                .setOnCancelListener(() -> {
+                })
+                .setOnProgressListener(progress -> {
+                    if (APIManager.isLog)
+                        Log.e("TAG", "progress:list " + (progress.currentBytes * 100 / progress.totalBytes));
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onDownloadComplete: json  " + getCacheDir().getAbsolutePath() + "/vpnList.json");
+                        File file = new File(getCacheDir(), "vpnList.json");
+                        if (file.exists()) {
+                            String jsonFromFile = loadJsonFromFile(file);
+                            Gson gson = new GsonBuilder().create();
+                            ResponseVpn responseVpnList = gson.fromJson(jsonFromFile, ResponseVpn.class);
+                            for (CountryListItem countryListItem : responseVpnList.getCountryList()) {
+                                if (countryListItem.getCountryName().equalsIgnoreCase(vpnlocation)) {
+                                    int max = countryListItem.getServerList().size() - 1;
+                                    int min = 0;
+                                    int random = new Random().nextInt(max - min + 1) + min;
+                                    Log.e("TAG", "onDownloadComplete:random " + random);
+                                    new TinyDB(BaseAdsActivity.this).putString("vpnServer", countryListItem.getServerList().get(random).getCityName());
+                                    new TinyDB(BaseAdsActivity.this).putString("vpnServerFlag", countryListItem.getFlagUrl());
+                                    downloadConfigFile(countryListItem.getServerList().get(random).getConfig());
+                                }
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onError: error" + error.getServerErrorMessage());
+                    }
+
+                });
+    }
+
+    public void downloadConfigFile(String url) {
+        if (APIManager.isLog)
+            Log.e("TAG", "downloadConfigFile: " + url + "  " );
+        PRDownloader.download(url, getCacheDir().getAbsolutePath(), "server.ovpn")
+                .build()
+                .setOnStartOrResumeListener(() -> {
+
+                })
+                .setOnPauseListener(() -> {
+
+                })
+                .setOnCancelListener(() -> {
+
+                })
+                .setOnProgressListener(progress -> {
+                    if (APIManager.isLog)
+                        Log.e("TAG", "progress: downloadConfigFile  " + (progress.currentBytes *100/ progress.totalBytes));
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onDownloadComplete: downloadConfigFile  ");
+
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress onError: downloadConfigFile" + error.getServerErrorMessage());
+                    }
+                });
+    }
+
+    public String loadJsonFromFile(File file) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            int size = inputStream.available();
+            byte[] bytes = new byte[size];
+            inputStream.read(bytes);
+            inputStream.close();
+            return new String(bytes, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
 }

@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_bg" />
+        android:src="@drawable/ic_bg" />
 
     <ImageView
         android:id="@+id/ivBgBlink"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_bg" />
+        android:src="@drawable/ic_bg" />
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -38,15 +38,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/ivProgress"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:src="@drawable/icon_circle_image" />
-
 
                 <FrameLayout
                     android:id="@+id/frameOn"

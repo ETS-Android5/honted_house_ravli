@@ -43,6 +43,7 @@ import de.blinkt.openvpn.core.OpenVPNThread;
 
 public class BannerVpnActivity extends BaseActivity {
 
+
     private ImageView ivUnconnected;
     private TextView tvTitle;
     private ImageView ivConnecting;
@@ -51,6 +52,7 @@ public class BannerVpnActivity extends BaseActivity {
     private ImageView iv_icon;
     private ImageView ivBGImage;
     boolean vpnStart = false;
+    boolean isProgress = false;
     private ConnectionListener connectionListener = null;
 
     public void setBannerView(ViewGroup viewGroup) {
@@ -99,7 +101,7 @@ public class BannerVpnActivity extends BaseActivity {
         }
     };
 
-    public void connectVpnListen(ConnectionListener connectionListener) {
+    public void connectVpnListener(ConnectionListener connectionListener) {
         this.connectionListener = connectionListener;
         connectVpn();
     }
@@ -111,9 +113,6 @@ public class BannerVpnActivity extends BaseActivity {
                 if (intent != null) {
                     someActivityResultLauncher.launch(intent);
                 } else startVpn();
-
-                setStatus("RECONNECTING");
-
             } else {
                 showToast("you have no internet connection !!");
             }
@@ -136,11 +135,12 @@ public class BannerVpnActivity extends BaseActivity {
     }
 
     private void startVpn() {
+        setStatus("RECONNECTING");
         Server server = new Server(new TinyDB(this).getString("vpnServer", "United Status"), "",
                 APIManager.getInstance(this).getVpnServer(),
                 APIManager.getInstance(this).getVpnUser(),
                 APIManager.getInstance(this).getVpnPass());
-        
+
         try {
             InputStream conf = new FileInputStream(server.getOvpn());
             InputStreamReader isr = new InputStreamReader(conf);
@@ -199,26 +199,20 @@ public class BannerVpnActivity extends BaseActivity {
     }
 
     public void setStatus(String connectionState) {
-        if (connectionListener != null)
-            connectionListener.onStatus(connectionState);
-        if (connectionState != null)
-            if (APIManager.isLog) {
-                Log.e("TAG", "setStatus: " + connectionState);
-            }
+        if (APIManager.isLog) {
+            if (connectionState != null)
+                Log.e("TAG", "setStatus:Banner " + connectionState);
+        }
+
         switch (connectionState) {
             case "CONNECTED":
                 vpnStart = true;
-                if (tvTitle != null) {
-                    tvTitle.setVisibility(View.VISIBLE);
-                    tvTitle.setText("Protected");
-                    ivBGImage.setImageResource(R.drawable.bg_green_vpn);
-                    iv_icon.setImageResource(R.drawable.icon_active);
-                    ivConnecting.setVisibility(View.GONE);
-                    ivConnected.setVisibility(View.VISIBLE);
-                    ivUnconnected.setVisibility(View.GONE);
-                }
+                uiConnect();
+                if (connectionListener != null)
+                    connectionListener.onStatus(CONNECTION_STATE.CONNECTED, connectionState);
                 break;
             case "WAIT":
+            case "CONNECTRETRY":
             case "RECONNECTING":
             case "AUTH":
             case "VPN_GENERATE_CONFIG":
@@ -226,42 +220,81 @@ public class BannerVpnActivity extends BaseActivity {
             case "GET_CONFIG":
             case "ASSIGN_IP":
             case "RESOLVE":
-                if (tvTitle != null) {
-                    tvTitle.setText("Connecting..");
-                    ivConnecting.setVisibility(View.VISIBLE);
-                    ivConnected.setVisibility(View.GONE);
-                    ivUnconnected.setVisibility(View.GONE);
-                    ObjectAnimator ofFloat = ObjectAnimator.ofFloat(ivConnecting, "rotation", 0.0f, 360.0f);
-                    ofFloat.setRepeatCount(-1);
-                    ofFloat.setRepeatMode(ValueAnimator.RESTART);
-                    ofFloat.setInterpolator(new LinearInterpolator());
-                    ofFloat.setDuration(800L);
-                    ofFloat.start();
+            case "EXITING":
+            case "TCP_CONNECT":
+            case "AUTH_PENDING":
+            case "ADD_ROUTES":
+                if (!isProgress) {
+                    uiProgress();
                 }
+                if (connectionListener != null)
+                    connectionListener.onStatus(CONNECTION_STATE.CONNECTING, connectionState);
                 break;
             case "NONETWORK":
-                if (tvTitle != null) {
-                    tvTitle.setVisibility(View.VISIBLE);
-                    tvTitle.setText("Protect Your\nNetwork");
-                    ivBGImage.setImageResource(R.drawable.bg_red_vpn);
-                    iv_icon.setImageResource(R.drawable.icon_deactive);
-                    ivConnecting.setVisibility(View.GONE);
-                    ivConnected.setVisibility(View.GONE);
-                    ivUnconnected.setVisibility(View.VISIBLE);
+                if (isProgress) {
+                    uiProgress();
+                } else {
+                    uiDisconnect();
                 }
+                if (connectionListener != null)
+                    connectionListener.onStatus(CONNECTION_STATE.CONNECTING, connectionState);
+                break;
+            case "AUTH_FAILED":
+            case "DISCONNECTED":
+                uiDisconnect();
+                if (connectionListener != null)
+                    connectionListener.onStatus(CONNECTION_STATE.DISCONNECTED, connectionState);
                 break;
             default:
-                vpnStart = false;
-                if (tvTitle != null) {
-                    tvTitle.setVisibility(View.VISIBLE);
-                    tvTitle.setText("Protect Your\nNetwork");
-                    ivBGImage.setImageResource(R.drawable.bg_red_vpn);
-                    iv_icon.setImageResource(R.drawable.icon_deactive);
-                    ivConnecting.setVisibility(View.GONE);
-                    ivConnected.setVisibility(View.GONE);
-                    ivUnconnected.setVisibility(View.VISIBLE);
-                    OpenVPNService.setDefaultStatus();
-                }
+                isProgress = false;
+                uiDisconnect();
+                if (connectionListener != null)
+                    connectionListener.onStatus(CONNECTION_STATE.DISCONNECTED, connectionState);
+                break;
         }
     }
+
+    public void uiProgress() {
+        isProgress = true;
+        if (tvTitle != null) {
+            tvTitle.setText("Connecting..");
+            ivConnecting.setVisibility(View.VISIBLE);
+            ivConnected.setVisibility(View.GONE);
+            ivUnconnected.setVisibility(View.GONE);
+            ObjectAnimator ofFloat = ObjectAnimator.ofFloat(ivConnecting, "rotation", 0.0f, 360.0f);
+            ofFloat.setRepeatCount(-1);
+            ofFloat.setRepeatMode(ValueAnimator.RESTART);
+            ofFloat.setInterpolator(new LinearInterpolator());
+            ofFloat.setDuration(800L);
+            ofFloat.start();
+        }
+    }
+
+
+    public void uiConnect() {
+        if (tvTitle != null) {
+            tvTitle.setVisibility(View.VISIBLE);
+            tvTitle.setText("Protected");
+            ivBGImage.setImageResource(R.drawable.bg_green_vpn);
+            iv_icon.setImageResource(R.drawable.icon_active);
+            ivConnecting.setVisibility(View.GONE);
+            ivConnected.setVisibility(View.VISIBLE);
+            ivUnconnected.setVisibility(View.GONE);
+        }
+    }
+
+    public void uiDisconnect() {
+        isProgress = false;
+        if (tvTitle != null) {
+            tvTitle.setVisibility(View.VISIBLE);
+            tvTitle.setText("Protect Your\nNetwork");
+            ivBGImage.setImageResource(R.drawable.bg_red_vpn);
+            iv_icon.setImageResource(R.drawable.icon_deactive);
+            ivConnecting.setVisibility(View.GONE);
+            ivConnected.setVisibility(View.GONE);
+            ivUnconnected.setVisibility(View.VISIBLE);
+            OpenVPNService.setDefaultStatus();
+        }
+    }
+
 }

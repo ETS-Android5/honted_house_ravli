@@ -7,6 +7,10 @@
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_on_off.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_strok.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_vpn.xml" value="0.215" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_bg__1_.xml" value="0.195" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_bg__1_blink.xml" value="0.195" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_bg__1_connected.xml" value="0.195" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_close.xml" value="0.195" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_active.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_circle_image.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/icon_circle_image_off.xml" value="0.215" />
@@ -49,7 +53,7 @@
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/userpass.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main2.xml" value="0.2755208333333333" />
         <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main3.xml" value="0.2755208333333333" />
-        <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main_a.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/activity_main_a.xml" value="0.2" />
         <entry key="..\:/admodule/MyDemoApp_edited/app/src/main/res/layout/api_confirm.xml" value="0.18541666666666667" />
       </map>
     </option>
