@@ -158,6 +158,8 @@ public class BannerVpnActivity extends BaseActivity {
             OpenVpnApi.startVpn(this, config, server.getCountry(), server.getOvpnUserName(), server.getOvpnUserPassword());
             vpnStart = true;
         } catch (IOException | RemoteException e) {
+            if (connectionListener != null)
+                connectionListener.onStatus(CONNECTION_STATE.FAIL, "FAIL");
             Log.e("TAG", "startVpn: " + e.getMessage());
             e.printStackTrace();
         }

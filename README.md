@@ -124,12 +124,14 @@ Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
      setBannerView(iVPN);
      guideVpn.setOnClickListener(view -> {
          connectVpnListener((isConnect, connectionState) -> {
-             if (isConnect == CONNECTION_STATE.CONNECTED)
-                 rootViewGuide.setVisibility(View.GONE);
-             else if (isConnect == CONNECTION_STATE.CONNECTING) {
-                 guideVpn.setVisibility(View.GONE);
-                 layoutGuideVPN.setVisibility(View.INVISIBLE);
-             }
+              if (isConnect == CONNECTION_STATE.CONNECTED){
+                  rootViewGuide.setVisibility(View.GONE);
+              } else if (isConnect == CONNECTION_STATE.CONNECTING) {
+                  guideVpn.setVisibility(View.GONE);
+                  layoutGuideVPN.setVisibility(View.INVISIBLE);
+              } else if (isConnect == CONNECTION_STATE.FAIL) {
+                  rootViewGuide.setVisibility(View.GONE);
+              }
          });
      });
      if (getConnection()) {

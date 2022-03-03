@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
 import com.pesonal.adsdk.remote.APIManager;
@@ -49,11 +47,13 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
             setBannerView(iVPN);
             guideVpn.setOnClickListener(view -> {
                 connectVpnListener((isConnect, connectionState) -> {
-                    if (isConnect == CONNECTION_STATE.CONNECTED)
+                    if (isConnect == CONNECTION_STATE.CONNECTED) {
                         rootViewGuide.setVisibility(View.GONE);
-                    else if (isConnect == CONNECTION_STATE.CONNECTING) {
+                    } else if (isConnect == CONNECTION_STATE.CONNECTING) {
                         guideVpn.setVisibility(View.GONE);
                         layoutGuideVPN.setVisibility(View.INVISIBLE);
+                    } else if (isConnect == CONNECTION_STATE.FAIL) {
+                        rootViewGuide.setVisibility(View.GONE);
                     }
                 });
             });
