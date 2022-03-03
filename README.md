@@ -153,31 +153,33 @@ And put below layout in your ```xml```.
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rootViewGuide"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#9D000000"
-        android:clickable="true"
-        android:visibility="gone">
+     <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:id="@+id/rootViewGuide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:visibility="gone">
 
-        <include
-            android:id="@+id/layoutGuideVPN"
-            layout="@layout/layout_vpn" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/layoutGuideVPN"
+                android:background="#9D000000" />
 
+            <include
+                android:id="@+id/layoutGuideVPN"
+                layout="@layout/layout_vpn" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/guideVpn"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/anim_guide" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/guideVpn"
+                android:layout_width="140dp"
+                android:layout_height="150dp"
+                android:layout_alignParentEnd="true"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/anim_guide" />
+
+     </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 ```
 
 ### For VPN Screen
