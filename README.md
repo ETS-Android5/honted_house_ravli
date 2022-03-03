@@ -116,21 +116,28 @@ Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
      btnOpenVpnScreen.setVisibility(View.VISIBLE);
  }else btnOpenVpnScreen.setVisibility(View.GONE);
 
-  iVPN = (FrameLayout) findViewById(R.id.iVPN);
-  rootViewGuide = (ConstraintLayout) findViewById(R.id.rootViewGuide);
-  guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
-  if (APIManager.getInstance(this).getVpnStatus()) {
-      setBannerView(iVPN);
-      guideVpn.setOnClickListener(view -> {
-          connectVpn();
-          rootViewGuide.setVisibility(View.GONE);
-      });
-      if (getConnection()) {
-          rootViewGuide.setVisibility(View.GONE);
-      } else {
-          rootViewGuide.setVisibility(View.VISIBLE);
-      }
-  }
+ iVPN = (FrameLayout) findViewById(R.id.iVPN);
+ rootViewGuide = (CircularRevealRelativeLayout) findViewById(R.id.rootViewGuide);
+ guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
+ layoutGuideVPN = (FrameLayout) findViewById(R.id.layoutGuideVPN);
+ if (APIManager.getInstance(this).getVpnStatus()) {
+     setBannerView(iVPN);
+     guideVpn.setOnClickListener(view -> {
+         connectVpnListener((isConnect, connectionState) -> {
+             if (isConnect == CONNECTION_STATE.CONNECTED)
+                 rootViewGuide.setVisibility(View.GONE);
+             else if (isConnect == CONNECTION_STATE.CONNECTING) {
+                 guideVpn.setVisibility(View.GONE);
+                 layoutGuideVPN.setVisibility(View.INVISIBLE);
+             }
+         });
+     });
+     if (getConnection()) {
+         rootViewGuide.setVisibility(View.GONE);
+     } else {
+         rootViewGuide.setVisibility(View.VISIBLE);
+     }
+ }
 ```
 
 And call below in ```onBackPressed()```.
