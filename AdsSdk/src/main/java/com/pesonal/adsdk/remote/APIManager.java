@@ -29,9 +29,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.downloader.Error;
-import com.downloader.OnDownloadListener;
-import com.downloader.PRDownloader;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -41,6 +38,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
@@ -373,6 +371,10 @@ public class APIManager {
                 if (listner != null)
                     listner.onGetExtradata(responseRoot.getEXTRADATA());
             }
+
+            RequestConfiguration conf= new RequestConfiguration.Builder().setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE).build();
+            MobileAds.setRequestConfiguration(conf);
+
             MobileAds.initialize(activity, initializationStatus -> {
             });
 
@@ -1738,7 +1740,10 @@ public class APIManager {
         showSmallNative(adContainerBack);
         bottomSheetDialog.show();
         later.setOnClickListener(view -> bottomSheetDialog.dismiss());
-        update.setOnClickListener(view -> activity.finish());
+        update.setOnClickListener(view -> {
+            bottomSheetDialog.dismiss();
+            activity.finish();
+        });
         return bottomSheetDialog;
     }
 }
