@@ -2,19 +2,4 @@
 <resources>
 
 
-    <string-array name="countryNames">
-        <item>us</item>
-        <item>ca</item>
-        <item>de</item>
-        <item>no</item>
-        <item>hk</item>
-        <item>fr</item>
-        <item>es</item>
-        <item>sg</item>
-        <item>au</item>
-        <item>gb</item>
-        <item>ie</item>
-        <item>nl</item>
-        <item>jp</item>
-    </string-array>
 </resources>

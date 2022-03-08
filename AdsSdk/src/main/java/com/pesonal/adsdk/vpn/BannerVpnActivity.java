@@ -54,6 +54,7 @@ public class BannerVpnActivity extends BaseActivity {
     boolean vpnStart = false;
     boolean isProgress = false;
     private ConnectionListener connectionListener = null;
+    private ImageView bgTexture;
 
     public void setBannerView(ViewGroup viewGroup) {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -66,6 +67,7 @@ public class BannerVpnActivity extends BaseActivity {
         iv_bg = (ImageView) view.findViewById(R.id.iv_bg);
         iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
         ivBGImage = (ImageView) view.findViewById(R.id.ivBGImage);
+        bgTexture = (ImageView) view.findViewById(R.id.bgTexture);
         iv_bg.setOnClickListener(view1 -> {
             if (vpnStart) {
                 confirmDisconnect();
@@ -76,6 +78,19 @@ public class BannerVpnActivity extends BaseActivity {
         isServiceRunning();
         viewGroup.addView(view);
     }
+
+    public void setBackgroundColor(int color) {
+        ivBGImage.setBackgroundColor(color);
+        ivConnected.setColorFilter(color);
+        ivConnecting.setColorFilter(color);
+        ivUnconnected.setColorFilter(color);
+    }
+
+    public void setTextColor(int color) {
+        tvTitle.setTextColor(color);
+        bgTexture.setColorFilter(color);
+    }
+
 
     @Override
     protected void onResume() {
@@ -260,6 +275,8 @@ public class BannerVpnActivity extends BaseActivity {
         isProgress = true;
         if (tvTitle != null) {
             tvTitle.setText("Connecting..");
+            iv_icon.setImageResource(R.drawable.icon_deactive);
+            iv_bg.setImageResource(R.drawable.bg_switch_deactive);
             ivConnecting.setVisibility(View.VISIBLE);
             ivConnected.setVisibility(View.GONE);
             ivUnconnected.setVisibility(View.GONE);
@@ -277,8 +294,8 @@ public class BannerVpnActivity extends BaseActivity {
         if (tvTitle != null) {
             tvTitle.setVisibility(View.VISIBLE);
             tvTitle.setText("Protected");
-            ivBGImage.setImageResource(R.drawable.bg_green_vpn);
             iv_icon.setImageResource(R.drawable.icon_active);
+            iv_bg.setImageResource(R.drawable.bg_switch_active);
             ivConnecting.setVisibility(View.GONE);
             ivConnected.setVisibility(View.VISIBLE);
             ivUnconnected.setVisibility(View.GONE);
@@ -290,8 +307,8 @@ public class BannerVpnActivity extends BaseActivity {
         if (tvTitle != null) {
             tvTitle.setVisibility(View.VISIBLE);
             tvTitle.setText("Protect Your\nNetwork");
-            ivBGImage.setImageResource(R.drawable.bg_red_vpn);
             iv_icon.setImageResource(R.drawable.icon_deactive);
+            iv_bg.setImageResource(R.drawable.bg_switch_deactive);
             ivConnecting.setVisibility(View.GONE);
             ivConnected.setVisibility(View.GONE);
             ivUnconnected.setVisibility(View.VISIBLE);

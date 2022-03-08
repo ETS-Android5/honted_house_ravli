@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/button_bg_ad"
+                            android:background="@drawable/button_bg"
                             android:gravity="center"
                             android:padding="13dp"
                             android:text="INSTALL"

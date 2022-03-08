@@ -159,7 +159,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
-                            android:background="@drawable/button_bg_ad"
+                            android:background="@drawable/button_bg"
                             android:gravity="center"
                             android:padding="13dp"
                             android:textAllCaps="true"

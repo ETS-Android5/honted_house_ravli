@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import androidx.core.content.ContextCompat;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
 import com.pesonal.adsdk.remote.APIManager;
@@ -45,6 +47,8 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
         layoutGuideVPN = (FrameLayout) findViewById(R.id.layoutGuideVPN);
         if (APIManager.getInstance(this).getVpnStatus()) {
             setBannerView(iVPN);
+            setBackgroundColor(getColor(R.color.colorAdBlack));
+            setTextColor(getColor(R.color.colorAdWhite));
             guideVpn.setOnClickListener(view -> {
                 connectVpnListener((isConnect, connectionState) -> {
                     if (isConnect == CONNECTION_STATE.CONNECTED) {
@@ -52,6 +56,7 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                     } else if (isConnect == CONNECTION_STATE.CONNECTING) {
                         guideVpn.setVisibility(View.GONE);
                         layoutGuideVPN.setVisibility(View.INVISIBLE);
+                        rootViewGuide.setVisibility(View.GONE);
                     } else if (isConnect == CONNECTION_STATE.FAIL) {
                         rootViewGuide.setVisibility(View.GONE);
                     }
@@ -61,6 +66,7 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                 rootViewGuide.setVisibility(View.GONE);
             } else {
                 rootViewGuide.setVisibility(View.VISIBLE);
+                rootViewGuide.setVisibility(View.GONE);
             }
         }
         btnNext = (Button) findViewById(R.id.btnNext);

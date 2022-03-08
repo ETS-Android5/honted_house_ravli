@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAdWhite"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -11,21 +10,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivBGImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorBgVpn" />
+
+        <ImageView
+            android:id="@+id/bgTexture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/bg_red_vpn" />
+            app:srcCompat="@drawable/bg_texture" />
 
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:padding="@dimen/_5sdp"
             android:src="@drawable/icon_deactive"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_title"
@@ -34,23 +41,48 @@
 
         <ImageView
             android:id="@+id/iv_bg"
-            android:layout_width="114dp"
-            android:layout_height="48dp"
+            android:layout_width="73dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="28dp"
-            android:src="@drawable/i_vpn_bg"
+            android:src="@drawable/bg_switch_deactive"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_unconnected"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_marginStart="6dp"
             android:clickable="false"
-            android:src="@drawable/i_vpn_unconnect"
+            android:src="@drawable/icon_switch_thumb"
             app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
             app:layout_constraintStart_toStartOf="@+id/iv_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
+
+
+        <ImageView
+            android:id="@+id/iv_connecting"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:clickable="false"
+            android:src="@drawable/icon_loading"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+            app:layout_constraintEnd_toEndOf="@+id/iv_bg"
+            app:layout_constraintStart_toStartOf="@+id/iv_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
+
+        <ImageView
+            android:id="@+id/iv_connected"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginEnd="6dp"
+            android:clickable="false"
+            android:src="@drawable/icon_switch_thumb"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+            app:layout_constraintEnd_toEndOf="@+id/iv_bg"
             app:layout_constraintTop_toTopOf="@+id/iv_bg" />
 
         <TextView
@@ -61,36 +93,12 @@
             android:gravity="center"
             android:text="Protect Your\nNetwork"
             android:textColor="@color/colorAdWhite"
-            android:textSize="18sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_bg"
             app:layout_constraintStart_toEndOf="@+id/iv_icon"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv_connecting"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:clickable="false"
-            android:src="@drawable/i_vpn_connecting"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
-            app:layout_constraintEnd_toEndOf="@+id/iv_bg"
-            app:layout_constraintStart_toStartOf="@+id/iv_bg"
-            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
-
-        <ImageView
-            android:id="@+id/iv_connected"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginEnd="6dp"
-            android:clickable="false"
-            android:src="@drawable/i_vpn_connected"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
-            app:layout_constraintEnd_toEndOf="@+id/iv_bg"
-            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

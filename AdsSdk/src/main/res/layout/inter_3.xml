@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/button_bg_ad"
+                android:background="@drawable/button_bg"
                 android:gravity="center">
 
                 <TextView
@@ -340,7 +340,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_bg_ad"
+                    android:background="@drawable/button_bg"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -398,7 +398,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_bg_ad"
+                    android:background="@drawable/button_bg"
                     
                     android:gravity="center"
                     android:textColor="@color/colorAdWhite"
