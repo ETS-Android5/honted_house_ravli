@@ -47,6 +47,7 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
         layoutGuideVPN = (FrameLayout) findViewById(R.id.layoutGuideVPN);
         if (APIManager.getInstance(this).getVpnStatus()) {
             setBannerView(iVPN);
+            setGuideView(layoutGuideVPN);
             setBackgroundColor(getColor(R.color.colorAdBlack));
             setTextColor(getColor(R.color.colorAdWhite));
             guideVpn.setOnClickListener(view -> {
@@ -56,7 +57,6 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                     } else if (isConnect == CONNECTION_STATE.CONNECTING) {
                         guideVpn.setVisibility(View.GONE);
                         layoutGuideVPN.setVisibility(View.INVISIBLE);
-                        rootViewGuide.setVisibility(View.GONE);
                     } else if (isConnect == CONNECTION_STATE.FAIL) {
                         rootViewGuide.setVisibility(View.GONE);
                     }
@@ -66,7 +66,6 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                 rootViewGuide.setVisibility(View.GONE);
             } else {
                 rootViewGuide.setVisibility(View.VISIBLE);
-                rootViewGuide.setVisibility(View.GONE);
             }
         }
         btnNext = (Button) findViewById(R.id.btnNext);

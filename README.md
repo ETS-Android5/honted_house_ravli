@@ -122,6 +122,9 @@ Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
  layoutGuideVPN = (FrameLayout) findViewById(R.id.layoutGuideVPN);
  if (APIManager.getInstance(this).getVpnStatus()) {
      setBannerView(iVPN);
+     setGuideView(layoutGuideVPN);
+     setBackgroundColor(getColor(R.color.colorAdBlack));
+     setTextColor(getColor(R.color.colorAdWhite));
      guideVpn.setOnClickListener(view -> {
          connectVpnListener((isConnect, connectionState) -> {
               if (isConnect == CONNECTION_STATE.CONNECTED){
@@ -155,31 +158,40 @@ And put below layout in your ```xml```.
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-     <com.google.android.material.circularreveal.CircularRevealRelativeLayout
-            android:id="@+id/rootViewGuide"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:visibility="gone">
+      <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+             android:id="@+id/rootViewGuide"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:clickable="true"
+             android:visibility="gone">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/layoutGuideVPN"
-                android:background="#9D000000" />
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_below="@+id/layoutGuideVPN"
+                 android:background="#9D000000" />
 
-            <include
-                android:id="@+id/layoutGuideVPN"
-                layout="@layout/layout_vpn" />
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_50sdp">
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/guideVpn"
-                android:layout_width="140dp"
-                android:layout_height="150dp"
-                android:layout_alignParentEnd="true"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/anim_guide" />
+                 <FrameLayout
+                     android:id="@+id/layoutGuideVPN"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent" />
+
+                 <com.airbnb.lottie.LottieAnimationView
+                     android:id="@+id/guideVpn"
+                     android:layout_width="80dp"
+                     android:layout_height="50dp"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="26dp"
+                     app:lottie_autoPlay="true"
+                     app:lottie_loop="true"
+                     app:lottie_rawRes="@raw/guide" />
+
+             </RelativeLayout>
 
      </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 ```

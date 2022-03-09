@@ -55,19 +55,27 @@ public class BannerVpnActivity extends BaseActivity {
     boolean isProgress = false;
     private ConnectionListener connectionListener = null;
     private ImageView bgTexture;
+    private ImageView ivUnconnected1;
+    private TextView tvTitle1;
+    private ImageView ivConnecting1;
+    private ImageView ivConnected1;
+    private ImageView iv_bg1;
+    private ImageView iv_icon1;
+    private ImageView ivBGImage1;
+    private ImageView bgTexture1;
 
     public void setBannerView(ViewGroup viewGroup) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view = (View) inflater.inflate(R.layout.layout_vpn, null);
+        View viewBanner = (View) inflater.inflate(R.layout.layout_vpn, null);
         viewGroup.removeAllViews();
-        ivUnconnected = (ImageView) view.findViewById(R.id.iv_unconnected);
-        tvTitle = (TextView) view.findViewById(R.id.tv_title);
-        ivConnecting = (ImageView) view.findViewById(R.id.iv_connecting);
-        ivConnected = (ImageView) view.findViewById(R.id.iv_connected);
-        iv_bg = (ImageView) view.findViewById(R.id.iv_bg);
-        iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
-        ivBGImage = (ImageView) view.findViewById(R.id.ivBGImage);
-        bgTexture = (ImageView) view.findViewById(R.id.bgTexture);
+        ivUnconnected = (ImageView) viewBanner.findViewById(R.id.iv_unconnected);
+        tvTitle = (TextView) viewBanner.findViewById(R.id.tv_title);
+        ivConnecting = (ImageView) viewBanner.findViewById(R.id.iv_connecting);
+        ivConnected = (ImageView) viewBanner.findViewById(R.id.iv_connected);
+        iv_bg = (ImageView) viewBanner.findViewById(R.id.iv_bg);
+        iv_icon = (ImageView) viewBanner.findViewById(R.id.iv_icon);
+        ivBGImage = (ImageView) viewBanner.findViewById(R.id.ivBGImage);
+        bgTexture = (ImageView) viewBanner.findViewById(R.id.bgTexture);
         iv_bg.setOnClickListener(view1 -> {
             if (vpnStart) {
                 confirmDisconnect();
@@ -76,7 +84,22 @@ public class BannerVpnActivity extends BaseActivity {
             }
         });
         isServiceRunning();
-        viewGroup.addView(view);
+        viewGroup.addView(viewBanner);
+    }
+
+    public void setGuideView(ViewGroup guideView) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View viewBanner = (View) inflater.inflate(R.layout.layout_vpn, null);
+        guideView.removeAllViews();
+        ivUnconnected1 = (ImageView) viewBanner.findViewById(R.id.iv_unconnected);
+        tvTitle1 = (TextView) viewBanner.findViewById(R.id.tv_title);
+        ivConnecting1 = (ImageView) viewBanner.findViewById(R.id.iv_connecting);
+        ivConnected1 = (ImageView) viewBanner.findViewById(R.id.iv_connected);
+        iv_bg1 = (ImageView) viewBanner.findViewById(R.id.iv_bg);
+        iv_icon1 = (ImageView) viewBanner.findViewById(R.id.iv_icon);
+        ivBGImage1 = (ImageView) viewBanner.findViewById(R.id.ivBGImage);
+        bgTexture1 = (ImageView) viewBanner.findViewById(R.id.bgTexture);
+        guideView.addView(viewBanner);
     }
 
     public void setBackgroundColor(int color) {
@@ -84,11 +107,22 @@ public class BannerVpnActivity extends BaseActivity {
         ivConnected.setColorFilter(color);
         ivConnecting.setColorFilter(color);
         ivUnconnected.setColorFilter(color);
+
+        if (ivBGImage1 != null) {
+            ivBGImage1.setBackgroundColor(color);
+            ivConnected1.setColorFilter(color);
+            ivConnecting1.setColorFilter(color);
+            ivUnconnected1.setColorFilter(color);
+        }
     }
 
     public void setTextColor(int color) {
         tvTitle.setTextColor(color);
         bgTexture.setColorFilter(color);
+        if (tvTitle1 != null) {
+            tvTitle1.setTextColor(color);
+            bgTexture1.setColorFilter(color);
+        }
     }
 
 
