@@ -372,7 +372,7 @@ public class APIManager {
                     listner.onGetExtradata(responseRoot.getEXTRADATA());
             }
 
-            RequestConfiguration conf= new RequestConfiguration.Builder().setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE).build();
+            RequestConfiguration conf = new RequestConfiguration.Builder().setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE).build();
             MobileAds.setRequestConfiguration(conf);
 
             MobileAds.initialize(activity, initializationStatus -> {
@@ -1144,6 +1144,26 @@ public class APIManager {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER"))
                 BannerUtils.banner(viewGroup, activity);
             else Nativeutils.banner(viewGroup, activity);
+        }
+    }
+
+
+    public void showNativeBanner(ViewGroup viewGroup) {
+        if (!setResponseRoot()) {
+            return;
+        }
+        if (responseRoot.getAPPSETTINGS() == null) {
+            return;
+        }
+
+        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+            String platform = getPlatFormName("BN");
+            String adUnitId = getUnitID(platform, "BN", "");
+            if (isLog)
+                Log.e(TAG, "showBanner:BN  " + adUnitId + "  " + platform);
+            turnShowNativeBanner(viewGroup, adUnitId);
+        } else {
+            Nativeutils.banner(viewGroup, activity);
         }
     }
 

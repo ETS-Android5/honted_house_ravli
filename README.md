@@ -203,13 +203,13 @@ And put below layout in your ```xml```.
 
 ### NativeAd
 ```java
-APIManager.getInstance(MainAAActivity.this).showNative(adContainer);
-APIManager.getInstance(MainAAActivity.this).showSmallNative(adContainer1);
+APIManager.getInstance(MainAAActivity.this).showNative(adContainer);  //size - @dimen/_200sdp
+APIManager.getInstance(MainAAActivity.this).showSmallNative(adContainer1);  //size - @dimen/_130sdp
 ```
 
 ### BannerAd
 ```java
-APIManager.getInstance(MainActivity2.this).showBanner(adContainer);
+APIManager.getInstance(MainActivity2.this).showBanner(adContainer);   //size - @dimen/_65sdp
 ```
 
 ### InterstitialAd
@@ -264,6 +264,30 @@ PrivacyDialog.show(StartSecondActivity.this,getResources().getStringArray(R.arra
 ### Gift Dialog
 ```java
 new GiftAds(StartSecondActivity.this).showGiftAds();
+```
+
+
+### Proguard Rules
+```java
+-keep class androidx.renderscript.** { *; }
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+-keep class com.yandex.metrica.** { *; }
+-dontwarn com.yandex.metrica.**
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn sun.misc.**
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+-keep class com.pesonal.adsdk.model.** { <fields>; }
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep class com.github.mikephil.charting.** { *; }
+-dontwarn io.realm.**
 ```
 
 

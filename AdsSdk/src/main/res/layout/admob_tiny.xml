@@ -127,7 +127,7 @@
                                         android:layout_below="@+id/ad_headline"
                                         android:layout_toLeftOf="@id/ad_call_to_action"
                                         android:maxLines="2"
-                                        android:textColor="@color/colorAdBlack"
+                                        android:textColor="@color/colorAdGrey"
                                         android:textSize="@dimen/_7sdp"
                                         android:visibility="visible" />
                                 </RelativeLayout>
