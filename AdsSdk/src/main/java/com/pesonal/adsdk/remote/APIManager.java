@@ -250,6 +250,14 @@ public class APIManager {
         }
     }
 
+    public JsonObject getExtraData() {
+        if (!setResponseRoot())
+            return null;
+        if (responseRoot != null) {
+            return responseRoot.getEXTRADATA();
+        } else return null;
+    }
+
     public String loadJsonFromFile(File file) {
         try {
             InputStream inputStream = new FileInputStream(file);
