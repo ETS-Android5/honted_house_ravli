@@ -30,8 +30,7 @@
         <activity android:name=".MainActivity2"/>
         <activity android:name=".MainActivity3"/>
         <activity android:name=".ExitActivity"/>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="landscape"/>
+        <activity android:name=".MainActivity" />
 
 
     </application>
