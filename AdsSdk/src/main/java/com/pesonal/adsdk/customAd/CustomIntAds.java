@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class CustomIntAds extends Dialog {
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.width = screen_size_get(getContext()).x;
         attributes.height = screen_size_get(getContext()).y;
+        attributes.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         getWindow().setAttributes(attributes);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 

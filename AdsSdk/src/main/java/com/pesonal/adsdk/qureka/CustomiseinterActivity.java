@@ -2,6 +2,7 @@ package com.pesonal.adsdk.qureka;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,6 +50,7 @@ public class CustomiseinterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         TextView textView;
         String str;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         super.onCreate(savedInstanceState);
         int i7 = Glob.f2126r;
