@@ -1,6 +1,7 @@
 package com.pesonal.adsdk.customAd;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +30,7 @@ import com.pesonal.adsdk.model.AdvertiseList;
 
 public class CustomIntAds extends Dialog {
     private LinearLayout LLTop;
-    public Context mContext;
+    public Activity mContext;
     public OnCloseListener listener_positive;
     private ImageView ad_media_view;
     private RelativeLayout int_bg;
@@ -39,24 +40,11 @@ public class CustomIntAds extends Dialog {
     private TextView txt_download;
     AdvertiseList advertiseList;
 
-    public CustomIntAds(@NonNull Context context) {
-        super(context);
-        this.mContext = context;
-    }
 
-
-    public CustomIntAds(@NonNull Context context, AdvertiseList customAdModel) {
+    public CustomIntAds(@NonNull Activity context, AdvertiseList customAdModel) {
         super(context);
         this.mContext = context;
         this.advertiseList = customAdModel;
-    }
-
-    public CustomIntAds(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
-    protected CustomIntAds(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
     }
 
     public interface OnCloseListener {
@@ -91,7 +79,7 @@ public class CustomIntAds extends Dialog {
         attributes.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         getWindow().setAttributes(attributes);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
+        mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         if (advertiseList != null) {
             try {

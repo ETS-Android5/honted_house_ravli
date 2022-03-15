@@ -1,6 +1,7 @@
 package com.pesonal.adsdk.customAd;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +31,7 @@ import com.pesonal.adsdk.model.AdvertiseList;
 
 
 public class CustomAppOpenAds extends Dialog  {
-    public Context mContext;
+    public Activity mContext;
     public OnCloseListener listener_positive;
 
     private TextView txt_title;
@@ -49,33 +50,13 @@ public class CustomAppOpenAds extends Dialog  {
     CustomAdModel customAdModel;
     AdvertiseList advertiseList;
 
-    public CustomAppOpenAds(@NonNull Context context) {
-        super(context);
-        this.mContext = context;
 
-    }
-
-    public CustomAppOpenAds(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-        this.mContext = context;
-
-    }
-
-    public CustomAppOpenAds(@NonNull Context context, int themeResId,CustomAdModel customAdModel) {
-        super(context, themeResId);
-        this.mContext = context;
-        this.customAdModel = customAdModel;
-    }
-
-    public CustomAppOpenAds(@NonNull Context context, int themeResId, AdvertiseList customAdModel) {
+    public CustomAppOpenAds(@NonNull Activity context, int themeResId, AdvertiseList customAdModel) {
         super(context, themeResId);
         this.mContext = context;
         this.advertiseList = customAdModel;
     }
 
-    protected CustomAppOpenAds(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
-    }
     public interface OnCloseListener {
         void onAdsCloseClick();
 
@@ -87,6 +68,7 @@ public class CustomAppOpenAds extends Dialog  {
         this.listener_positive = onCloseListener;
         return this;
     }
+
     @SuppressLint("WrongConstant")
     public Point screen_size_get(Context context) {
         Point point = new Point();
@@ -107,7 +89,7 @@ public class CustomAppOpenAds extends Dialog  {
         attributes.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         getWindow().setAttributes(attributes);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
+        mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(customAdModel!=null)
         {
             try
