@@ -2,10 +2,14 @@ package com.demo.mycommonapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.gson.JsonObject;
 import com.pesonal.adsdk.BaseAdsActivity;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.utils.SplashListner;
+
+import org.json.JSONObject;
 
 public class SplashActivity extends BaseAdsActivity {
 
@@ -33,8 +37,8 @@ public class SplashActivity extends BaseAdsActivity {
             }
 
             @Override
-            public void onExtra(String extraData) {
-
+            public void onExtra(JsonObject extraData) {
+                Log.e("TAG", "onExtra: "+extraData.toString() );
             }
         });
     }

@@ -2,6 +2,8 @@ package com.pesonal.adsdk.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 public class ResponseRoot{
@@ -10,7 +12,7 @@ public class ResponseRoot{
 	private String mSG;
 
 	@SerializedName("EXTRA_DATA")
-	private String eXTRADATA="";
+	private JsonObject eXTRADATA;
 
 	@SerializedName("STATUS")
 	private boolean sTATUS;
@@ -38,11 +40,11 @@ public class ResponseRoot{
 		return mSG;
 	}
 
-	public void setEXTRADATA(String eXTRADATA){
+	public void setEXTRADATA(JsonObject eXTRADATA){
 		this.eXTRADATA = eXTRADATA;
 	}
 
-	public String getEXTRADATA(){
+	public JsonObject getEXTRADATA(){
 		return eXTRADATA;
 	}
 

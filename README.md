@@ -63,10 +63,10 @@ Extend as ```BaseAdsActivity``` and call below method in ```onCreate()```.
                  });
             }
 
-            @Override
-            public void onExtra(String extraData) {
-
-            }
+           @Override
+           public void onExtra(JsonObject extraData) {
+               Log.e("TAG", "onExtra: "+extraData.toString() );
+           }
         });
 ```
 
@@ -168,10 +168,11 @@ And put below layout in your ```xml```.
              <View
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 android:layout_below="@+id/layoutGuideVPN"
+                 android:layout_below="@+id/xyz"
                  android:background="#9D000000" />
 
              <RelativeLayout
+                 android:id="@+id/xyz"
                  android:layout_width="match_parent"
                  android:layout_height="@dimen/_50sdp">
 

@@ -40,6 +40,7 @@ import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.pesonal.adsdk.model.ResponseRoot;
 import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
 import com.pesonal.adsdk.model.vpnmodel.ResponseVpn;
@@ -113,7 +114,7 @@ public class BaseAdsActivity extends BaseActivity {
             }
 
             @Override
-            public void onGetExtradata(String extraData) {
+            public void onGetExtradata(JsonObject extraData) {
                 if (listner != null)
                     listner.onExtra(extraData);
             }
@@ -229,7 +230,7 @@ public class BaseAdsActivity extends BaseActivity {
                 }
 
                 @Override
-                public void onGetExtradata(String extraData) {
+                public void onGetExtradata(JsonObject extraData) {
                 }
             }, currentVersionCode);
         }
@@ -337,7 +338,7 @@ public class BaseAdsActivity extends BaseActivity {
                             }
 
                             @Override
-                            public void onGetExtradata(String extraData) {
+                            public void onGetExtradata(JsonObject extraData) {
                                 myCallback1.onGetExtradata(extraData);
 
                             }
