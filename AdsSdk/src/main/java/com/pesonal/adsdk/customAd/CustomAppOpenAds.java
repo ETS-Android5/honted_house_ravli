@@ -86,10 +86,9 @@ public class CustomAppOpenAds extends Dialog  {
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.width = screen_size_get(getContext()).x;
         attributes.height = screen_size_get(getContext()).y;
-        attributes.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         getWindow().setAttributes(attributes);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         if(customAdModel!=null)
         {
             try

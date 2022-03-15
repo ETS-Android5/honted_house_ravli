@@ -60,6 +60,7 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                     } else if (isConnect == CONNECTION_STATE.FAIL) {
                         rootViewGuide.setVisibility(View.GONE);
                     }
+                    rootViewGuide.setVisibility(View.GONE);
                 });
             });
             if (getConnection()) {
