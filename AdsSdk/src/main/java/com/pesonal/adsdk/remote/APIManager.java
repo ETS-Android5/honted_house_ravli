@@ -47,6 +47,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
@@ -250,7 +251,7 @@ public class APIManager {
         }
     }
 
-    public JsonObject getExtraData() {
+    public JsonElement getExtraData() {
         if (!setResponseRoot())
             return null;
         if (responseRoot != null) {

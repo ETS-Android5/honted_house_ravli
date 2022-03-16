@@ -3,6 +3,7 @@ package com.pesonal.adsdk.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,7 +13,7 @@ public class ResponseRoot{
 	private String mSG;
 
 	@SerializedName("EXTRA_DATA")
-	private JsonObject eXTRADATA;
+	private JsonElement eXTRADATA;
 
 	@SerializedName("STATUS")
 	private boolean sTATUS;
@@ -44,7 +45,7 @@ public class ResponseRoot{
 		this.eXTRADATA = eXTRADATA;
 	}
 
-	public JsonObject getEXTRADATA(){
+	public JsonElement getEXTRADATA(){
 		return eXTRADATA;
 	}
 

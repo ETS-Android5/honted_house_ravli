@@ -1,5 +1,6 @@
 package com.pesonal.adsdk.utils;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -14,5 +15,5 @@ public interface getDataListner {
 
     void onReload();
 
-    void onGetExtradata(JsonObject extraData);
+    void onGetExtradata(JsonElement extraData);
 }

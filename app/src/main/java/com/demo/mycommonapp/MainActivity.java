@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.vpn.BannerVpnActivity;
@@ -84,7 +85,7 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this, VanishVPNActivity.class));
             }
         });
-        JsonObject extraData = APIManager.getInstance(this).getExtraData();
+        JsonElement extraData = APIManager.getInstance(this).getExtraData();
     }
 
     @Override

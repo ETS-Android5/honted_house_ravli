@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.pesonal.adsdk.BaseAdsActivity;
 import com.pesonal.adsdk.remote.APIManager;
@@ -37,7 +38,7 @@ public class SplashActivity extends BaseAdsActivity {
             }
 
             @Override
-            public void onExtra(JsonObject extraData) {
+            public void onExtra(JsonElement extraData) {
                 Log.e("TAG", "onExtra: "+extraData.toString() );
             }
         });
