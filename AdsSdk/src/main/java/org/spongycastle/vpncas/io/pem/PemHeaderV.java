@@ -3,14 +3,14 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.io.pem;
+package org.spongycastle.vpncas.io.pem;
 
-public class PemHeader
+public class PemHeaderV
 {
     private String name;
     private String value;
 
-    public PemHeader(String name, String value)
+    public PemHeaderV(String name, String value)
     {
         this.name = name;
         this.value = value;
@@ -33,12 +33,12 @@ public class PemHeader
 
     public boolean equals(Object o)
     {
-        if (!(o instanceof PemHeader))
+        if (!(o instanceof PemHeaderV))
         {
             return false;
         }
 
-        PemHeader other = (PemHeader)o;
+        PemHeaderV other = (PemHeaderV)o;
 
         return other == this || (isEqual(this.name, other.name) && isEqual(this.value, other.value));
     }

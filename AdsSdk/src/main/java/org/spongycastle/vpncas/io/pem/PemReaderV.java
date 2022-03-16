@@ -3,7 +3,7 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.io.pem;
+package org.spongycastle.vpncas.io.pem;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,17 +11,17 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spongycastle.util.encoders.Base64;
+import org.spongycastle.vpncas.encoders.Base64V;
 
-public class PemReader extends BufferedReader {
+public class PemReaderV extends BufferedReader {
     private static final String BEGIN = "-----BEGIN ";
     private static final String END = "-----END ";
 
-    public PemReader(Reader reader) {
+    public PemReaderV(Reader reader) {
         super(reader);
     }
 
-    public PemObject readPemObject() throws IOException {
+    public PemObjectV readPemObject() throws IOException {
         String line = readLine();
 
         while (line != null && !line.startsWith(BEGIN)) {
@@ -41,7 +41,7 @@ public class PemReader extends BufferedReader {
         return null;
     }
 
-    private PemObject loadObject(String type) throws IOException {
+    private PemObjectV loadObject(String type) throws IOException {
         String line;
         String endMarker = END + type;
         StringBuilder buf = new StringBuilder();
@@ -53,7 +53,7 @@ public class PemReader extends BufferedReader {
                 String hdr = line.substring(0, index);
                 String value = line.substring(index + 1).trim();
 
-                headers.add(new PemHeader(hdr, value));
+                headers.add(new PemHeaderV(hdr, value));
 
                 continue;
             }
@@ -69,7 +69,7 @@ public class PemReader extends BufferedReader {
             throw new IOException(endMarker + " not found");
         }
 
-        return new PemObject(type, headers, Base64.decode(buf.toString()));
+        return new PemObjectV(type, headers, Base64V.decode(buf.toString()));
     }
 
 }

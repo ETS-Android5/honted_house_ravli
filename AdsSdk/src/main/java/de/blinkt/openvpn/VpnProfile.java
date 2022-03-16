@@ -23,8 +23,8 @@ import android.util.Base64;
 import com.pesonal.adsdk.R;
 
 import de.blinkt.openvpn.core.*;
-import org.spongycastle.util.io.pem.PemObject;
-import org.spongycastle.util.io.pem.PemWriter;
+import org.spongycastle.vpncas.io.pem.PemObjectV;
+import org.spongycastle.vpncas.io.pem.PemWriterV;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -860,10 +860,10 @@ public class VpnProfile implements Serializable, Cloneable {
             } else {
                 StringWriter ksStringWriter = new StringWriter();
 
-                PemWriter pw = new PemWriter(ksStringWriter);
+                PemWriterV pw = new PemWriterV(ksStringWriter);
                 for (int i = 1; i < caChain.length; i++) {
                     X509Certificate cert = caChain[i];
-                    pw.writeObject(new PemObject("CERTIFICATE", cert.getEncoded()));
+                    pw.writeObject(new PemObjectV("CERTIFICATE", cert.getEncoded()));
                 }
                 pw.close();
                 keystoreChain = ksStringWriter.toString();
@@ -875,10 +875,10 @@ public class VpnProfile implements Serializable, Cloneable {
                 try {
                     Certificate[] cacerts = X509Utils.getCertificatesFromFile(mCaFilename);
                     StringWriter caoutWriter = new StringWriter();
-                    PemWriter pw = new PemWriter(caoutWriter);
+                    PemWriterV pw = new PemWriterV(caoutWriter);
 
                     for (Certificate cert : cacerts)
-                        pw.writeObject(new PemObject("CERTIFICATE", cert.getEncoded()));
+                        pw.writeObject(new PemObjectV("CERTIFICATE", cert.getEncoded()));
                     pw.close();
                     caout = caoutWriter.toString();
 
@@ -894,8 +894,8 @@ public class VpnProfile implements Serializable, Cloneable {
             if (caChain.length >= 1) {
                 X509Certificate usercert = caChain[0];
 
-                PemWriter upw = new PemWriter(certout);
-                upw.writeObject(new PemObject("CERTIFICATE", usercert.getEncoded()));
+                PemWriterV upw = new PemWriterV(certout);
+                upw.writeObject(new PemObjectV("CERTIFICATE", usercert.getEncoded()));
                 upw.close();
 
             }

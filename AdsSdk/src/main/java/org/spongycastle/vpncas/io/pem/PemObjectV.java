@@ -3,15 +3,15 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.io.pem;
+package org.spongycastle.vpncas.io.pem;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("all")
-public class PemObject
-    implements PemObjectGenerator
+public class PemObjectV
+    implements PemObjectGeneratorV
 {
 	private static final List EMPTY_LIST = Collections.unmodifiableList(new ArrayList());
 
@@ -25,7 +25,7 @@ public class PemObject
      * @param type pem object type.
      * @param content the binary content of the object.
      */
-    public PemObject(String type, byte[] content)
+    public PemObjectV(String type, byte[] content)
     {
         this(type, EMPTY_LIST, content);
     }
@@ -37,7 +37,7 @@ public class PemObject
      * @param headers a list of PemHeader objects.
      * @param content the binary content of the object.
      */
-    public PemObject(String type, List headers, byte[] content)
+    public PemObjectV(String type, List headers, byte[] content)
     {
         this.type = type;
         this.headers = Collections.unmodifiableList(headers);
@@ -59,8 +59,8 @@ public class PemObject
         return content;
     }
 
-    public PemObject generate()
-        throws PemGenerationException
+    public PemObjectV generate()
+        throws PemGenerationExceptionV
     {
         return this;
     }

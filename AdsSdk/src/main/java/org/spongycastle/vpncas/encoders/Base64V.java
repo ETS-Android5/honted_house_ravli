@@ -3,14 +3,14 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.encoders;
+package org.spongycastle.vpncas.encoders;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class Base64 {
-    private static final Encoder encoder = new Base64Encoder();
+public class Base64V {
+    private static final EncoderV encoder = new Base64EncoderV();
 
     /**
      * encode the input data producing a base 64 encoded byte array.

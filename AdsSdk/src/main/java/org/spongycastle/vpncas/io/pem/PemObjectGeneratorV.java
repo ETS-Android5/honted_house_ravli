@@ -3,10 +3,10 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.io.pem;
+package org.spongycastle.vpncas.io.pem;
 
-public interface PemObjectGenerator
+public interface PemObjectGeneratorV
 {
-    PemObject generate()
-        throws PemGenerationException;
+    PemObjectV generate()
+        throws PemGenerationExceptionV;
 }

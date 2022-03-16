@@ -3,20 +3,20 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.io.pem;
+package org.spongycastle.vpncas.io.pem;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.spongycastle.util.encoders.Base64;
+import org.spongycastle.vpncas.encoders.Base64V;
 
 /**
  * A generic PEM writer, based on RFC 1421
  */
 @SuppressWarnings("all")
-public class PemWriter
+public class PemWriterV
     extends BufferedWriter
 {
     private static final int LINE_LENGTH = 64;
@@ -29,7 +29,7 @@ public class PemWriter
      *
      * @param out output stream to use.
      */
-    public PemWriter(Writer out)
+    public PemWriterV(Writer out)
     {
         super(out);
 
@@ -51,7 +51,7 @@ public class PemWriter
      * @param obj pem object to be output
      * @return an estimate of the number of bytes
      */
-    public int getOutputSize(PemObject obj)
+    public int getOutputSize(PemObjectV obj)
     {
         // BEGIN and END boundaries.
         int size = (2 * (obj.getType().length() + 10 + nlLength)) + 6 + 4;
@@ -60,7 +60,7 @@ public class PemWriter
         {
             for (Iterator it = obj.getHeaders().iterator(); it.hasNext();)
             {
-                PemHeader hdr = (PemHeader)it.next();
+                PemHeaderV hdr = (PemHeaderV)it.next();
 
                 size += hdr.getName().length() + ": ".length() + hdr.getValue().length() + nlLength;
             }
@@ -76,10 +76,10 @@ public class PemWriter
         return size;
     }
     
-    public void writeObject(PemObjectGenerator objGen)
+    public void writeObject(PemObjectGeneratorV objGen)
         throws IOException
     {
-        PemObject obj = objGen.generate();
+        PemObjectV obj = objGen.generate();
 
         writePreEncapsulationBoundary(obj.getType());
 
@@ -87,7 +87,7 @@ public class PemWriter
         {
             for (Iterator it = obj.getHeaders().iterator(); it.hasNext();)
             {
-                PemHeader hdr = (PemHeader)it.next();
+                PemHeaderV hdr = (PemHeaderV)it.next();
 
                 this.write(hdr.getName());
                 this.write(": ");
@@ -105,7 +105,7 @@ public class PemWriter
     private void writeEncoded(byte[] bytes)
         throws IOException
     {
-        bytes = Base64.encode(bytes);
+        bytes = Base64V.encode(bytes);
 
         for (int i = 0; i < bytes.length; i += buf.length)
         {

@@ -12,8 +12,8 @@ import android.text.TextUtils;
 
 import com.pesonal.adsdk.R;
 import de.blinkt.openvpn.VpnProfile;
-import org.spongycastle.util.io.pem.PemObject;
-import org.spongycastle.util.io.pem.PemReader;
+import org.spongycastle.vpncas.io.pem.PemObjectV;
+import org.spongycastle.vpncas.io.pem.PemReaderV;
 
 
 import javax.security.auth.x500.X500Principal;
@@ -26,7 +26,6 @@ import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -57,7 +56,7 @@ public class X509Utils {
 
 	}
 
-	public static PemObject readPemObjectFromFile (String keyfilename) throws IOException {
+	public static PemObjectV readPemObjectFromFile (String keyfilename) throws IOException {
 
 		Reader inStream;
 
@@ -66,8 +65,8 @@ public class X509Utils {
 		else 
 			inStream = new FileReader(new File(keyfilename));
 
-		PemReader pr = new PemReader(inStream);
-		PemObject r = pr.readPemObject();
+		PemReaderV pr = new PemReaderV(inStream);
+		PemObjectV r = pr.readPemObject();
 		pr.close();
 		return r;
 	}

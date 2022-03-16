@@ -3,23 +3,23 @@
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
-package org.spongycastle.util.io.pem;
+package org.spongycastle.vpncas.io.pem;
 
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class PemGenerationException
+public class PemGenerationExceptionV
     extends IOException
 {
     private Throwable cause;
 
-    public PemGenerationException(String message, Throwable cause)
+    public PemGenerationExceptionV(String message, Throwable cause)
     {
         super(message);
         this.cause = cause;
     }
 
-    public PemGenerationException(String message)
+    public PemGenerationExceptionV(String message)
     {
         super(message);
     }
