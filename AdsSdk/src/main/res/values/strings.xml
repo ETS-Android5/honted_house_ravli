@@ -133,4 +133,12 @@
     <string name="connection_close_confirm">Would you like to cancel the current VPN Connection?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+
+    <string name="rating_dialog_experience">How was your experience with us?</string>
+    <string name="rating_dialog_maybe_later">Maybe later</string>
+    <string name="rating_dialog_never">Never</string>
+    <string name="rating_dialog_feedback_title">Feedback</string>
+    <string name="rating_dialog_submit">Submit</string>
+    <string name="rating_dialog_cancel">Cancel</string>
+    <string name="rating_dialog_suggestions">Suggest us what went wrong and we\'ll work on it!</string>
 </resources>

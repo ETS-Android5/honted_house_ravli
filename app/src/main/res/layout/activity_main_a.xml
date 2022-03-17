@@ -5,24 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <FrameLayout
-        android:id="@+id/iVPN"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/iVPN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:id="@+id/btnRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/appColor"
+            android:gravity="center"
+            android:text="Rate Dialog" />
 
         <Button
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:backgroundTint="@color/appColor"
             android:gravity="center"
             android:text="Next" />

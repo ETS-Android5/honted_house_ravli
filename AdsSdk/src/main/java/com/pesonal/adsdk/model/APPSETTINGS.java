@@ -148,6 +148,28 @@ public class APPSETTINGS {
     @SerializedName("VPNPASS")
     private String vpnPass ="ON";
 
+    @SerializedName("RATINGDIALOG")
+    private String ratingDialog ="";
+
+    @SerializedName("FIRSTTIMEAD")
+    private String firstTimeAd ="";
+
+    public String getRatingDialog() {
+        return ratingDialog;
+    }
+
+    public void setRatingDialog(String ratingDialog) {
+        this.ratingDialog = ratingDialog;
+    }
+
+    public String getFirstTimeAd() {
+        return firstTimeAd;
+    }
+
+    public void setFirstTimeAd(String firstTimeAd) {
+        this.firstTimeAd = firstTimeAd;
+    }
+
     public String getVpnUser() {
         return vpnUser;
     }

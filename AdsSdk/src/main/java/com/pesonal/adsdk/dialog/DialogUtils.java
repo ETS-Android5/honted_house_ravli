@@ -51,9 +51,7 @@ public class DialogUtils {
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialog.create();
-        }
+        dialog.create();
 
         dialog.show();
         Window window = dialog.getWindow();

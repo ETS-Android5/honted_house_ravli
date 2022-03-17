@@ -131,8 +131,6 @@ public class BaseAdsActivity extends BaseActivity {
         retry_buttton = view.findViewById(R.id.retry_buttton);
 
         final SharedPreferences preferences = activity.getSharedPreferences("ad_pref", 0);
-        final SharedPreferences.Editor editor_AD_PREF = preferences.edit();
-
         need_internet = preferences.getBoolean("need_internet", need_internet);
 
         if (!isNetworkAvailable() && need_internet) {
@@ -211,7 +209,7 @@ public class BaseAdsActivity extends BaseActivity {
             } else {
                 addfdsf123 = 87332;
             }
-            new APIManager(BaseAdsActivity.this).init(new getDataListner() {
+            new APIManager(BaseAdsActivity.this).init(false,new getDataListner() {
                 @Override
                 public void onSuccess() {
                     APIManager.getInstance(BaseAdsActivity.this).loadInterstitialAd();
@@ -307,7 +305,7 @@ public class BaseAdsActivity extends BaseActivity {
                             }
                         }
 
-                        new APIManager(BaseAdsActivity.this).init(new getDataListner() {
+                        new APIManager(BaseAdsActivity.this).init(true,new getDataListner() {
                             @Override
                             public void onSuccess() {
                                 if (status.equals("true")) {

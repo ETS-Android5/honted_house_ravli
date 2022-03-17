@@ -267,6 +267,13 @@ PrivacyDialog.show(StartSecondActivity.this,getResources().getStringArray(R.arra
 new GiftAds(StartSecondActivity.this).showGiftAds();
 ```
 
+### Rate Dialog
+```java
+  APIManager.getInstance(this).showRatingDialog((feedBack,rate) -> {
+      Log.e("TAG", "onClick: rate "+ feedBack+"  "+rate);
+  });
+```
+
 
 ### Proguard Rules
 ```java

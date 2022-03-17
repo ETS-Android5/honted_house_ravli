@@ -53,6 +53,7 @@ import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.customAd.CustomAppOpenAds;
 import com.pesonal.adsdk.customAd.CustomIntAds;
+import com.pesonal.adsdk.dialog.RatingDialog;
 import com.pesonal.adsdk.model.AdvertiseList;
 import com.pesonal.adsdk.model.MOREAPPEXIT;
 import com.pesonal.adsdk.model.MOREAPPSPLASH;
@@ -80,6 +81,7 @@ public class APIManager {
 
 
     public static boolean isLog = false;
+    public static boolean AD_VISIBLE = true;
     public String ADMOB = "Admob";
     public static String QUREKALINK = "Admob";
     public static String[] ADMOB_B = new String[]{};
@@ -242,6 +244,29 @@ public class APIManager {
         return responseRoot.getAPPSETTINGS().getBottomAd().equalsIgnoreCase("ON");
     }
 
+    public boolean getFirstTimeAd() {
+        if (!setResponseRoot())
+            return false;
+        if (responseRoot.getAPPSETTINGS().getFirstTimeAd() == null)
+            return false;
+        if (responseRoot.getAPPSETTINGS().getFirstTimeAd().equalsIgnoreCase("ON")) {
+            if (!new TinyDB(activity).getBoolean("appIsFirstAd")) {
+                new TinyDB(activity).putBoolean("appIsFirstAd", true);
+                return true;
+            } else {
+                return false;
+            }
+        } else return false;
+    }
+
+    public boolean getRatingDialog() {
+        if (!setResponseRoot())
+            return false;
+        if (responseRoot.getAPPSETTINGS().getRatingDialog() == null)
+            return false;
+        return responseRoot.getAPPSETTINGS().getRatingDialog().equalsIgnoreCase("ON");
+    }
+
 
     public static int getApp_adShowStatus() {
         try {
@@ -273,7 +298,6 @@ public class APIManager {
         return "";
     }
 
-
     public static String getFileNameFromUrl(String url) {
         return url.substring(url.lastIndexOf('/') + 1);
     }
@@ -281,7 +305,7 @@ public class APIManager {
     public boolean setResponseRoot() {
         if (responseRoot == null) {
             if (activity != null && !activity.isFinishing()) {
-                init(null, -1);
+                init(false, null, -1);
                 if (responseRoot == null)
                     return false;
                 else
@@ -291,7 +315,7 @@ public class APIManager {
         return true;
     }
 
-    public void init(getDataListner listner, int cversion) {
+    public void init(boolean isFirstAD, getDataListner listner, int cversion) {
         if (cversion != -1)
             new TinyDB(activity).putBoolean("isUpdateCall", false);
         String response = new TinyDB(activity).getString("response");
@@ -304,6 +328,12 @@ public class APIManager {
         new TinyDB(activity).putString("app_name", responseRoot.getAPPSETTINGS().getAppName());
         new TinyDB(activity).putString("app_logo", responseRoot.getAPPSETTINGS().getAppLogo());
         QUREKALINK = responseRoot.getAPPSETTINGS().getQUREKALINK();
+
+        if (isFirstAD) {
+            AD_VISIBLE = !getFirstTimeAd();
+            if (APIManager.isLog)
+                Log.e(TAG, "init:getFirstTimeAd " + AD_VISIBLE);
+        }
 
         String app_howShowAdInterstitial = responseRoot.getAPPSETTINGS().getAppHowShowAdInterstitial();
 
@@ -413,7 +443,6 @@ public class APIManager {
         }
         return false;
     }
-
 
     public String getPlatFormName(String whichOne) {
         String returnPlatForm = "";
@@ -564,7 +593,6 @@ public class APIManager {
 
         return returnId;
     }
-
 
     public String getUnitIDForCPM(String platform) {
         String returnId = "";
@@ -834,6 +862,12 @@ public class APIManager {
                 callback.onClose();
             return;
         }
+        if (!AD_VISIBLE) {
+            if (callback != null)
+                callback.onClose();
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (isBack && responseRoot.getAPPSETTINGS().getAPPOPENBACK().equalsIgnoreCase("ON")) {
                 showOpenCall(activity, () -> {
@@ -873,6 +907,11 @@ public class APIManager {
                 callback.onClose();
             return;
         }
+        if (!AD_VISIBLE) {
+            if (callback != null)
+                callback.onClose();
+            return;
+        }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getAFTERSPLASH().equalsIgnoreCase("INTER")) {
                 if (getInter(false)) {
@@ -908,6 +947,12 @@ public class APIManager {
                 callback.onClose();
             return;
         }
+        if (!AD_VISIBLE) {
+            if (callback != null)
+                callback.onClose();
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getAPPOPENINTER().equalsIgnoreCase("ON")) {
                 showOpenCall(context, () -> {
@@ -943,6 +988,12 @@ public class APIManager {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            if (callback != null)
+                callback.onClose();
+            return;
+        }
+
+        if (!AD_VISIBLE) {
             if (callback != null)
                 callback.onClose();
             return;
@@ -1017,6 +1068,11 @@ public class APIManager {
     }
 
     public void showOpenCall(Activity context, InterCallback myCallback) {
+        if (!AD_VISIBLE) {
+            myCallback.onClose();
+            return;
+        }
+
         if (manager != null) {
             manager.showAdIfAvailable(new AppOpenManager.splshADlistner() {
                 @Override
@@ -1082,6 +1138,12 @@ public class APIManager {
                 myCallback.onClose();
             return;
         }
+
+        if (!AD_VISIBLE) {
+            if (myCallback != null)
+                myCallback.onClose();
+            return;
+        }
         String app_AppOpenAdStatus = responseRoot.getAPPSETTINGS().getAppAppOpenAdStatus();
         if (app_AppOpenAdStatus.equals("false")) {
             if (myCallback != null) {
@@ -1134,6 +1196,8 @@ public class APIManager {
         }
         if (!getBottomAd())
             return;
+        if (!AD_VISIBLE)
+            return;
 
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
@@ -1156,7 +1220,6 @@ public class APIManager {
         }
     }
 
-
     public void showNativeBanner(ViewGroup viewGroup) {
         if (!setResponseRoot()) {
             return;
@@ -1164,7 +1227,8 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS() == null) {
             return;
         }
-
+        if (!AD_VISIBLE)
+            return;
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("BN");
             String adUnitId = getUnitID(platform, "BN", "");
@@ -1414,6 +1478,10 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS() == null) {
             return;
         }
+
+        if (!AD_VISIBLE) {
+            return;
+        }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
@@ -1430,6 +1498,9 @@ public class APIManager {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            return;
+        }
+        if (!AD_VISIBLE) {
             return;
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
@@ -1450,6 +1521,9 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS() == null) {
             return;
         }
+        if (!AD_VISIBLE) {
+            return;
+        }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
@@ -1466,6 +1540,9 @@ public class APIManager {
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            return;
+        }
+        if (!AD_VISIBLE) {
             return;
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
@@ -1675,6 +1752,12 @@ public class APIManager {
                 rewardCallback.onClose(false);
             return;
         }
+
+        if (!AD_VISIBLE) {
+            if (rewardCallback != null)
+                rewardCallback.onClose(true);
+            return;
+        }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             dialog = new Dialog(activity);
             View view = LayoutInflater.from(activity).inflate(R.layout.ad_progress_dialog, null);
@@ -1775,4 +1858,28 @@ public class APIManager {
         });
         return bottomSheetDialog;
     }
+
+    public void showRatingDialog(DialogCallback dialogCallback) {
+        if (APIManager.getInstance(activity).getRatingDialog()) {
+            final RatingDialog ratingDialog = new RatingDialog.Builder(activity)
+                    .session(1)
+                    .threshold(5)
+                    .ratingBarColor(R.color.colorAdColor)
+                    .playstoreUrl("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
+                    .onRatingBarFormSumbit((feedback, rate) -> {
+                        if (dialogCallback != null)
+                            dialogCallback.onClose(feedback,rate);
+                    }).onDialogList(rate -> {
+                        if (dialogCallback != null)
+                            dialogCallback.onClose("",rate);
+                    })
+                    .build();
+            ratingDialog.show();
+        }else {
+            if (dialogCallback != null)
+                dialogCallback.onClose("",5);
+        }
+    }
+
+
 }

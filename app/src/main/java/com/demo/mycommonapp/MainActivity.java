@@ -2,6 +2,7 @@ package com.demo.mycommonapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -14,6 +15,7 @@ import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.pesonal.adsdk.remote.APIManager;
+import com.pesonal.adsdk.remote.DialogCallback;
 import com.pesonal.adsdk.vpn.BannerVpnActivity;
 import com.pesonal.adsdk.vpn.CONNECTION_STATE;
 import com.pesonal.adsdk.vpn.VanishVPNActivity;
@@ -21,6 +23,7 @@ import com.pesonal.adsdk.vpn.VanishVPNActivity;
 public class MainActivity extends BannerVpnActivity implements View.OnClickListener {
 
     private Button btnNext;
+    private Button btnRate;
     private RelativeLayout adContainer;
     private RelativeLayout adContainer1;
     private RelativeLayout adContainer2;
@@ -72,7 +75,9 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
             }
         }
         btnNext = (Button) findViewById(R.id.btnNext);
+        btnRate = (Button) findViewById(R.id.btnRate);
         btnNext.setOnClickListener(this);
+        btnRate.setOnClickListener(this);
         adContainer = (RelativeLayout) findViewById(R.id.adContainer);
         adContainer1 = (RelativeLayout) findViewById(R.id.adContainer1);
         adContainer2 = (RelativeLayout) findViewById(R.id.adContainer2);
@@ -96,6 +101,11 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                     startActivity(new Intent(MainActivity.this, MainActivity2.class));
                 });
                 break;
+            case R.id.btnRate:
+                 APIManager.getInstance(this).showRatingDialog((feedBack,rate) -> {
+                     Log.e("TAG", "onClick: Back "+ feedBack+"  "+rate);
+                 });
+                break;
         }
     }
 
@@ -105,7 +115,6 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
             return;
         if (APIManager.getInstance(this).isExitScreen()) {
             startActivity(new Intent(MainActivity.this, ExitActivity.class));
-            finish();
         } else {
             APIManager.getInstance(MainActivity.this).showExitDialog();
         }
