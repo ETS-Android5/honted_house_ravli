@@ -10,7 +10,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -869,15 +872,24 @@ public class APIManager {
         }
 
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
-            if (isBack && responseRoot.getAPPSETTINGS().getAPPOPENBACK().equalsIgnoreCase("ON")) {
-                showOpenCall(activity, () -> {
+            if (isBack) {
+                if (responseRoot.getAPPSETTINGS().getAPPOPENBACK().equalsIgnoreCase("ON")) {
+                    showOpenCall(activity, () -> {
+                        if (getInter(true)) {
+                            showInterstitial(callback);
+                        } else {
+                            if (callback != null)
+                                callback.onClose();
+                        }
+                    });
+                } else {
                     if (getInter(true)) {
                         showInterstitial(callback);
                     } else {
                         if (callback != null)
                             callback.onClose();
                     }
-                });
+                }
             } else {
                 if (getInter(false)) {
                     showInterstitial(callback);
@@ -1246,7 +1258,14 @@ public class APIManager {
         }
 
         final AdView mAdView = new AdView(activity);
-        mAdView.setAdSize(AdSize.SMART_BANNER);
+        AdSize adSize = getAdSize();
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, adSize.getHeight() + 5, activity.getResources().getDisplayMetrics());
+        if (APIManager.isLog)
+            Log.e(TAG, "turnShowBanner:size " + adSize.getHeight() + " ::: " + height + "   " + adSize.getWidth());
+        ViewGroup.LayoutParams params = banner_container.getLayoutParams();
+        params.height = height;
+        banner_container.setLayoutParams(params);
+        mAdView.setAdSize(adSize);
         mAdView.setAdUnitId(admob_b);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -1285,6 +1304,17 @@ public class APIManager {
                 super.onAdImpression();
             }
         });
+    }
+
+    private AdSize getAdSize() {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float widthPixels = outMetrics.widthPixels;
+        float density = outMetrics.density;
+        int adWidth = (int) (widthPixels / density);
+
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth);
     }
 
     private void showMyCustomBanner(final ViewGroup banner_container) {
@@ -1555,7 +1585,8 @@ public class APIManager {
         }
     }
 
-    private void showAdmobNative(final ViewGroup nativeAdContainer, boolean small, String id, NativeCallback nativeCallback) {
+    private void showAdmobNative(final ViewGroup nativeAdContainer, boolean small, String
+            id, NativeCallback nativeCallback) {
         if (id.isEmpty()) {
             return;
         }
@@ -1868,16 +1899,16 @@ public class APIManager {
                     .playstoreUrl("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
                     .onRatingBarFormSumbit((feedback, rate) -> {
                         if (dialogCallback != null)
-                            dialogCallback.onClose(feedback,rate);
+                            dialogCallback.onClose(feedback, rate);
                     }).onDialogList(rate -> {
                         if (dialogCallback != null)
-                            dialogCallback.onClose("",rate);
+                            dialogCallback.onClose("", rate);
                     })
                     .build();
             ratingDialog.show();
-        }else {
+        } else {
             if (dialogCallback != null)
-                dialogCallback.onClose("",5);
+                dialogCallback.onClose("", 5);
         }
     }
 

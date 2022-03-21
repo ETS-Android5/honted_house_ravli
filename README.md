@@ -64,7 +64,7 @@ Extend as ```BaseAdsActivity``` and call below method in ```onCreate()```.
             }
 
            @Override
-           public void onExtra(JsonObject extraData) {
+           public void onExtra(JsonElement extraData) {
                Log.e("TAG", "onExtra: "+extraData.toString() );
            }
         });

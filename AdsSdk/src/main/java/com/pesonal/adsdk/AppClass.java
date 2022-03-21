@@ -22,6 +22,7 @@ import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.pesonal.adsdk.remote.APIManager;
 
+import de.blinkt.openvpn.DisconnectVPNActivity;
 import de.blinkt.openvpn.core.OpenVPNService;
 
 public class AppClass extends Application
@@ -56,9 +57,12 @@ public class AppClass extends Application
                 if (aClass != null) {
                     if (APIManager.isLog)
                         Log.e("TAG", "onMoveToForeground: " + aClass.getName() + "  " + currentActivity.getLocalClassName());
-                    if (!aClass.getName().contains(currentActivity.getLocalClassName()))
-                        APIManager.getInstance(currentActivity).showOpenCall(currentActivity, () -> {
-                        });
+                    if (!aClass.getName().contains(currentActivity.getLocalClassName())) {
+                        if (!DisconnectVPNActivity.class.getName().contains(currentActivity.getLocalClassName())) {
+                            APIManager.getInstance(currentActivity).showOpenCall(currentActivity, () -> {
+                            });
+                        }
+                    }
                 }
     }
 
