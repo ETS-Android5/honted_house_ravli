@@ -41,7 +41,6 @@ import com.downloader.PRDownloader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.pesonal.adsdk.model.ResponseRoot;
 import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
 import com.pesonal.adsdk.model.vpnmodel.ResponseVpn;
@@ -77,6 +76,7 @@ public class BaseAdsActivity extends BaseActivity {
     private Dialog dialog;
     private TextView retry_buttton;
     private getDataListner myCallback1;
+    public static boolean SET_RELEASE = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +209,7 @@ public class BaseAdsActivity extends BaseActivity {
             } else {
                 addfdsf123 = 87332;
             }
-            new APIManager(BaseAdsActivity.this).init(false,new getDataListner() {
+            new APIManager(BaseAdsActivity.this).init(false, new getDataListner() {
                 @Override
                 public void onSuccess() {
                     APIManager.getInstance(BaseAdsActivity.this).loadInterstitialAd();
@@ -250,14 +250,21 @@ public class BaseAdsActivity extends BaseActivity {
         boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
         if (APIManager.isLog)
             Log.e("TAG", "sendRequest:isDebuggable " + isDebuggable);
+
+        if (SET_RELEASE)
+            isDebuggable = false;
+
+        if (APIManager.isLog)
+            Log.e("TAG", "sendRequest:SET_RELEASE " + isDebuggable);
+
         if (isDebuggable) {
             sdfsdf = "TRSOFTAG12789I";
         } else {
             sdfsdf = "TRSOFTAG82382I";
         }
-
         if (APIManager.isLog)
             Log.e("TAG", "sdfsdf: " + sdfsdf);
+
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         StringRequest strRequest = new StringRequest(Request.Method.POST, bytemode,
                 new Response.Listener<String>() {
@@ -277,7 +284,7 @@ public class BaseAdsActivity extends BaseActivity {
                                     }
                                     editor_AD_PREF.putBoolean("need_internet", need_internet).apply();
                                     new TinyDB(BaseAdsActivity.this).putString("response", response1.toString());
-                                    downloadVpn(responseRoot.getAPPSETTINGS().getVpnLink(),responseRoot.getAPPSETTINGS().getVpnLocation());
+                                    downloadVpn(responseRoot.getAPPSETTINGS().getVpnLink(), responseRoot.getAPPSETTINGS().getVpnLocation());
                                 }
                             }
                         } catch (Exception e) {
@@ -305,7 +312,7 @@ public class BaseAdsActivity extends BaseActivity {
                             }
                         }
 
-                        new APIManager(BaseAdsActivity.this).init(true,new getDataListner() {
+                        new APIManager(BaseAdsActivity.this).init(true, new getDataListner() {
                             @Override
                             public void onSuccess() {
                                 if (status.equals("true")) {
@@ -511,9 +518,9 @@ public class BaseAdsActivity extends BaseActivity {
     }
 
 
-    public void downloadVpn(String url,String vpnlocation) {
+    public void downloadVpn(String url, String vpnlocation) {
         if (APIManager.isLog)
-            Log.e("TAG", "progress url json: " + url+"  "+vpnlocation);
+            Log.e("TAG", "progress url json: " + url + "  " + vpnlocation);
         PRDownloader.download(url, getCacheDir().getAbsolutePath(), "vpnList.json")
                 .build()
                 .setOnStartOrResumeListener(() -> {
@@ -562,7 +569,7 @@ public class BaseAdsActivity extends BaseActivity {
 
     public void downloadConfigFile(String url) {
         if (APIManager.isLog)
-            Log.e("TAG", "downloadConfigFile: " + url + "  " );
+            Log.e("TAG", "downloadConfigFile: " + url + "  ");
         PRDownloader.download(url, getCacheDir().getAbsolutePath(), "server.ovpn")
                 .build()
                 .setOnStartOrResumeListener(() -> {
@@ -576,7 +583,7 @@ public class BaseAdsActivity extends BaseActivity {
                 })
                 .setOnProgressListener(progress -> {
                     if (APIManager.isLog)
-                        Log.e("TAG", "progress: downloadConfigFile  " + (progress.currentBytes *100/ progress.totalBytes));
+                        Log.e("TAG", "progress: downloadConfigFile  " + (progress.currentBytes * 100 / progress.totalBytes));
                 })
                 .start(new OnDownloadListener() {
                     @Override

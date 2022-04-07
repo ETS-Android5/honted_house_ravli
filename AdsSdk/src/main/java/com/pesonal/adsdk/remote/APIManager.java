@@ -203,7 +203,6 @@ public class APIManager {
 
     public static HashMap<String, Object> getAllAppSettingsData(Context context) {
         String response = new TinyDB(context).getString("response");
-//        HashMap<String, Object> yourHashMap = new Gson().fromJson(response, HashMap.class);
 
         JsonObject jsonObject = new Gson().fromJson(response, JsonObject.class).getAsJsonObject("APP_SETTINGS");
         HashMap<String, Object> yourHashMap = new Gson().fromJson(jsonObject.toString(), HashMap.class);
@@ -268,6 +267,14 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS().getRatingDialog() == null)
             return false;
         return responseRoot.getAPPSETTINGS().getRatingDialog().equalsIgnoreCase("ON");
+    }
+
+    public boolean getInterAdStatus() {
+        if (!setResponseRoot())
+            return false;
+        if (responseRoot.getAPPSETTINGS().getInterAD() == null)
+            return true;
+        return responseRoot.getAPPSETTINGS().getInterAD().equalsIgnoreCase("ON");
     }
 
 
@@ -703,8 +710,8 @@ public class APIManager {
         });
     }
 
-    public void showInterstitial(InterCallback interCallback) {
-        this.interCallback = interCallback;
+    public void showInterstitial(InterCallback callback) {
+        this.interCallback = callback;
         if (!setResponseRoot()) {
             if (interCallback != null)
                 interCallback.onClose();
@@ -715,6 +722,12 @@ public class APIManager {
                 interCallback.onClose();
             return;
         }
+        if (!getInterAdStatus()) {
+            if (interCallback != null)
+                interCallback.onClose();
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             dialog = new Dialog(activity);
             View view = LayoutInflater.from(activity).inflate(R.layout.ad_progress_dialog, null);
@@ -1024,7 +1037,7 @@ public class APIManager {
     private boolean getInter(boolean isBack) {
         boolean ad = getAd(isBack);
         if (isLog)
-            Log.e(TAG, "getInter: " + ad);
+            Log.e(TAG, "getInter: " + ad + "  status:  " + getInterAdStatus());
         return ad;
     }
 

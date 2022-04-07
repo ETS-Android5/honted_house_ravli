@@ -154,6 +154,17 @@ public class APPSETTINGS {
     @SerializedName("FIRSTTIMEAD")
     private String firstTimeAd ="";
 
+    @SerializedName("INTERAD")
+    private String interAD ="";
+
+    public String getInterAD() {
+        return interAD;
+    }
+
+    public void setInterAD(String interAD) {
+        this.interAD = interAD;
+    }
+
     public String getRatingDialog() {
         return ratingDialog;
     }
