@@ -64,6 +64,8 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
                         layoutGuideVPN.setVisibility(View.INVISIBLE);
                     } else if (isConnect == CONNECTION_STATE.FAIL) {
                         rootViewGuide.setVisibility(View.GONE);
+                    }else if (isConnect == CONNECTION_STATE.DISCONNECTED) {
+                        rootViewGuide.setVisibility(View.GONE);
                     }
                     rootViewGuide.setVisibility(View.GONE);
                 });

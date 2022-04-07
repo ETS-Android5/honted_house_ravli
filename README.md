@@ -134,6 +134,8 @@ Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
                   layoutGuideVPN.setVisibility(View.INVISIBLE);
               } else if (isConnect == CONNECTION_STATE.FAIL) {
                   rootViewGuide.setVisibility(View.GONE);
+              }else if (isConnect == CONNECTION_STATE.DISCONNECTED) {
+                  rootViewGuide.setVisibility(View.GONE);
               }
          });
      });
@@ -158,43 +160,43 @@ And put below layout in your ```xml```.
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-      <com.google.android.material.circularreveal.CircularRevealRelativeLayout
-             android:id="@+id/rootViewGuide"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:clickable="true"
-             android:visibility="gone">
+   <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+          android:id="@+id/rootViewGuide"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:clickable="true"
+          android:visibility="gone">
 
-             <View
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:layout_below="@+id/xyz"
-                 android:background="#9D000000" />
+          <View
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_below="@+id/xyz"
+              android:background="#9D000000" />
 
-             <RelativeLayout
-                 android:id="@+id/xyz"
-                 android:layout_width="match_parent"
-                 android:layout_height="@dimen/_50sdp">
+          <RelativeLayout
+              android:id="@+id/xyz"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_50sdp">
 
-                 <FrameLayout
-                     android:id="@+id/layoutGuideVPN"
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent" />
+              <FrameLayout
+                  android:id="@+id/layoutGuideVPN"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent" />
 
-                 <com.airbnb.lottie.LottieAnimationView
-                     android:id="@+id/guideVpn"
-                     android:layout_width="80dp"
-                     android:layout_height="50dp"
-                     android:layout_alignParentEnd="true"
-                     android:layout_centerVertical="true"
-                     android:layout_marginEnd="26dp"
-                     app:lottie_autoPlay="true"
-                     app:lottie_loop="true"
-                     app:lottie_rawRes="@raw/guide" />
+              <com.airbnb.lottie.LottieAnimationView
+                  android:id="@+id/guideVpn"
+                  android:layout_width="80dp"
+                  android:layout_height="50dp"
+                  android:layout_alignParentEnd="true"
+                  android:layout_centerVertical="true"
+                  android:layout_marginEnd="26dp"
+                  app:lottie_autoPlay="true"
+                  app:lottie_loop="true"
+                  app:lottie_rawRes="@raw/guide" />
 
-             </RelativeLayout>
+          </RelativeLayout>
 
-     </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+   </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 ```
 
 ### For VPN Screen
