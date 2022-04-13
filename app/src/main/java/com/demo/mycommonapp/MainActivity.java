@@ -14,8 +14,12 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.pesonal.adsdk.dialog.GiftAds;
 import com.pesonal.adsdk.remote.APIManager;
+import com.pesonal.adsdk.remote.AdvertisementState;
 import com.pesonal.adsdk.remote.DialogCallback;
+import com.pesonal.adsdk.remote.InterCallback;
+import com.pesonal.adsdk.remote.NativeCallback;
 import com.pesonal.adsdk.vpn.BannerVpnActivity;
 import com.pesonal.adsdk.vpn.CONNECTION_STATE;
 import com.pesonal.adsdk.vpn.VanishVPNActivity;
@@ -83,9 +87,34 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
         adContainer = (RelativeLayout) findViewById(R.id.adContainer);
         adContainer1 = (RelativeLayout) findViewById(R.id.adContainer1);
         adContainer2 = (RelativeLayout) findViewById(R.id.adContainer2);
-        APIManager.getInstance(MainActivity.this).showNative(adContainer);
-        APIManager.getInstance(MainActivity.this).showBanner(adContainer1);
-        APIManager.getInstance(MainActivity.this).showSmallNative(adContainer2);
+        APIManager.getInstance(MainActivity.this).showNative(adContainer, new NativeCallback() {
+            @Override
+            public void onLoad(boolean isFail) {
+
+            }
+
+            @Override
+            public void onState(AdvertisementState state) {
+                Log.e("MainActivity", "state showNative: "+state );
+            }
+        });
+        APIManager.getInstance(MainActivity.this).showBanner(adContainer1, new InterCallback() {
+            @Override
+            public void onClose(AdvertisementState state) {
+                Log.e("MainActivity", "state showBanner: "+state );
+            }
+        });
+        APIManager.getInstance(MainActivity.this).showSmallNative(adContainer2, new NativeCallback() {
+            @Override
+            public void onLoad(boolean isFail) {
+
+            }
+
+            @Override
+            public void onState(AdvertisementState state) {
+                Log.e("MainActivity", "state showSmallNative: "+state );
+            }
+        });
         btnOpenVpnScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,14 +128,17 @@ public class MainActivity extends BannerVpnActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnNext:
-                APIManager.getInstance(MainActivity.this).showAds(false, () -> {
+                APIManager.getInstance(MainActivity.this).showAds(false, (state) -> {
+                    Log.e("MainActivity", "state:inter "+state );
                     startActivity(new Intent(MainActivity.this, MainActivity2.class));
                 });
                 break;
             case R.id.btnRate:
-                 APIManager.getInstance(this).showRatingDialog((feedBack,rate) -> {
-                     Log.e("TAG", "onClick: Back "+ feedBack+"  "+rate);
-                 });
+//                 APIManager.getInstance(this).showRatingDialog((feedBack,rate) -> {
+//                     Log.e("TAG", "onClick: Back "+ feedBack+"  "+rate);
+//                 });
+
+                new GiftAds(this).showGiftAds();
                 break;
         }
     }

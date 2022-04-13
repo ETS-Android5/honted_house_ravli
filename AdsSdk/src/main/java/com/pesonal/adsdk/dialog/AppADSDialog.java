@@ -35,12 +35,14 @@ public class AppADSDialog {
         ImageView idLogo = (ImageView) inflate.findViewById(R.id.id_logo);
         TextView idTitle = (TextView) inflate.findViewById(R.id.id_title);
         TextView idDownload = (TextView) inflate.findViewById(R.id.id_download);
+        TextView id_description = (TextView) inflate.findViewById(R.id.id_description);
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         List<AdvertiseList> adsResponces1 = APIManager.getInstance(context).getAdvertiseLists();
         if (adsResponces1 != null && adsResponces1.size() > 0) {
             final AdvertiseList adsResponces = adsResponces1.get(0);
             idTitle.setText(adsResponces.getApp_name());
+            id_description.setText(adsResponces.getApp_shortDecription());
             Glide.with(context).load(adsResponces.getApp_logo()).into(idLogo);
             idClose.setOnClickListener(v -> dialog.dismiss());
             idDownload.setOnClickListener(v -> {
@@ -67,6 +69,7 @@ public class AppADSDialog {
             if (customAdModels != null && customAdModels.size() > 0) {
                 final MOREAPPSPLASH adsResponces = customAdModels.get(id);
                 idTitle.setText(adsResponces.getApp_name());
+                id_description.setVisibility(View.GONE);
                 Glide.with(context).load(adsResponces.getApp_logo()).into(idLogo);
                 idClose.setOnClickListener(v -> dialog.dismiss());
                 idDownload.setOnClickListener(v -> {

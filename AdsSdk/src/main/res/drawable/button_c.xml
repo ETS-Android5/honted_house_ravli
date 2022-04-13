@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <gradient
+        android:endColor="@color/colorAdCard"
+        android:startColor="@color/colorAdCard" />
+    <corners android:radius="5dp" />
+</shape>

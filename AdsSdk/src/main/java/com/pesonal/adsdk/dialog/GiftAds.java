@@ -22,12 +22,17 @@ public class GiftAds {
     }
 
     public void showGiftAds() {
-        if (isNetworkAvailable(context)) {
-            randomGenerator = new Random();
-            index = randomGenerator.nextInt(APIManager.getInstance(context).get_SPLASHMoreAppData().size());
-            AppADSDialog.show(context, index);
-        } else {
-            Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+        try {
+            if (isNetworkAvailable(context)) {
+                randomGenerator = new Random();
+                if (APIManager.getInstance(context).get_SPLASHMoreAppData() != null) {
+                    index = randomGenerator.nextInt(APIManager.getInstance(context).get_SPLASHMoreAppData().size());
+                    AppADSDialog.show(context, index);
+                }
+            } else {
+                Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
         }
     }
 

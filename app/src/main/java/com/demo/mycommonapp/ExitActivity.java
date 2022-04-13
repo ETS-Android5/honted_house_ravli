@@ -2,6 +2,7 @@ package com.demo.mycommonapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -68,7 +69,8 @@ public class ExitActivity extends BaseActivity implements View.OnClickListener {
                 finishAffinity();
                 break;
             case R.id.card_cancle:
-                APIManager.getInstance(ExitActivity.this).showAds(false, () -> {
+                APIManager.getInstance(ExitActivity.this).showAds(false, (state) -> {
+                    Log.e("showAds", "ExitActivity: "+state );
                     intent = new Intent(ExitActivity.this, StartSecondActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

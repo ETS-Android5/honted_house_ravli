@@ -14,10 +14,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.pesonal.adsdk.R;
+import com.pesonal.adsdk.remote.AdvertisementState;
+import com.pesonal.adsdk.remote.InterCallback;
 
 public class BannerUtils {
 
-    public static void banner(ViewGroup viewGroup, Activity context) {
+    public static void banner(ViewGroup viewGroup, Activity context, InterCallback interCallback) {
+        if (interCallback != null) {
+            interCallback.onClose(AdvertisementState.QUREKA_BANNER_AD_SHOW);
+        }
         Adsresponse e8 = Glob.dataset(context);
         LayoutInflater from = LayoutInflater.from(context);
         View inflate = from.inflate(R.layout.qurea_tiny_banner, viewGroup, false);

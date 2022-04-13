@@ -4,5 +4,7 @@ public interface RewardCallback {
 
     void onClose(boolean isSuccess);
 
+    void onState(AdvertisementState state);
+
     void onFail();
 }

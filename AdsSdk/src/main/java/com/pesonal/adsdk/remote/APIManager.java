@@ -684,13 +684,17 @@ public class APIManager {
                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
+                        mInterstitialAd = null;
                         requestInterstitial("Next");
-                        interstitialCallBack();
+                        interstitialCallBack(AdvertisementState.INTER_AD_CLOSE);
                     }
 
                     @Override
                     public void onAdFailedToShowFullScreenContent(@NonNull com.google.android.gms.ads.AdError adError) {
                         // Called when fullscreen content failed to show.
+                        mInterstitialAd = null;
+                        requestInterstitial("Next");
+                        interstitialCallBack(AdvertisementState.INTER_AD_FAILED_TO_SHOW);
                         Log.d("TAG", "The ad failed to show.");
                     }
 
@@ -714,17 +718,22 @@ public class APIManager {
         this.interCallback = callback;
         if (!setResponseRoot()) {
             if (interCallback != null)
-                interCallback.onClose();
+                interCallback.onClose(AdvertisementState.INTER_AD_RESPONSE_NULL);
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
             if (interCallback != null)
-                interCallback.onClose();
+                interCallback.onClose(AdvertisementState.INTER_AD_APPSETTING_NULL);
+            return;
+        }
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (interCallback != null)
+                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
             return;
         }
         if (!getInterAdStatus()) {
             if (interCallback != null)
-                interCallback.onClose();
+                interCallback.onClose(AdvertisementState.INTER_AD_STATUS_FALSE);
             return;
         }
 
@@ -762,14 +771,14 @@ public class APIManager {
                 }
             }
         } else {
-            CustomiseinterActivity.H(activity, this::interstitialCallBack, Glob.dataset(activity));
+            CustomiseinterActivity.H(activity, () -> interstitialCallBack(AdvertisementState.QUREKA_INTER_AD_CLOSE), Glob.dataset(activity));
         }
 
     }
 
-    void interstitialCallBack() {
+    void interstitialCallBack(AdvertisementState state) {
         if (interCallback != null) {
-            interCallback.onClose();
+            interCallback.onClose(state);
             interCallback = null;
         }
     }
@@ -787,13 +796,13 @@ public class APIManager {
                     public void onAdsCloseClick() {
                         customIntAds.dismiss();
                         loadInter();
-                        interstitialCallBack();
+                        interstitialCallBack(AdvertisementState.CUSTOM_INTER_AD_CLOSE);
                     }
 
                     public void setOnKeyListener() {
                         customIntAds.dismiss();
                         loadInter();
-                        interstitialCallBack();
+                        interstitialCallBack(AdvertisementState.CUSTOM_INTER_AD_CLOSE);
                     }
                 });
                 if (!activity.isFinishing()) {
@@ -804,12 +813,12 @@ public class APIManager {
                 dialog.dismiss();
                 e.printStackTrace();
                 loadInter();
-                interstitialCallBack();
+                interstitialCallBack(AdvertisementState.CUSTOM_INTER_AD_FAIL);
             }
         } else {
             dialog.dismiss();
             loadInter();
-            interstitialCallBack();
+            interstitialCallBack(AdvertisementState.CUSTOM_INTER_AD_FAIL_FROM_RESPONSE);
         }
     }
 
@@ -870,29 +879,30 @@ public class APIManager {
     public void showAds(boolean isBack, final InterCallback callback) {
         if (!setResponseRoot()) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.INTER_AD_RESPONSE_NULL);
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.INTER_AD_APPSETTING_NULL);
             return;
         }
         if (!AD_VISIBLE) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;
         }
 
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (isBack) {
                 if (responseRoot.getAPPSETTINGS().getAPPOPENBACK().equalsIgnoreCase("ON")) {
-                    showOpenCall(activity, () -> {
+                    showOpenCall(activity, (state) -> {
+
                         if (getInter(true)) {
                             showInterstitial(callback);
                         } else {
                             if (callback != null)
-                                callback.onClose();
+                                callback.onClose(AdvertisementState.AD_TYPE_OFF);
                         }
                     });
                 } else {
@@ -900,7 +910,7 @@ public class APIManager {
                         showInterstitial(callback);
                     } else {
                         if (callback != null)
-                            callback.onClose();
+                            callback.onClose(AdvertisementState.AD_TYPE_OFF);
                     }
                 }
             } else {
@@ -908,7 +918,7 @@ public class APIManager {
                     showInterstitial(callback);
                 } else {
                     if (callback != null)
-                        callback.onClose();
+                        callback.onClose(AdvertisementState.AD_TYPE_OFF);
                 }
             }
         } else {
@@ -916,25 +926,31 @@ public class APIManager {
                 showInterstitial(callback);
             } else {
                 if (callback != null)
-                    callback.onClose();
+                    callback.onClose(AdvertisementState.AD_TYPE_OFF);
             }
         }
     }
 
     public void showSplashAD(final Activity context, final InterCallback callback) {
+
         if (!setResponseRoot()) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.SPLASH_INTER_AD_RESPONSE_NULL);
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.SPLASH_INTER_AD_APPSETTING_NULL);
+            return;
+        }
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (interCallback != null)
+                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
             return;
         }
         if (!AD_VISIBLE) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
@@ -943,12 +959,12 @@ public class APIManager {
                     showInterstitial(callback);
                 } else {
                     if (callback != null)
-                        callback.onClose();
+                        callback.onClose(AdvertisementState.AD_TYPE_OFF);
                 }
             } else {
-                showOpenCall(context, () -> {
+                showOpenCall(context, (state) -> {
                     if (callback != null)
-                        callback.onClose();
+                        callback.onClose(state);
                 });
             }
         } else {
@@ -956,7 +972,7 @@ public class APIManager {
                 showInterstitial(callback);
             } else {
                 if (callback != null)
-                    callback.onClose();
+                    callback.onClose(AdvertisementState.AD_TYPE_OFF);
             }
         }
     }
@@ -964,28 +980,34 @@ public class APIManager {
     public void showAdsStart(final Activity context, final InterCallback callback) {
         if (!setResponseRoot()) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.STARTSCREEN_INTER_AD_RESPONSE_NULL);
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.STARTSCREEN_INTER_AD_APPSETTING_NULL);
             return;
         }
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (interCallback != null)
+                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            return;
+        }
+
         if (!AD_VISIBLE) {
             if (callback != null)
-                callback.onClose();
+                callback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;
         }
 
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getAPPOPENINTER().equalsIgnoreCase("ON")) {
-                showOpenCall(context, () -> {
+                showOpenCall(context, (state) -> {
                     if (getInter(false)) {
                         showInterstitial(callback);
                     } else {
                         if (callback != null)
-                            callback.onClose();
+                            callback.onClose(AdvertisementState.AD_TYPE_OFF);
                     }
                 });
             } else {
@@ -993,7 +1015,7 @@ public class APIManager {
                     showInterstitial(callback);
                 } else {
                     if (callback != null)
-                        callback.onClose();
+                        callback.onClose(AdvertisementState.AD_TYPE_OFF);
                 }
             }
         } else {
@@ -1001,36 +1023,8 @@ public class APIManager {
                 showInterstitial(callback);
             } else {
                 if (callback != null)
-                    callback.onClose();
+                    callback.onClose(AdvertisementState.AD_TYPE_OFF);
             }
-        }
-    }
-
-    public void showAdsStartExit(final Activity context, final InterCallback callback) {
-        if (!setResponseRoot()) {
-            if (callback != null)
-                callback.onClose();
-            return;
-        }
-        if (responseRoot.getAPPSETTINGS() == null) {
-            if (callback != null)
-                callback.onClose();
-            return;
-        }
-
-        if (!AD_VISIBLE) {
-            if (callback != null)
-                callback.onClose();
-            return;
-        }
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
-            if (responseRoot.getAPPSETTINGS().getAPPOPENINTER().equalsIgnoreCase("ON")) {
-                showOpenCall(context, () -> showInterstitial(callback));
-            } else {
-                showInterstitial(callback);
-            }
-        } else {
-            showInterstitial(callback);
         }
     }
 
@@ -1094,15 +1088,24 @@ public class APIManager {
 
     public void showOpenCall(Activity context, InterCallback myCallback) {
         if (!AD_VISIBLE) {
-            myCallback.onClose();
+            myCallback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;
         }
+
+        String app_AppOpenAdStatus = responseRoot.getAPPSETTINGS().getAppAppOpenAdStatus();
+        if (app_AppOpenAdStatus.equals("false")) {
+            if (myCallback != null) {
+                myCallback.onClose(AdvertisementState.OPEN_AD_STATUS_FALSE);
+            }
+            return;
+        }
+
 
         if (manager != null) {
             manager.showAdIfAvailable(new AppOpenManager.splshADlistner() {
                 @Override
                 public void onSuccess() {
-                    myCallback.onClose();
+                    myCallback.onClose(AdvertisementState.OPEN_AD_CLOSE);
                     loadAppOpenAd(context, new AppOpenManager.splshADlistner() {
                         @Override
                         public void onSuccess() {
@@ -1155,27 +1158,25 @@ public class APIManager {
     public void showCustomAppOpenAd(InterCallback myCallback) {
         if (!setResponseRoot()) {
             if (myCallback != null)
-                myCallback.onClose();
+                myCallback.onClose(AdvertisementState.CUSTOM_OPEN_AD_RESPONSE_NULL);
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
             if (myCallback != null)
-                myCallback.onClose();
+                myCallback.onClose(AdvertisementState.CUSTOM_OPEN_AD_APPSETTING_NULL);
+            return;
+        }
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (interCallback != null)
+                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            return;
+        }
+        if (!AD_VISIBLE) {
+            if (myCallback != null)
+                myCallback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;
         }
 
-        if (!AD_VISIBLE) {
-            if (myCallback != null)
-                myCallback.onClose();
-            return;
-        }
-        String app_AppOpenAdStatus = responseRoot.getAPPSETTINGS().getAppAppOpenAdStatus();
-        if (app_AppOpenAdStatus.equals("false")) {
-            if (myCallback != null) {
-                myCallback.onClose();
-            }
-            return;
-        }
 
         AdvertiseList customAdModel = getMyCustomAd("AppOpen");
         if (customAdModel != null) {
@@ -1187,14 +1188,14 @@ public class APIManager {
                     public void onAdsCloseClick() {
                         customAppOpenAds.dismiss();
                         if (myCallback != null) {
-                            myCallback.onClose();
+                            myCallback.onClose(AdvertisementState.CUSTOM_OPEN_AD_CLOSE);
                         }
                     }
 
                     public void setOnKeyListener() {
                         customAppOpenAds.dismiss();
                         if (myCallback != null) {
-                            myCallback.onClose();
+                            myCallback.onClose(AdvertisementState.CUSTOM_OPEN_AD_CLOSE);
                         }
                     }
                 });
@@ -1202,27 +1203,46 @@ public class APIManager {
             } catch (Exception e) {
                 e.printStackTrace();
                 if (myCallback != null) {
-                    myCallback.onClose();
+                    myCallback.onClose(AdvertisementState.CUSTOM_OPEN_AD_FAIL);
                 }
             }
         } else {
             if (myCallback != null) {
-                myCallback.onClose();
+                myCallback.onClose(AdvertisementState.CUSTOM_OPEN_AD_FAIL_FROM_RESPONSE);
             }
         }
     }
 
     public void showBanner(ViewGroup viewGroup) {
+        showBanner(viewGroup, null);
+    }
+
+    public void showBanner(ViewGroup viewGroup, InterCallback interCallback) {
         if (!setResponseRoot()) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.BANNER_AD_RESPONSE_NULL);
+            }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.BANNER_AD_APPSETTING_NULL);
+            }
             return;
         }
-        if (!getBottomAd())
+        if (!AD_VISIBLE) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
+            }
             return;
-        if (!AD_VISIBLE)
+        }
+        if (!getBottomAd()) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.BANNER_AD_STATUS_FALSE);
+            }
             return;
+        }
+
 
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
@@ -1230,43 +1250,60 @@ public class APIManager {
                 String adUnitId = getUnitID(platform, "B", "");
                 if (isLog)
                     Log.e(TAG, "showBanner: " + adUnitId + "  " + platform);
-                turnShowBanner(viewGroup, adUnitId);
+                turnShowBanner(viewGroup, adUnitId, interCallback);
             } else {
                 String platform = getPlatFormName("BN");
                 String adUnitId = getUnitID(platform, "BN", "");
                 if (isLog)
                     Log.e(TAG, "showBanner:BN  " + adUnitId + "  " + platform);
-                turnShowNativeBanner(viewGroup, adUnitId);
+                turnShowNativeBanner(viewGroup, adUnitId, interCallback);
             }
         } else {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER"))
-                BannerUtils.banner(viewGroup, activity);
-            else Nativeutils.banner(viewGroup, activity);
+                BannerUtils.banner(viewGroup, activity, interCallback);
+            else Nativeutils.banner(viewGroup, activity, interCallback);
         }
     }
 
     public void showNativeBanner(ViewGroup viewGroup) {
+        showNativeBanner(viewGroup, null);
+    }
+
+    public void showNativeBanner(ViewGroup viewGroup, InterCallback interCallback) {
         if (!setResponseRoot()) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_RESPONSE_NULL);
+            }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_APPSETTING_NULL);
+            }
             return;
         }
-        if (!AD_VISIBLE)
+        if (!AD_VISIBLE) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
+            }
             return;
+        }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("BN");
             String adUnitId = getUnitID(platform, "BN", "");
             if (isLog)
                 Log.e(TAG, "showBanner:BN  " + adUnitId + "  " + platform);
-            turnShowNativeBanner(viewGroup, adUnitId);
+            turnShowNativeBanner(viewGroup, adUnitId, interCallback);
         } else {
-            Nativeutils.banner(viewGroup, activity);
+            Nativeutils.banner(viewGroup, activity, interCallback);
         }
     }
 
-    private void turnShowBanner(ViewGroup banner_container, String admob_b) {
+    private void turnShowBanner(ViewGroup banner_container, String admob_b, InterCallback interCallback) {
         if (admob_b.isEmpty()) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.BANNER_AD_ID_EMPTY);
+            }
             return;
         }
 
@@ -1291,8 +1328,11 @@ public class APIManager {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
+                if (interCallback != null) {
+                    interCallback.onClose(AdvertisementState.BANNER_AD_FAIL);
+                }
                 banner_container.removeAllViews();
-                showMyCustomBanner(banner_container);
+                showMyCustomBanner(banner_container,interCallback);
             }
 
             @Override
@@ -1303,6 +1343,9 @@ public class APIManager {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
+                if (interCallback != null) {
+                    interCallback.onClose(AdvertisementState.BANNER_AD_SHOW);
+                }
                 banner_container.removeAllViews();
                 banner_container.addView(mAdView);
             }
@@ -1310,11 +1353,17 @@ public class APIManager {
             @Override
             public void onAdClicked() {
                 super.onAdClicked();
+                if (interCallback != null) {
+                    interCallback.onClose(AdvertisementState.BANNER_AD_CLICKED);
+                }
             }
 
             @Override
             public void onAdImpression() {
                 super.onAdImpression();
+                if (interCallback != null) {
+                    interCallback.onClose(AdvertisementState.BANNER_AD_IMPRESSION);
+                }
             }
         });
     }
@@ -1330,7 +1379,7 @@ public class APIManager {
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth);
     }
 
-    private void showMyCustomBanner(final ViewGroup banner_container) {
+    private void showMyCustomBanner(final ViewGroup banner_container, InterCallback interCallback) {
         if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("Banner");
@@ -1376,17 +1425,38 @@ public class APIManager {
             banner_container.removeAllViews();
             banner_container.addView(inflate2);
             count_custBannerAd++;
+            if (interCallback!=null){
+                interCallback.onClose(AdvertisementState.CUSTOM_BANNER_AD_SHOW);
+            }
+        }else {
+            if (interCallback!=null){
+                interCallback.onClose(AdvertisementState.CUSTOM_BANNER_AD_FAIL_FROM_RESPONSE);
+            }
         }
     }
 
-    void turnShowNativeBanner(ViewGroup banner_container, String admobB) {
+    void turnShowNativeBanner(ViewGroup banner_container, String admobB, InterCallback interCallback) {
+        if (admobB.isEmpty()) {
+            if (interCallback != null) {
+                interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_ID_EMPTY);
+            }
+            return;
+        }
 
         final AdLoader adLoader = new AdLoader.Builder(activity, admobB)
-                .forNativeAd(nativeAd -> new Inflate_ADS(activity).showSmall(nativeAd, banner_container))
+                .forNativeAd(nativeAd -> {
+                    new Inflate_ADS(activity).showSmall(nativeAd, banner_container);
+                    if (interCallback != null) {
+                        interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_SHOW);
+                    }
+                })
                 .withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                        showMyCustomNativeBanner(banner_container);
+                        if (interCallback != null) {
+                            interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_FAIL);
+                        }
+                        showMyCustomNativeBanner(banner_container,interCallback);
 
                     }
                 })
@@ -1398,7 +1468,7 @@ public class APIManager {
         adLoader.loadAd(new AdRequest.Builder().build());
     }
 
-    private void showMyCustomSmallNative(final ViewGroup nbanner_container) {
+    private void showMyCustomSmallNative(final ViewGroup nbanner_container, NativeCallback nativeCallback) {
         if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
@@ -1453,12 +1523,20 @@ public class APIManager {
             nbanner_container.removeAllViews();
             nbanner_container.addView(inflate2);
             count_custNBAd++;
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_SHOW);
+            }
+        }else {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_FAIL_FROM_RESPONSE);
+            }
         }
     }
 
-    private void showMyCustomNativeBanner(final ViewGroup nbanner_container) {
-        if (activity.isFinishing())
+    private void showMyCustomNativeBanner(final ViewGroup nbanner_container, InterCallback interCallback) {
+        if (activity.isFinishing()) {
             return;
+        }
         final AdvertiseList appModal = getMyCustomAd("NativeBanner");
         if (appModal != null) {
 
@@ -1511,39 +1589,40 @@ public class APIManager {
             nbanner_container.removeAllViews();
             nbanner_container.addView(inflate2);
             count_custNBAd++;
+            if (interCallback!=null){
+                interCallback.onClose(AdvertisementState.CUSTOM_NATIVE_AD_SHOW);
+            }
+        }else {
+            if (interCallback!=null){
+                interCallback.onClose(AdvertisementState.CUSTOM_NATIVE_AD_FAIL_FROM_RESPONSE);
+            }
         }
     }
 
     public void showNative(ViewGroup nativeAdContainer) {
-        if (!setResponseRoot()) {
-            return;
-        }
-        if (responseRoot.getAPPSETTINGS() == null) {
-            return;
-        }
-
-        if (!AD_VISIBLE) {
-            return;
-        }
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
-            String platform = getPlatFormName("N");
-            String adUnitId = getUnitID(platform, "N", "");
-            if (isLog)
-                Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
-            showAdmobNative(nativeAdContainer, false, adUnitId, null);
-        } else {
-            Nativeutils.mediam(nativeAdContainer, activity);
-        }
+        showNative(nativeAdContainer,null);
     }
 
     public void showNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
         if (!setResponseRoot()) {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.NATIVE_AD_RESPONSE_NULL);
+                nativeCallback.onLoad(true);
+            }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.NATIVE_AD_APPSETTING_NULL);
+                nativeCallback.onLoad(true);
+            }
             return;
         }
         if (!AD_VISIBLE) {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
+                nativeCallback.onLoad(true);
+            }
             return;
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
@@ -1553,54 +1632,54 @@ public class APIManager {
                 Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, false, adUnitId, nativeCallback);
         } else {
-            Nativeutils.mediam(nativeAdContainer, activity);
+            Nativeutils.mediam(nativeAdContainer, activity,nativeCallback);
         }
     }
 
     public void showSmallNative(ViewGroup nativeAdContainer) {
+        showSmallNative(nativeAdContainer,null);
+    }
+
+    public void showSmallNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
         if (!setResponseRoot()) {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.NATIVE_AD_RESPONSE_NULL);
+                nativeCallback.onLoad(true);
+            }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.NATIVE_AD_APPSETTING_NULL);
+                nativeCallback.onLoad(true);
+            }
             return;
         }
         if (!AD_VISIBLE) {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
+                nativeCallback.onLoad(true);
+            }
             return;
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
             if (isLog)
-                Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
-            showAdmobNative(nativeAdContainer, true, adUnitId, null);
-        } else {
-            Nativeutils.small(nativeAdContainer, activity);
-        }
-    }
-
-    public void showSmallNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
-        if (!setResponseRoot()) {
-            return;
-        }
-        if (responseRoot.getAPPSETTINGS() == null) {
-            return;
-        }
-        if (!AD_VISIBLE) {
-            return;
-        }
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
-            String platform = getPlatFormName("N");
-            String adUnitId = getUnitID(platform, "N", "");
-
+                Log.e(TAG, "showSmallNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, true, adUnitId, nativeCallback);
         } else {
-            Nativeutils.small(nativeAdContainer, activity);
+            Nativeutils.small(nativeAdContainer, activity,nativeCallback);
         }
     }
 
     private void showAdmobNative(final ViewGroup nativeAdContainer, boolean small, String
             id, NativeCallback nativeCallback) {
         if (id.isEmpty()) {
+            if (nativeCallback != null) {
+                nativeCallback.onLoad(true);
+                nativeCallback.onState(AdvertisementState.NATIVE_AD_ID_EMPTY);
+            }
             return;
         }
 
@@ -1610,8 +1689,10 @@ public class APIManager {
                         new Inflate_ADS(activity).inflate_NATIV_ADMOB(nativeAd, nativeAdContainer);
                     else
                         new Inflate_ADS(activity).inflate_NATIV_ADMOB_SMALL(nativeAd, nativeAdContainer);
-                    if (nativeCallback != null)
+                    if (nativeCallback != null) {
                         nativeCallback.onLoad(false);
+                        nativeCallback.onState(AdvertisementState.NATIVE_AD_SHOW);
+                    }
 
                 })
                 .withAdListener(new AdListener() {
@@ -1620,11 +1701,13 @@ public class APIManager {
                         if (isLog)
                             Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
                         if (!small)
-                            showMyCustomNative(nativeAdContainer);
+                            showMyCustomNative(nativeAdContainer,nativeCallback);
                         else
-                            showMyCustomSmallNative(nativeAdContainer);
-                        if (nativeCallback != null)
+                            showMyCustomSmallNative(nativeAdContainer,nativeCallback);
+                        if (nativeCallback != null) {
                             nativeCallback.onLoad(true);
+                            nativeCallback.onState(AdvertisementState.NATIVE_AD_FAIL);
+                        }
                     }
                 })
                 .withNativeAdOptions(new NativeAdOptions.Builder()
@@ -1633,7 +1716,7 @@ public class APIManager {
         adLoader.loadAd(new AdRequest.Builder().build());
     }
 
-    private void showMyCustomNative(final ViewGroup nativeAdContainer) {
+    private void showMyCustomNative(final ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
         if (activity.isFinishing())
             return;
         final AdvertiseList appModal = getMyCustomAd("Native");
@@ -1708,8 +1791,13 @@ public class APIManager {
             nativeAdContainer.addView(inflate);
             count_custNativeAd++;
 
-
-        } else {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_SHOW);
+            }
+        }else {
+            if (nativeCallback!=null){
+                nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_FAIL_FROM_RESPONSE);
+            }
         }
     }
 
@@ -1768,14 +1856,17 @@ public class APIManager {
                         } catch (Exception e) {
 
                         }
-                        if (rewardCallback != null)
+                        if (rewardCallback != null) {
                             rewardCallback.onFail();
+                            rewardCallback.onState(AdvertisementState.REWARD_AD_SHOW_FAIL);
+                        }
                         loadRewardAd();
                     }
 
                     @Override
                     public void onAdDismissedFullScreenContent() {
                         rewardCallback.onClose(booleans[0]);
+                        rewardCallback.onState(AdvertisementState.REWARD_AD_CLOSE);
                         loadRewardAd();
                     }
                 });
@@ -1787,19 +1878,25 @@ public class APIManager {
     public void showRewardAd(RewardCallback rewardCallback) {
         this.rewardCallback = rewardCallback;
         if (!setResponseRoot()) {
-            if (rewardCallback != null)
+            if (rewardCallback != null) {
                 rewardCallback.onClose(false);
+                rewardCallback.onState(AdvertisementState.REWARD_AD_RESPONSE_NULL);
+            }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
-            if (rewardCallback != null)
+            if (rewardCallback != null) {
                 rewardCallback.onClose(false);
+                rewardCallback.onState(AdvertisementState.REWARD_AD_APPSETTING_NULL);
+            }
             return;
         }
 
         if (!AD_VISIBLE) {
-            if (rewardCallback != null)
+            if (rewardCallback != null) {
                 rewardCallback.onClose(true);
+                rewardCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
+            }
             return;
         }
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
@@ -1835,14 +1932,19 @@ public class APIManager {
                 }
             }
         } else {
-            CustomiseinterActivity.H(activity, () -> rewardCallback.onClose(true), Glob.dataset(activity));
+            CustomiseinterActivity.H(activity, () -> {
+                rewardCallback.onClose(true);
+                rewardCallback.onState(AdvertisementState.QUREKA_REWARD_AD_CLOSE);
+            }, Glob.dataset(activity));
         }
     }
 
     private void showCustomReward(final Activity activity) {
         if (activity.isFinishing()) {
-            if (rewardCallback != null)
+            if (rewardCallback != null) {
                 rewardCallback.onClose(false);
+                rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_FAIL);
+            }
             return;
         }
         if (!activity.isFinishing())
@@ -1857,15 +1959,18 @@ public class APIManager {
                     public void onAdsCloseClick() {
                         customIntAds.dismiss();
                         loadRewardAd();
-                        if (rewardCallback != null)
+                        if (rewardCallback != null) {
                             rewardCallback.onClose(true);
+                            rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_CLOSE);
+                        }
                     }
 
                     public void setOnKeyListener() {
                         customIntAds.dismiss();
                         loadRewardAd();
-                        if (rewardCallback != null)
+                        if (rewardCallback != null){
                             rewardCallback.onClose(true);
+                            rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_CLOSE);}
                     }
                 });
                 if (!activity.isFinishing()) {
@@ -1876,14 +1981,18 @@ public class APIManager {
                 dialog.dismiss();
                 e.printStackTrace();
                 loadRewardAd();
-                if (rewardCallback != null)
+                if (rewardCallback != null) {
                     rewardCallback.onClose(false);
+                    rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_FAIL);
+                }
             }
         } else {
             dialog.dismiss();
             loadRewardAd();
-            if (rewardCallback != null)
+            if (rewardCallback != null) {
                 rewardCallback.onClose(false);
+                rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_FAIL_FROM_RESPONSE);
+            }
         }
     }
 

@@ -16,6 +16,9 @@ import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.pesonal.adsdk.R;
+import com.pesonal.adsdk.remote.AdvertisementState;
+import com.pesonal.adsdk.remote.InterCallback;
+import com.pesonal.adsdk.remote.NativeCallback;
 
 
 public class Nativeutils {
@@ -23,9 +26,11 @@ public class Nativeutils {
     public static int U = 0;
     private static String str4 = "";
 
-    public static void mediam(ViewGroup viewGroup, Activity context) {
+    public static void mediam(ViewGroup viewGroup, Activity context, NativeCallback nativeCallback) {
         LayoutInflater layoutInflater = null;
-
+        if (nativeCallback != null) {
+            nativeCallback.onState(AdvertisementState.QUREKA_NATIVE_AD_SHOW);
+        }
         Adsresponse e8 = Glob.dataset(context);
         LayoutInflater from = LayoutInflater.from(context);
         int i8 = R.layout.qurea_medium_native;
@@ -45,8 +50,8 @@ public class Nativeutils {
         TextView textView42 = (TextView) inflate.findViewById(R.id.tv_desc);
         Button button2 = (Button) inflate.findViewById(R.id.btn_install);
         View view2 = inflate;
-        Glide.with(context).load("file:///android_asset/"+e8.f18656d).into(imageView3);
-        Glide.with(context).load("file:///android_asset/"+e8.f18655c).into(imageView22);
+        Glide.with(context).load("file:///android_asset/" + e8.f18656d).into(imageView3);
+        Glide.with(context).load("file:///android_asset/" + e8.f18655c).into(imageView22);
         String str4 = "";
         if (!e8.f18654b.contains("http")) {
             textView6.setText("Play & Win Coins Daily.");
@@ -97,10 +102,13 @@ public class Nativeutils {
         U++;
     }
 
-    public static void small(ViewGroup viewGroup, Activity context) {
+    public static void small(ViewGroup viewGroup, Activity context, NativeCallback nativeCallback) {
+        if (nativeCallback != null) {
+            nativeCallback.onState(AdvertisementState.QUREKA_NATIVE_AD_SHOW);
+        }
         Adsresponse e8 = Glob.dataset(context);
         LayoutInflater from = LayoutInflater.from(context);
-        View   inflate = from.inflate(R.layout.qurea_small_native, viewGroup, false);
+        View inflate = from.inflate(R.layout.qurea_small_native, viewGroup, false);
         ImageView imageView3 = (ImageView) inflate.findViewById(R.id.iv_banner);
         ImageView imageView22 = (ImageView) inflate.findViewById(R.id.iv_logo);
         TextView textView6 = (TextView) inflate.findViewById(R.id.tv_appname);
@@ -111,8 +119,8 @@ public class Nativeutils {
         TextView textView42 = (TextView) inflate.findViewById(R.id.tv_desc);
         Button button2 = (Button) inflate.findViewById(R.id.btn_install);
         View view2 = inflate;
-        Glide.with(context).load("file:///android_asset/"+e8.f18656d).into(imageView3);
-        Glide.with(context).load("file:///android_asset/"+e8.f18655c).into(imageView22);
+        Glide.with(context).load("file:///android_asset/" + e8.f18656d).into(imageView3);
+        Glide.with(context).load("file:///android_asset/" + e8.f18655c).into(imageView22);
         if (!e8.f18654b.contains("http")) {
             textView6.setText("Play & Win Coins Daily.");
             str4 = "Play Now";
@@ -165,12 +173,14 @@ public class Nativeutils {
 
     }
 
-    public static void banner(ViewGroup viewGroup, Activity context) {
-
+    public static void banner(ViewGroup viewGroup, Activity context, InterCallback interCallback) {
+        if (interCallback != null) {
+            interCallback.onClose(AdvertisementState.QUREKA_NATIVE_BANNER_AD_SHOW);
+        }
         Adsresponse e8 = Glob.dataset(context);
         LayoutInflater from = LayoutInflater.from(context);
 
-        View  inflate = from.inflate(R.layout.qurea_tiny_native, viewGroup, false);
+        View inflate = from.inflate(R.layout.qurea_tiny_native, viewGroup, false);
 
         ImageView imageView3 = (ImageView) inflate.findViewById(R.id.iv_banner);
         ImageView imageView22 = (ImageView) inflate.findViewById(R.id.iv_logo);
@@ -183,8 +193,8 @@ public class Nativeutils {
         TextView textView42 = (TextView) inflate.findViewById(R.id.tv_desc);
         Button button2 = (Button) inflate.findViewById(R.id.btn_install);
         View view2 = inflate;
-        Glide.with(context).load("file:///android_asset/"+e8.f18656d).into(imageView3);
-        Glide.with(context).load("file:///android_asset/"+e8.f18655c).into(imageView22);
+        Glide.with(context).load("file:///android_asset/" + e8.f18656d).into(imageView3);
+        Glide.with(context).load("file:///android_asset/" + e8.f18655c).into(imageView22);
         if (!e8.f18654b.contains("http")) {
             textView6.setText("Play & Win Coins Daily.");
             str4 = "Play Now";

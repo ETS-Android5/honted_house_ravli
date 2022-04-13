@@ -24,7 +24,8 @@ public class SplashActivity extends BaseAdsActivity {
         initializeSplash(SplashActivity.this, new SplashListner() {
             @Override
             public void onSuccess() {
-                APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, () -> {
+                APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, (state) -> {
+                    Log.e("SplashActivity", "state: "+state );
                     if (APIManager.getInstance(SplashActivity.this).getScreenStatus()) {
                         Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
                         startActivity(intent);

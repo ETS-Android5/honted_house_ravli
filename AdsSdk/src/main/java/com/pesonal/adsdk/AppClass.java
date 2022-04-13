@@ -21,15 +21,18 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.pesonal.adsdk.remote.APIManager;
+import com.pesonal.adsdk.remote.AdvertisementState;
 
 import de.blinkt.openvpn.DisconnectVPNActivity;
 import de.blinkt.openvpn.core.OpenVPNService;
 
-public class AppClass extends Application
+public abstract class AppClass extends Application
         implements ActivityLifecycleCallbacks, LifecycleObserver {
 
     private Activity currentActivity;
     Class aClass;
+
+    public abstract void onState(AdvertisementState state);
 
     public void setClass(Class aClass) {
         this.aClass = aClass;
@@ -59,8 +62,7 @@ public class AppClass extends Application
                         Log.e("TAG", "onMoveToForeground: " + aClass.getName() + "  " + currentActivity.getLocalClassName());
                     if (!aClass.getName().contains(currentActivity.getLocalClassName())) {
                         if (!DisconnectVPNActivity.class.getName().contains(currentActivity.getLocalClassName())) {
-                            APIManager.getInstance(currentActivity).showOpenCall(currentActivity, () -> {
-                            });
+                            APIManager.getInstance(currentActivity).showOpenCall(currentActivity, this::onState);
                         }
                     }
                 }
