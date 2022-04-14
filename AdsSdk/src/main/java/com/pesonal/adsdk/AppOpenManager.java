@@ -61,6 +61,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
                         @Override
                         public void onAdFailedToShowFullScreenContent(AdError adError) {
                             listner.onError(adError.getMessage());
+                            if (APIManager.callbackForAnalytics != null) {
+                                APIManager.callbackForAnalytics.onState("openAd Show  "+adError.getCode() + " : " + adError.getMessage());
+                            }
                         }
 
                         @Override
@@ -98,6 +101,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
                 super.onAdFailedToLoad(loadAdError);
                 if (APIManager.isLog)
                     Log.e("my_log", "onAppOpenAdFailedToLoad: " + loadAdError.getMessage());
+                if (APIManager.callbackForAnalytics != null) {
+                    APIManager.callbackForAnalytics.onState("openAd Load  "+loadAdError.getCode() + " : " + loadAdError.getMessage());
+                }
                 listner.onError(loadAdError.getMessage());
             }
         };

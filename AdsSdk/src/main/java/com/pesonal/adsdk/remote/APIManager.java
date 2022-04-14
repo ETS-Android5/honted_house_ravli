@@ -123,6 +123,7 @@ public class APIManager {
     private static boolean showCustomreward = false;
     private RewardCallback rewardCallback;
     final boolean[] booleans = new boolean[]{false};
+    public static AnalyticsCallback callbackForAnalytics;
 
     public APIManager(Activity activity) {
         APIManager.activity = activity;
@@ -138,6 +139,10 @@ public class APIManager {
             mInstance = new APIManager(activity);
         }
         return mInstance;
+    }
+
+    public static void setAdListner(AnalyticsCallback interCallback) {
+        callbackForAnalytics = interCallback;
     }
 
     public boolean getQureka() {
@@ -696,6 +701,9 @@ public class APIManager {
                         requestInterstitial("Next");
                         interstitialCallBack(AdvertisementState.INTER_AD_FAILED_TO_SHOW);
                         Log.d("TAG", "The ad failed to show.");
+                        if (callbackForAnalytics != null) {
+                            callbackForAnalytics.onState("Inter Show  "+adError.getCode() + " : " + adError.getMessage());
+                        }
                     }
 
                     @Override
@@ -710,6 +718,9 @@ public class APIManager {
                 Log.e(TAG, loadAdError.getMessage());
                 mInterstitialAd = null;
                 showCustom = true;
+                if (callbackForAnalytics != null) {
+                    callbackForAnalytics.onState("Inter Load  "+loadAdError.getCode() + " : " + loadAdError.getMessage());
+                }
             }
         });
     }
@@ -1328,11 +1339,14 @@ public class APIManager {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
+                if (callbackForAnalytics != null) {
+                    callbackForAnalytics.onState("Banner Load  "+ loadAdError.getCode() + " : " + loadAdError.getMessage());
+                }
                 if (interCallback != null) {
                     interCallback.onClose(AdvertisementState.BANNER_AD_FAIL);
                 }
                 banner_container.removeAllViews();
-                showMyCustomBanner(banner_container,interCallback);
+                showMyCustomBanner(banner_container, interCallback);
             }
 
             @Override
@@ -1425,11 +1439,11 @@ public class APIManager {
             banner_container.removeAllViews();
             banner_container.addView(inflate2);
             count_custBannerAd++;
-            if (interCallback!=null){
+            if (interCallback != null) {
                 interCallback.onClose(AdvertisementState.CUSTOM_BANNER_AD_SHOW);
             }
-        }else {
-            if (interCallback!=null){
+        } else {
+            if (interCallback != null) {
                 interCallback.onClose(AdvertisementState.CUSTOM_BANNER_AD_FAIL_FROM_RESPONSE);
             }
         }
@@ -1453,10 +1467,13 @@ public class APIManager {
                 .withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                        if (callbackForAnalytics != null) {
+                            callbackForAnalytics.onState("NativeBanner Load  "+adError.getCode() + " : " + adError.getMessage());
+                        }
                         if (interCallback != null) {
                             interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_FAIL);
                         }
-                        showMyCustomNativeBanner(banner_container,interCallback);
+                        showMyCustomNativeBanner(banner_container, interCallback);
 
                     }
                 })
@@ -1523,11 +1540,11 @@ public class APIManager {
             nbanner_container.removeAllViews();
             nbanner_container.addView(inflate2);
             count_custNBAd++;
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_SHOW);
             }
-        }else {
-            if (nativeCallback!=null){
+        } else {
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_FAIL_FROM_RESPONSE);
             }
         }
@@ -1589,37 +1606,37 @@ public class APIManager {
             nbanner_container.removeAllViews();
             nbanner_container.addView(inflate2);
             count_custNBAd++;
-            if (interCallback!=null){
+            if (interCallback != null) {
                 interCallback.onClose(AdvertisementState.CUSTOM_NATIVE_AD_SHOW);
             }
-        }else {
-            if (interCallback!=null){
+        } else {
+            if (interCallback != null) {
                 interCallback.onClose(AdvertisementState.CUSTOM_NATIVE_AD_FAIL_FROM_RESPONSE);
             }
         }
     }
 
     public void showNative(ViewGroup nativeAdContainer) {
-        showNative(nativeAdContainer,null);
+        showNative(nativeAdContainer, null);
     }
 
     public void showNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
         if (!setResponseRoot()) {
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.NATIVE_AD_RESPONSE_NULL);
                 nativeCallback.onLoad(true);
             }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.NATIVE_AD_APPSETTING_NULL);
                 nativeCallback.onLoad(true);
             }
             return;
         }
         if (!AD_VISIBLE) {
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
                 nativeCallback.onLoad(true);
             }
@@ -1632,31 +1649,31 @@ public class APIManager {
                 Log.e(TAG, "showNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, false, adUnitId, nativeCallback);
         } else {
-            Nativeutils.mediam(nativeAdContainer, activity,nativeCallback);
+            Nativeutils.mediam(nativeAdContainer, activity, nativeCallback);
         }
     }
 
     public void showSmallNative(ViewGroup nativeAdContainer) {
-        showSmallNative(nativeAdContainer,null);
+        showSmallNative(nativeAdContainer, null);
     }
 
     public void showSmallNative(ViewGroup nativeAdContainer, NativeCallback nativeCallback) {
         if (!setResponseRoot()) {
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.NATIVE_AD_RESPONSE_NULL);
                 nativeCallback.onLoad(true);
             }
             return;
         }
         if (responseRoot.getAPPSETTINGS() == null) {
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.NATIVE_AD_APPSETTING_NULL);
                 nativeCallback.onLoad(true);
             }
             return;
         }
         if (!AD_VISIBLE) {
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
                 nativeCallback.onLoad(true);
             }
@@ -1669,7 +1686,7 @@ public class APIManager {
                 Log.e(TAG, "showSmallNative: " + adUnitId + "  " + platform);
             showAdmobNative(nativeAdContainer, true, adUnitId, nativeCallback);
         } else {
-            Nativeutils.small(nativeAdContainer, activity,nativeCallback);
+            Nativeutils.small(nativeAdContainer, activity, nativeCallback);
         }
     }
 
@@ -1698,12 +1715,15 @@ public class APIManager {
                 .withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(LoadAdError adError) {
+                        if (callbackForAnalytics != null) {
+                            callbackForAnalytics.onState("Native Load  "+adError.getCode() + " : " + adError.getMessage());
+                        }
                         if (isLog)
                             Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
                         if (!small)
-                            showMyCustomNative(nativeAdContainer,nativeCallback);
+                            showMyCustomNative(nativeAdContainer, nativeCallback);
                         else
-                            showMyCustomSmallNative(nativeAdContainer,nativeCallback);
+                            showMyCustomSmallNative(nativeAdContainer, nativeCallback);
                         if (nativeCallback != null) {
                             nativeCallback.onLoad(true);
                             nativeCallback.onState(AdvertisementState.NATIVE_AD_FAIL);
@@ -1791,11 +1811,11 @@ public class APIManager {
             nativeAdContainer.addView(inflate);
             count_custNativeAd++;
 
-            if (nativeCallback!=null){
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_SHOW);
             }
-        }else {
-            if (nativeCallback!=null){
+        } else {
+            if (nativeCallback != null) {
                 nativeCallback.onState(AdvertisementState.CUSTOM_NATIVE_AD_FAIL_FROM_RESPONSE);
             }
         }
@@ -1832,6 +1852,9 @@ public class APIManager {
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 showCustomreward = true;
                 rewardedAd = null;
+                if (callbackForAnalytics != null) {
+                    callbackForAnalytics.onState("Reward Load  "+loadAdError.getCode() + " : " + loadAdError.getMessage());
+                }
             }
 
             @Override
@@ -1855,6 +1878,9 @@ public class APIManager {
                             }
                         } catch (Exception e) {
 
+                        }
+                        if (callbackForAnalytics != null) {
+                            callbackForAnalytics.onState("Reward Show  "+adError.getCode() + " : " + adError.getMessage());
                         }
                         if (rewardCallback != null) {
                             rewardCallback.onFail();
@@ -1968,9 +1994,10 @@ public class APIManager {
                     public void setOnKeyListener() {
                         customIntAds.dismiss();
                         loadRewardAd();
-                        if (rewardCallback != null){
+                        if (rewardCallback != null) {
                             rewardCallback.onClose(true);
-                            rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_CLOSE);}
+                            rewardCallback.onState(AdvertisementState.CUSTOM_REWARD_AD_CLOSE);
+                        }
                     }
                 });
                 if (!activity.isFinishing()) {
