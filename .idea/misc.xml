@@ -9,10 +9,13 @@
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_strok_edit.xml" value="0.2425" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_switch.xml" value="0.2015" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_switch_active.xml" value="0.2015" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_switch_deactive.xml" value="0.2065" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/bg_vpn.xml" value="0.215" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/button_bg.xml" value="0.2015" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/button_bg_ad.xml" value="0.2015" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/button_bg_close.xml" value="0.2015" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/button_c.xml" value="0.2065" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/button_cs.xml" value="0.2065" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_bg.xml" value="0.2015" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_bg__1_.xml" value="0.195" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/drawable/ic_bg__1_blink.xml" value="0.195" />
@@ -63,6 +66,7 @@
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/launchvpn.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/layout_vpn.xml" value="0.25" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/policy_dialog.xml" value="0.31354166666666666" />
+        <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/promo_dialog.xml" value="0.309375" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_medium_native.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_small_native.xml" value="0.31354166666666666" />
         <entry key="..\:/admodule/MyDemoApp_edited/AdsSdk/src/main/res/layout/qurea_tiny_banner.xml" value="0.31354166666666666" />

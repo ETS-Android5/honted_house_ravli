@@ -50,30 +50,35 @@ Extend as ```BaseAdsActivity``` and call below method in ```onCreate()```.
  initializeSplash(SplashActivity.this, new SplashListner() {
             @Override
             public void onSuccess() {
-                 APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, () -> {
-                     if (APIManager.getInstance(SplashActivity.this).getScreenStatus()) {
-                         Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
-                         startActivity(intent);
-                         finish();
-                     } else {
-                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                         startActivity(intent);
-                         finish();
-                     }
-                 });
+                APIManager.getInstance(SplashActivity.this).showSplashAD(SplashActivity.this, (state) -> {
+                    if (APIManager.getInstance(SplashActivity.this).getScreenStatus()) {
+                        Intent intent = new Intent(SplashActivity.this, StartSecondActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
 
-           @Override
-           public void onExtra(JsonElement extraData) {
-               Log.e("TAG", "onExtra: "+extraData.toString() );
-           }
+            @Override
+            public void onExtra(JsonElement extraData) {
+                Log.e("TAG", "onExtra: "+extraData.toString() );
+            }
         });
+
 ```
 
 ### Application class
 In ```setClass()``` method replace SplashActivity.class with your launcher activity.
 ```java
 public class MyApp extends AppClass {
+
+   @Override
+    public void onState(AdvertisementState state) {
+    }
 
     @Override
     public void onCreate() {
@@ -89,7 +94,7 @@ public class MyApp extends AppClass {
 If you have Start Button Activity then use below method to goto ```MainActivity.java```.
 
 ```java
- APIManager.getInstance(StartSecondActivity.this).showAdsStart(StartSecondActivity.this, () -> {
+ APIManager.getInstance(StartSecondActivity.this).showAdsStart(StartSecondActivity.this, (state) -> {
     Intent intent = new Intent(StartSecondActivity.this, MainAAActivity.class);
     startActivity(intent);
     finish();
@@ -98,9 +103,14 @@ If you have Start Button Activity then use below method to goto ```MainActivity.
 
 Check for app update.
 ```java
-if (APIManager.getInstance(StartSecondActivity.this).isUpdate()) {
+if (APIManager.getInstance(this).isUpdate()) {
    new DialogUtils().showUpdateDialog(this, "https://play.google.com/store/apps/details?id=" + getPackageName());
 }
+```
+
+And Add PromotionDialog in ```StartActivity```.
+```java
+APIManager.getInstance(this).showPromoAdDialog(true);
 ```
 
 Fetch Promo Apps list for ```StartActivity```.
@@ -218,7 +228,7 @@ APIManager.getInstance(MainActivity2.this).showBanner(adContainer);   //size - @
 ### InterstitialAd
 If you call below method in ```onBackPressed()``` then pass boolean value as true otherwise pass false.
 ```java
-APIManager.getInstance(MainActivity2.this).showAds( false, () -> {
+APIManager.getInstance(MainActivity2.this).showAds( false, (state) -> {
     startActivity(new Intent(MainActivity2.this, MainActivity3.class));
 });
 ```
@@ -229,6 +239,10 @@ APIManager.getInstance(MainActivity2.this).showRewardAd(new RewardCallback() {
     @Override
     public void onClose(boolean isSuccess) {
 
+    }
+
+    @Override
+    public void onState(AdvertisementState state){
     }
 
     @Override
@@ -248,6 +262,11 @@ if(APIManager.getInstance(this).isExitScreen()){
    APIManager.getInstance(MainAAActivity.this).showExitDialog();
 }
 ```
+And Add PromotionDialog in ```ExitActivity```.
+```java
+APIManager.getInstance(this).showPromoAdDialog(false);
+```
+
 
 ### Change Color of Ads Button
 add below line in ```colors.xml```

@@ -42,7 +42,7 @@ public class ExitActivity extends BaseActivity implements View.OnClickListener {
 //        smallnative2 = findViewById(R.id.id_native1);
 
         APIManager.getInstance(ExitActivity.this).showNative(smallnative);
-
+        APIManager.getInstance(this).showPromoAdDialog(false);
 
         if (adsResponces != null) {
             adsResponces.clear();

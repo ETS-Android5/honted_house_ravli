@@ -19,8 +19,6 @@ public class SplashActivity extends BaseAdsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-
         initializeSplash(SplashActivity.this, new SplashListner() {
             @Override
             public void onSuccess() {

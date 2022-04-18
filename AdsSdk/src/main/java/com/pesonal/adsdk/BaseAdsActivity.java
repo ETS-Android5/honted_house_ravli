@@ -285,6 +285,8 @@ public class BaseAdsActivity extends BaseActivity {
                                     editor_AD_PREF.putBoolean("need_internet", need_internet).apply();
                                     new TinyDB(BaseAdsActivity.this).putString("response", response1.toString());
                                     downloadVpn(responseRoot.getAPPSETTINGS().getVpnLink(), responseRoot.getAPPSETTINGS().getVpnLocation());
+                                    if (responseRoot.getAPPSETTINGS().getPromoADJson() != null)
+                                        downloadPromoAD(responseRoot.getAPPSETTINGS().getPromoADJson());
                                 }
                             }
                         } catch (Exception e) {
@@ -530,8 +532,9 @@ public class BaseAdsActivity extends BaseActivity {
                 .setOnCancelListener(() -> {
                 })
                 .setOnProgressListener(progress -> {
-                    if (APIManager.isLog)
-                        Log.e("TAG", "progress:list " + (progress.currentBytes * 100 / progress.totalBytes));
+                    long pro = progress.currentBytes * 100 / progress.totalBytes;
+                    if (APIManager.isLog && pro == 100)
+                        Log.e("TAG", "progress:list " + pro);
                 })
                 .start(new OnDownloadListener() {
                     @Override
@@ -613,6 +616,43 @@ public class BaseAdsActivity extends BaseActivity {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public void downloadPromoAD(String url) {
+        if (APIManager.isLog)
+            Log.e("TAG", "downloadPromoAD: " + url + "  ");
+        if (url != null && !url.equals("") && url.contains("http")) {
+            PRDownloader.download(url, getCacheDir().getAbsolutePath(), "promoAD.json")
+                    .build()
+                    .setOnStartOrResumeListener(() -> {
+
+                    })
+                    .setOnPauseListener(() -> {
+
+                    })
+                    .setOnCancelListener(() -> {
+
+                    })
+                    .setOnProgressListener(progress -> {
+                        if (APIManager.isLog)
+                            Log.e("TAG", "progress: downloadPromoAD  " + (progress.currentBytes * 100 / progress.totalBytes));
+                    })
+                    .start(new OnDownloadListener() {
+                        @Override
+                        public void onDownloadComplete() {
+                            if (APIManager.isLog)
+                                Log.e("TAG", "progress downloadPromoAD: Complete  ");
+
+                        }
+
+                        @Override
+                        public void onError(Error error) {
+                            if (APIManager.isLog)
+                                Log.e("TAG", "progress onError: downloadPromoAD" + error.getServerErrorMessage());
+                        }
+
+                    });
+        }
     }
 
 }

@@ -59,6 +59,8 @@ public class StartSecondActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
+        APIManager.getInstance(this).showPromoAdDialog(true);
+
         ivShare.setOnClickListener(this::onClick);
         ivPrivacy.setOnClickListener(this::onClick);
         recyclerApp = (RecyclerView) findViewById(R.id.recyclerApp);

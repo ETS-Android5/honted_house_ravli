@@ -157,6 +157,28 @@ public class APPSETTINGS {
     @SerializedName("INTERAD")
     private String interAD ="";
 
+    @SerializedName("PROMOAD")
+    private String promoAD ="";
+
+    @SerializedName("PROMOADJSON")
+    private String promoADJson ="";
+
+    public String getPromoAD() {
+        return promoAD;
+    }
+
+    public void setPromoAD(String promoAD) {
+        this.promoAD = promoAD;
+    }
+
+    public String getPromoADJson() {
+        return promoADJson;
+    }
+
+    public void setPromoADJson(String promoADJson) {
+        this.promoADJson = promoADJson;
+    }
+
     public String getInterAD() {
         return interAD;
     }

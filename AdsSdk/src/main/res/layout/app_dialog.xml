@@ -25,9 +25,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorAdColor"
                 android:orientation="horizontal"
-                android:paddingVertical="@dimen/_5sdp"
-                android:background="@color/colorAdColor">
+                android:paddingVertical="@dimen/_5sdp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -44,18 +44,19 @@
                     android:id="@+id/id_close"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginRight="@dimen/_5sdp"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:padding="5dp"
                     android:src="@drawable/icon_cancel" />
 
+
                 <TextView
-                    android:layout_width="25dp"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="25dp"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:background="@drawable/button_c"
+                    android:paddingLeft="25dp"
+                    android:layout_marginLeft="-25dp"
+                    android:background="@drawable/button_cs"
                     android:fontFamily="@font/appfont_bold"
                     android:gravity="center"
                     android:text="@string/ad"
@@ -154,7 +155,6 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-
 
 
     </androidx.cardview.widget.CardView>

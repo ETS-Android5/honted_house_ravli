@@ -4,7 +4,9 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,6 +35,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackException;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
+import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -52,6 +62,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.marozzi.shimmerview.ShimmerView;
 import com.pesonal.adsdk.AppOpenManager;
 import com.pesonal.adsdk.R;
 import com.pesonal.adsdk.customAd.CustomAppOpenAds;
@@ -61,6 +72,8 @@ import com.pesonal.adsdk.model.AdvertiseList;
 import com.pesonal.adsdk.model.MOREAPPEXIT;
 import com.pesonal.adsdk.model.MOREAPPSPLASH;
 import com.pesonal.adsdk.model.ResponseRoot;
+import com.pesonal.adsdk.model.promo.AppItemPromo;
+import com.pesonal.adsdk.model.promo.ResponsePromo;
 import com.pesonal.adsdk.model.vpnmodel.CountryListItem;
 import com.pesonal.adsdk.model.vpnmodel.ResponseVpn;
 import com.pesonal.adsdk.qureka.BannerUtils;
@@ -74,6 +87,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -256,7 +270,7 @@ public class APIManager {
             return false;
         if (responseRoot.getAPPSETTINGS().getFirstTimeAd() == null)
             return false;
-        if (responseRoot.getAPPSETTINGS().getFirstTimeAd().equalsIgnoreCase("ON")) {
+        if (responseRoot.getAPPSETTINGS().getFirstTimeAd().equalsIgnoreCase("OFF")) {
             if (!new TinyDB(activity).getBoolean("appIsFirstAd")) {
                 new TinyDB(activity).putBoolean("appIsFirstAd", true);
                 return true;
@@ -280,6 +294,22 @@ public class APIManager {
         if (responseRoot.getAPPSETTINGS().getInterAD() == null)
             return true;
         return responseRoot.getAPPSETTINGS().getInterAD().equalsIgnoreCase("ON");
+    }
+
+    public boolean getPromoAdStatus() {
+        if (!setResponseRoot())
+            return false;
+        if (responseRoot.getAPPSETTINGS().getPromoAD() == null)
+            return false;
+        return responseRoot.getAPPSETTINGS().getPromoAD().equalsIgnoreCase("ON");
+    }
+
+    public String getPromoAdJson() {
+        if (!setResponseRoot())
+            return "";
+        if (responseRoot.getAPPSETTINGS().getPromoADJson() == null)
+            return "";
+        return responseRoot.getAPPSETTINGS().getPromoADJson();
     }
 
 
@@ -702,7 +732,7 @@ public class APIManager {
                         interstitialCallBack(AdvertisementState.INTER_AD_FAILED_TO_SHOW);
                         Log.d("TAG", "The ad failed to show.");
                         if (callbackForAnalytics != null) {
-                            callbackForAnalytics.onState("Inter Show  "+adError.getCode() + " : " + adError.getMessage());
+                            callbackForAnalytics.onState("Inter Show  " + adError.getCode() + " : " + adError.getMessage());
                         }
                     }
 
@@ -719,7 +749,7 @@ public class APIManager {
                 mInterstitialAd = null;
                 showCustom = true;
                 if (callbackForAnalytics != null) {
-                    callbackForAnalytics.onState("Inter Load  "+loadAdError.getCode() + " : " + loadAdError.getMessage());
+                    callbackForAnalytics.onState("Inter Load  " + loadAdError.getCode() + " : " + loadAdError.getMessage());
                 }
             }
         });
@@ -1340,7 +1370,7 @@ public class APIManager {
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 if (callbackForAnalytics != null) {
-                    callbackForAnalytics.onState("Banner Load  "+ loadAdError.getCode() + " : " + loadAdError.getMessage());
+                    callbackForAnalytics.onState("Banner Load  " + loadAdError.getCode() + " : " + loadAdError.getMessage());
                 }
                 if (interCallback != null) {
                     interCallback.onClose(AdvertisementState.BANNER_AD_FAIL);
@@ -1468,7 +1498,7 @@ public class APIManager {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError adError) {
                         if (callbackForAnalytics != null) {
-                            callbackForAnalytics.onState("NativeBanner Load  "+adError.getCode() + " : " + adError.getMessage());
+                            callbackForAnalytics.onState("NativeBanner Load  " + adError.getCode() + " : " + adError.getMessage());
                         }
                         if (interCallback != null) {
                             interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_FAIL);
@@ -1716,7 +1746,7 @@ public class APIManager {
                     @Override
                     public void onAdFailedToLoad(LoadAdError adError) {
                         if (callbackForAnalytics != null) {
-                            callbackForAnalytics.onState("Native Load  "+adError.getCode() + " : " + adError.getMessage());
+                            callbackForAnalytics.onState("Native Load  " + adError.getCode() + " : " + adError.getMessage());
                         }
                         if (isLog)
                             Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
@@ -1853,7 +1883,7 @@ public class APIManager {
                 showCustomreward = true;
                 rewardedAd = null;
                 if (callbackForAnalytics != null) {
-                    callbackForAnalytics.onState("Reward Load  "+loadAdError.getCode() + " : " + loadAdError.getMessage());
+                    callbackForAnalytics.onState("Reward Load  " + loadAdError.getCode() + " : " + loadAdError.getMessage());
                 }
             }
 
@@ -1880,7 +1910,7 @@ public class APIManager {
 
                         }
                         if (callbackForAnalytics != null) {
-                            callbackForAnalytics.onState("Reward Show  "+adError.getCode() + " : " + adError.getMessage());
+                            callbackForAnalytics.onState("Reward Show  " + adError.getCode() + " : " + adError.getMessage());
                         }
                         if (rewardCallback != null) {
                             rewardCallback.onFail();
@@ -2061,5 +2091,115 @@ public class APIManager {
         }
     }
 
+    public void showPromoAdDialog(boolean startScreen) {
+        if (getPromoAdStatus() && !activity.isFinishing()) {
+            File file = new File(activity.getCacheDir(), "promoAD.json");
+            String json = loadJsonFromFile(file);
+            if (json != null && !json.equals("")) {
+                try {
+                    ResponsePromo responsePromo = new Gson().fromJson(json, ResponsePromo.class);
+                    if (responsePromo != null) {
+                        if (responsePromo.getApp() != null) {
+                            if (responsePromo.getApp().size() > 0) {
+                                if (responsePromo.getApp().get(0).getAdPosition().equals("STARTSCREEN") && startScreen) {
+                                    showPromo(responsePromo.getApp().get(0));
+                                } else if (responsePromo.getApp().get(0).getAdPosition().equals("EXITSCREEN") && !startScreen) {
+                                    showPromo(responsePromo.getApp().get(0));
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
+
+    private void showPromo(AppItemPromo appItemPromo){
+        Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(1);
+        dialog.getWindow().addFlags(2);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        View inflate = LayoutInflater.from(dialog.getContext()).inflate(R.layout.promo_dialog, null, false);
+        dialog.setContentView(inflate);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ImageView idClose = (ImageView) inflate.findViewById(R.id.id_close);
+        ImageView idLogo = (ImageView) inflate.findViewById(R.id.id_logo);
+        TextView idTitle = (TextView) inflate.findViewById(R.id.id_title);
+        TextView idDownload = (TextView) inflate.findViewById(R.id.id_download);
+        StyledPlayerView playerView = (StyledPlayerView) inflate.findViewById(R.id.playerView);
+        ShimmerView ivShimmerView = (ShimmerView) inflate.findViewById(R.id.ivShimmerView);
+
+        idTitle.setText(appItemPromo.getAdTitle());
+        Log.e(TAG, "showPromoAdDialog: " + appItemPromo.getAdImage());
+        ExoPlayer player = new ExoPlayer.Builder(activity).build();
+        if (isImageFile(appItemPromo.getAdImage())) {
+            Glide.with(activity).load(appItemPromo.getAdImage()).into(idLogo);
+            ivShimmerView.setVisibility(View.GONE);
+            playerView.setVisibility(View.GONE);
+        } else {
+            playerView.setVisibility(View.VISIBLE);
+            playerView.setPlayer(player);
+            MediaItem mediaItem = MediaItem.fromUri(appItemPromo.getAdImage());
+            player.setMediaItem(mediaItem);
+            player.prepare();
+            player.play();
+            player.addListener(new Player.Listener() {
+                @Override
+                public void onVideoSizeChanged(VideoSize videoSize) {
+                    Player.Listener.super.onVideoSizeChanged(videoSize);
+                    Log.e(TAG, "onVideoSizeChanged: " + videoSize.width + "  " + videoSize.height + "  " + videoSize.pixelWidthHeightRatio);
+                    ivShimmerView.setVisibility(View.GONE);
+                    playerView.setVisibility(View.VISIBLE);
+                    if (videoSize.width < videoSize.height) {
+                        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
+                        ViewGroup.LayoutParams layoutParams = playerView.getLayoutParams();
+                        layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, activity.getResources().getDisplayMetrics());
+                        playerView.setLayoutParams(layoutParams);
+                    } else {
+                        ViewGroup.LayoutParams layoutParams = playerView.getLayoutParams();
+                        layoutParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
+                        playerView.setLayoutParams(layoutParams);
+                    }
+                }
+
+                @Override
+                public void onPlayerError(PlaybackException error) {
+                    Player.Listener.super.onPlayerError(error);
+                    Log.e(TAG, "onPlayerError: " + error.getMessage());
+                }
+            });
+        }
+        idClose.setOnClickListener(v -> {
+            dialog.dismiss();
+            if (player.isPlaying())
+                player.stop();
+        });
+        dialog.setOnDismissListener(dialogInterface -> {
+            if (player.isPlaying())
+                player.stop();
+        });
+        idDownload.setOnClickListener(v -> {
+            try {
+                Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(appItemPromo.getAppLink()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Intent intent2 = new Intent("android.intent.action.VIEW", Uri.parse(appItemPromo.getAppLink()));
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent2);
+            }
+            dialog.dismiss();
+            if (player.isPlaying())
+                player.stop();
+        });
+        dialog.show();
+    }
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+    }
 
 }
