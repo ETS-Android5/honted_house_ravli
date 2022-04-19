@@ -317,6 +317,9 @@ new GiftAds(StartSecondActivity.this).showGiftAds();
 }
 -keep class com.github.mikephil.charting.** { *; }
 -dontwarn io.realm.**
+-keep class androidx.mediarouter.app.MediaRouteActionProvider {
+  *;
+}
 ```
 
 

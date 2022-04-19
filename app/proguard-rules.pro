@@ -40,6 +40,8 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
-
+-keep class androidx.mediarouter.app.MediaRouteActionProvider {
+  *;
+}
 -keep class com.github.mikephil.charting.** { *; }
 -dontwarn io.realm.**
