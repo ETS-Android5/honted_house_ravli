@@ -1128,6 +1128,18 @@ public class APIManager {
     }
 
     public void showOpenCall(Activity context, InterCallback myCallback) {
+        if (!setResponseRoot()) {
+            if (myCallback != null)
+                myCallback.onClose(AdvertisementState.OPEN_AD_RESPONSE_NULL);
+            return;
+        }
+
+        if (responseRoot.getAPPSETTINGS() == null) {
+            if (myCallback != null)
+                myCallback.onClose(AdvertisementState.OPEN_AD_APPSETTING_NULL);
+            return;
+        }
+
         if (!AD_VISIBLE) {
             myCallback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;

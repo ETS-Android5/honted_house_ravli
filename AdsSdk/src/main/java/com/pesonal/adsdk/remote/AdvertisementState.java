@@ -22,6 +22,8 @@ public enum AdvertisementState {
    INTER_AD_FAILED_TO_SHOW,
 
    // OPEN AD
+   OPEN_AD_RESPONSE_NULL,
+   OPEN_AD_APPSETTING_NULL,
    OPEN_AD_STATUS_FALSE,
    OPEN_AD_CLOSE,
 
