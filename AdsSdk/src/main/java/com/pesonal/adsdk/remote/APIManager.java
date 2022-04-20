@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -218,6 +217,17 @@ public class APIManager {
             return file.getAbsolutePath();
         }
         return "";
+    }
+
+    public ResponseRoot getResponseRoot() {
+        return responseRoot;
+    }
+
+    public void setAdStatus(String status) {
+        if (responseRoot != null) {
+            if(responseRoot.getAPPSETTINGS()!=null)
+                responseRoot.getAPPSETTINGS().setAppAdShowStatus(status);
+        }
     }
 
     public static HashMap<String, Object> getAllAppSettingsData(Context context) {
@@ -985,8 +995,8 @@ public class APIManager {
             return;
         }
         if (APIManager.getApp_adShowStatus() == 0) {
-            if (interCallback != null)
-                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            if (callback != null)
+                callback.onClose(AdvertisementState.AD_STATUS_FALSE);
             return;
         }
         if (!AD_VISIBLE) {
@@ -1030,8 +1040,8 @@ public class APIManager {
             return;
         }
         if (APIManager.getApp_adShowStatus() == 0) {
-            if (interCallback != null)
-                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            if (callback != null)
+                callback.onClose(AdvertisementState.AD_STATUS_FALSE);
             return;
         }
 
@@ -1145,6 +1155,13 @@ public class APIManager {
             return;
         }
 
+
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (myCallback != null)
+                myCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            return;
+        }
+
         String app_AppOpenAdStatus = responseRoot.getAPPSETTINGS().getAppAppOpenAdStatus();
         if (app_AppOpenAdStatus.equals("false")) {
             if (myCallback != null) {
@@ -1220,8 +1237,8 @@ public class APIManager {
             return;
         }
         if (APIManager.getApp_adShowStatus() == 0) {
-            if (interCallback != null)
-                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            if (myCallback != null)
+                myCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
             return;
         }
         if (!AD_VISIBLE) {
@@ -1296,6 +1313,11 @@ public class APIManager {
             return;
         }
 
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (interCallback != null)
+                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            return;
+        }
 
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
@@ -1341,6 +1363,13 @@ public class APIManager {
             }
             return;
         }
+
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (interCallback != null)
+                interCallback.onClose(AdvertisementState.AD_STATUS_FALSE);
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("BN");
             String adUnitId = getUnitID(platform, "BN", "");
@@ -1684,6 +1713,14 @@ public class APIManager {
             }
             return;
         }
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (nativeCallback != null) {
+                nativeCallback.onState(AdvertisementState.AD_STATUS_FALSE);
+                nativeCallback.onLoad(true);
+            }
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
@@ -1721,6 +1758,15 @@ public class APIManager {
             }
             return;
         }
+
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (nativeCallback != null) {
+                nativeCallback.onState(AdvertisementState.AD_STATUS_FALSE);
+                nativeCallback.onLoad(true);
+            }
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
@@ -1967,6 +2013,15 @@ public class APIManager {
             }
             return;
         }
+
+        if (APIManager.getApp_adShowStatus() == 0) {
+            if (rewardCallback != null) {
+                rewardCallback.onClose(true);
+                rewardCallback.onState(AdvertisementState.AD_STATUS_FALSE);
+            }
+            return;
+        }
+
         if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
             dialog = new Dialog(activity);
             View view = LayoutInflater.from(activity).inflate(R.layout.ad_progress_dialog, null);
@@ -2128,7 +2183,7 @@ public class APIManager {
     }
 
 
-    private void showPromo(AppItemPromo appItemPromo){
+    private void showPromo(AppItemPromo appItemPromo) {
         Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(1);
         dialog.getWindow().addFlags(2);
@@ -2189,8 +2244,8 @@ public class APIManager {
                 player.stop();
         });
         dialog.setOnDismissListener(dialogInterface -> {
-            if (player.isPlaying())
-                player.stop();
+            player.setPlayWhenReady(false);
+            player.stop();
         });
         idDownload.setOnClickListener(v -> {
             try {
