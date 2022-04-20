@@ -2242,10 +2242,14 @@ public class APIManager {
             dialog.dismiss();
             if (player.isPlaying())
                 player.stop();
+            player.setPlayWhenReady(false);
+            player.release();
         });
         dialog.setOnDismissListener(dialogInterface -> {
+            if (player.isPlaying())
+                player.stop();
             player.setPlayWhenReady(false);
-            player.stop();
+            player.release();
         });
         idDownload.setOnClickListener(v -> {
             try {
@@ -2260,6 +2264,8 @@ public class APIManager {
             dialog.dismiss();
             if (player.isPlaying())
                 player.stop();
+            player.setPlayWhenReady(false);
+            player.release();
         });
         dialog.show();
     }
