@@ -8,7 +8,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleObserver;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
@@ -47,7 +46,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
 
     public void showAdIfAvailable(final splshADlistner listner) {
         if (!isShowingAd && isAdAvailable()) {
-            Log.d(LOG_TAG, "Will show ad.");
+            Log.e(LOG_TAG, "Will show ad.");
 
             FullScreenContentCallback fullScreenContentCallback =
                     new FullScreenContentCallback() {
@@ -62,7 +61,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
                         public void onAdFailedToShowFullScreenContent(AdError adError) {
                             listner.onError(adError.getMessage());
                             if (APIManager.callbackForAnalytics != null) {
-                                APIManager.callbackForAnalytics.onState("openAd Show  "+adError.getCode() + " : " + adError.getMessage());
+                                APIManager.callbackForAnalytics.onState("openAd Show  " + adError.getCode() + " : " + adError.getMessage());
                             }
                         }
 
@@ -76,7 +75,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
             appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
             appOpenAd.show(currentActivity);
         } else {
-            listner.onError("");
+            if (!isShowingAd)
+                listner.onError("");
         }
     }
 
@@ -102,7 +102,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks {
                 if (APIManager.isLog)
                     Log.e("my_log", "onAppOpenAdFailedToLoad: " + loadAdError.getMessage());
                 if (APIManager.callbackForAnalytics != null) {
-                    APIManager.callbackForAnalytics.onState("openAd Load  "+loadAdError.getCode() + " : " + loadAdError.getMessage());
+                    APIManager.callbackForAnalytics.onState("openAd Load  " + loadAdError.getCode() + " : " + loadAdError.getMessage());
                 }
                 listner.onError(loadAdError.getMessage());
             }

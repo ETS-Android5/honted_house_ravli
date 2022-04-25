@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="-5dp"
                 android:background="@drawable/button_bg"
                 android:gravity="center">
 
@@ -41,24 +42,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    
+                    android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="@string/ad"
                     android:textColor="@color/colorAdWhite"
                     android:textSize="14dp" />
             </LinearLayout>
 
-            <ImageView
+            <FrameLayout
                 android:id="@+id/ImgClose"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/button_bg_close"
-                android:padding="7dp"
-                android:src="@drawable/ic_close" />
+                android:layout_marginEnd="15dp">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_bg_close"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_close" />
+            </FrameLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
@@ -122,7 +129,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
@@ -130,10 +137,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            
                             android:gravity="left|center_vertical|center_horizontal|center"
                             android:lineSpacingExtra="5dp"
-                            android:maxLines="2"
+                            android:maxLines="1"
                             android:text="My Photo Phone Dialer - Photo Caller Dialer 2021"
                             android:textColor="@color/colorAdBlack"
                             android:textSize="14dp"
@@ -143,8 +149,7 @@
                             android:id="@+id/querkaText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            
+                            android:gravity="left|center_vertical|center_horizontal|center"
                             android:singleLine="true"
                             android:text="Play &amp; Win Coins Daily"
                             android:textColor="@color/colorAdGrey"

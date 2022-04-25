@@ -131,12 +131,13 @@ public class APIManager {
     public static int adInterVal = 0;
     public static boolean aBoolean = false;
     public static AppOpenManager manager;
-
     private static RewardedAd rewardedAd;
-    private static boolean showCustomreward = false;
     private RewardCallback rewardCallback;
+    private static boolean showCustomReward = false;
     final boolean[] booleans = new boolean[]{false};
     public static AnalyticsCallback callbackForAnalytics;
+
+    public static boolean sequenceQureka = false;
 
     public APIManager(Activity activity) {
         APIManager.activity = activity;
@@ -225,14 +226,13 @@ public class APIManager {
 
     public void setAdStatus(String status) {
         if (responseRoot != null) {
-            if(responseRoot.getAPPSETTINGS()!=null)
+            if (responseRoot.getAPPSETTINGS() != null)
                 responseRoot.getAPPSETTINGS().setAppAdShowStatus(status);
         }
     }
 
     public static HashMap<String, Object> getAllAppSettingsData(Context context) {
         String response = new TinyDB(context).getString("response");
-
         JsonObject jsonObject = new Gson().fromJson(response, JsonObject.class).getAsJsonObject("APP_SETTINGS");
         HashMap<String, Object> yourHashMap = new Gson().fromJson(jsonObject.toString(), HashMap.class);
         return yourHashMap;
@@ -405,6 +405,8 @@ public class APIManager {
             for (int i = 0; i < app_adPlatformSequence.size(); i++) {
                 if (app_adPlatformSequence.get(i).contains(ADMOB)) {
                     platformArrayList.add(app_adPlatformSequence.get(i));
+                } else if (app_adPlatformSequence.get(i).contains("Qureka")) {
+                    sequenceQureka = true;
                 }
             }
             ADMOB_B = new String[platformArrayList.size()];
@@ -419,20 +421,28 @@ public class APIManager {
                 ADMOB_R[i] = platformArrayList.get(i);
                 ADMOB_O[i] = platformArrayList.get(i);
             }
+            whichShowReward = 0;
+            whichShowNative = 0;
+            whichShowInter = 0;
+            whichShowBanner = 0;
+            whichShowOpenAd = 0;
         } else if (app_howShowAdInterstitial.equals("1") && alernateAd.length != 0) {
             for (int i = 0; i <= 10; i++) {
                 int min = 0;
                 int max = alernateAd.length;
                 int random = new Random().nextInt((max - min) + 1) + min;
-                if (alernateAd[random].contains(ADMOB)) {
-                    platformArrayList.add(alernateAd[random]);
-                }
+                if (random < alernateAd.length)
+                    if (alernateAd[random].contains(ADMOB)) {
+                        platformArrayList.add(alernateAd[random]);
+                    }
             }
             for (String s : adSequence) {
                 if (platformArrayList.size() != 0) {
                     if (!platformArrayList.get(0).equals(s)) {
                         if (s.contains(ADMOB)) {
                             platformArrayList.add(s);
+                        } else if (s.contains("Qureka")) {
+                            sequenceQureka = true;
                         }
                     }
                 }
@@ -449,6 +459,11 @@ public class APIManager {
                 ADMOB_R[i] = platformArrayList.get(i);
                 ADMOB_O[i] = platformArrayList.get(i);
             }
+            whichShowReward = 0;
+            whichShowNative = 0;
+            whichShowInter = 0;
+            whichShowBanner = 0;
+            whichShowOpenAd = 0;
         }
         if (responseRoot.getAPPSETTINGS().getAppRedirectOtherAppStatus().equals("1")) {
             String redirectNewPackage = responseRoot.getAPPSETTINGS().getAppNewPackageName();
@@ -473,7 +488,6 @@ public class APIManager {
             });
 
             if (ADMOB_O.length > 0) {
-                new TinyDB(activity).putString("AppOpenID", getUnitID(getPlatFormName("O"), "O", ""));
                 loadAppOpenAd(activity, new AppOpenManager.splshADlistner() {
                     @Override
                     public void onSuccess() {
@@ -546,7 +560,7 @@ public class APIManager {
 
                 break;
             case "O":
-                if (ADMOB_O.length > 0)
+                if (ADMOB_O.length > 0) {
                     if (whichShowOpenAd != ADMOB_O.length - 1) {
                         returnPlatForm = ADMOB_O[whichShowOpenAd];
                         whichShowOpenAd++;
@@ -554,6 +568,7 @@ public class APIManager {
                         returnPlatForm = ADMOB_O[whichShowOpenAd];
                         whichShowOpenAd = 0;
                     }
+                }
                 break;
         }
 
@@ -788,7 +803,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             dialog = new Dialog(activity);
             View view = LayoutInflater.from(activity).inflate(R.layout.ad_progress_dialog, null);
             dialog.setContentView(view);
@@ -797,7 +812,14 @@ public class APIManager {
             window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             if (showCustom || mInterstitialAd == null) {
-                showCustomInter(activity);
+                if (sequenceQureka) {
+                    CustomiseinterActivity.H(activity, () -> {
+                        loadInter();
+                        interstitialCallBack(AdvertisementState.QUREKA_INTER_AD_CLOSE);
+                    }, Glob.dataset(activity));
+                } else {
+                    showCustomInter(activity);
+                }
             } else {
                 if (responseRoot.getAPPSETTINGS().getAppDialogBeforeAdShow().equals("1")) {
                     if (!activity.isFinishing())
@@ -944,7 +966,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             if (isBack) {
                 if (responseRoot.getAPPSETTINGS().getAPPOPENBACK().equalsIgnoreCase("ON")) {
                     showOpenCall(activity, (state) -> {
@@ -1004,7 +1026,7 @@ public class APIManager {
                 callback.onClose(AdvertisementState.FIRST_TIME_AD_OFF);
             return;
         }
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             if (responseRoot.getAPPSETTINGS().getAFTERSPLASH().equalsIgnoreCase("INTER")) {
                 if (getInter(false)) {
                     showInterstitial(callback);
@@ -1051,7 +1073,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             if (responseRoot.getAPPSETTINGS().getAPPOPENINTER().equalsIgnoreCase("ON")) {
                 showOpenCall(context, (state) -> {
                     if (getInter(false)) {
@@ -1319,7 +1341,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             if (responseRoot.getAPPSETTINGS().getNATIVEBANNER().equalsIgnoreCase("BANNER")) {
                 String platform = getPlatFormName("B");
                 String adUnitId = getUnitID(platform, "B", "");
@@ -1370,7 +1392,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             String platform = getPlatFormName("BN");
             String adUnitId = getUnitID(platform, "BN", "");
             if (isLog)
@@ -1417,7 +1439,10 @@ public class APIManager {
                     interCallback.onClose(AdvertisementState.BANNER_AD_FAIL);
                 }
                 banner_container.removeAllViews();
-                showMyCustomBanner(banner_container, interCallback);
+                if (sequenceQureka)
+                    BannerUtils.banner(banner_container, activity, interCallback);
+                else
+                    showMyCustomBanner(banner_container, interCallback);
             }
 
             @Override
@@ -1544,7 +1569,10 @@ public class APIManager {
                         if (interCallback != null) {
                             interCallback.onClose(AdvertisementState.NATIVE_BANNER_AD_FAIL);
                         }
-                        showMyCustomNativeBanner(banner_container, interCallback);
+                        if (sequenceQureka) {
+                            Nativeutils.banner(banner_container, activity, interCallback);
+                        } else
+                            showMyCustomNativeBanner(banner_container, interCallback);
 
                     }
                 })
@@ -1721,7 +1749,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
             if (isLog)
@@ -1767,7 +1795,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             String platform = getPlatFormName("N");
             String adUnitId = getUnitID(platform, "N", "");
             if (isLog)
@@ -1808,10 +1836,19 @@ public class APIManager {
                         }
                         if (isLog)
                             Log.e(TAG, "onAdFailedToLoad: " + adError.getMessage());
-                        if (!small)
-                            showMyCustomNative(nativeAdContainer, nativeCallback);
-                        else
-                            showMyCustomSmallNative(nativeAdContainer, nativeCallback);
+
+                        if (sequenceQureka) {
+                            if (!small)
+                                Nativeutils.mediam(nativeAdContainer, activity, nativeCallback);
+                            else
+                                Nativeutils.small(nativeAdContainer, activity, nativeCallback);
+
+                        } else {
+                            if (!small)
+                                showMyCustomNative(nativeAdContainer, nativeCallback);
+                            else
+                                showMyCustomSmallNative(nativeAdContainer, nativeCallback);
+                        }
                         if (nativeCallback != null) {
                             nativeCallback.onLoad(true);
                             nativeCallback.onState(AdvertisementState.NATIVE_AD_FAIL);
@@ -1938,7 +1975,7 @@ public class APIManager {
         RewardedAd.load(activity, adUnitId, new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                showCustomreward = true;
+                showCustomReward = true;
                 rewardedAd = null;
                 if (callbackForAnalytics != null) {
                     callbackForAnalytics.onState("Reward Load  " + loadAdError.getCode() + " : " + loadAdError.getMessage());
@@ -1947,7 +1984,7 @@ public class APIManager {
 
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewarded) {
-                showCustomreward = false;
+                showCustomReward = false;
                 rewardedAd = rewarded;
                 rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
@@ -2022,7 +2059,7 @@ public class APIManager {
             return;
         }
 
-        if (!responseRoot.getAPPSETTINGS().getQUREKA().equalsIgnoreCase("ON")) {
+        if (!getQureka()) {
             dialog = new Dialog(activity);
             View view = LayoutInflater.from(activity).inflate(R.layout.ad_progress_dialog, null);
             dialog.setContentView(view);
@@ -2030,8 +2067,18 @@ public class APIManager {
             Window window = dialog.getWindow();
             window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            if (showCustomreward || rewardedAd == null) {
-                showCustomReward(activity);
+            if (showCustomReward || rewardedAd == null) {
+                if(sequenceQureka){
+                    CustomiseinterActivity.H(activity, () -> {
+                        loadRewardAd();
+                        if (rewardCallback != null) {
+                            rewardCallback.onClose(true);
+                            rewardCallback.onState(AdvertisementState.QUREKA_REWARD_AD_CLOSE);
+                        }
+                    }, Glob.dataset(activity));
+                }else {
+                    showCustomReward(activity);
+                }
             } else {
                 if (responseRoot.getAPPSETTINGS().getAppDialogBeforeAdShow().equals("1")) {
                     if (!activity.isFinishing())

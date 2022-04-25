@@ -156,9 +156,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="4dp"
-                app:cardUseCompatPadding="true">
+                android:layout_marginHorizontal="@dimen/_10dp">
 
                 <Button
                     android:id="@+id/btn_install"

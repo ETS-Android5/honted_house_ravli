@@ -117,25 +117,22 @@ public class CustomiseinterActivity extends AppCompatActivity {
                 int i8 = Glob.f2126r;
                 if (i8 == 2) {
                     Glob.f2126r = 0;
-                    F(findViewById(R.id.llcus3), 2000);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            int i7;
-                            FadeIn(findViewById(R.id.llPersonalAd));
-                            FadeIn(findViewById(R.id.main));
-                            FadeIn(findViewById(R.id.aa));
-                            String str = f2124p.f18654b;
-                            C = str;
-                            if (str.contains("http")) {
-                                i7 = R.id.querkaText;
-                            } else {
-                                i7 = R.id.adPersonalLlPlayStore;
-                            }
-                            FadeIn(findViewById(i7));
-                            FadeIn(findViewById(R.id.adPersonalLlCloseInstallBtns));
+                    F(findViewById(R.id.llcus3), 1000);
+                    new Handler().postDelayed(() -> {
+                        int i71;
+                        FadeIn(findViewById(R.id.llPersonalAd));
+                        FadeIn(findViewById(R.id.main));
+                        FadeIn(findViewById(R.id.aa));
+                        String str1 = f2124p.f18654b;
+                        C = str1;
+                        if (str1.contains("http")) {
+                            i71 = R.id.querkaText;
+                        } else {
+                            i71 = R.id.adPersonalLlPlayStore;
                         }
-                    }, 1000);
+                        FadeIn(findViewById(i71));
+                        FadeIn(findViewById(R.id.adPersonalLlCloseInstallBtns));
+                    }, 500);
                 } else if (i8 == 1) {
                     Glob.f2126r = i8 + 1;
                     final View findViewById = findViewById(R.id.native_ad_icon);
@@ -143,7 +140,7 @@ public class CustomiseinterActivity extends AppCompatActivity {
                     loadAnimation.setFillAfter(true);
                     findViewById.startAnimation(loadAnimation);
                     TranslateAnimation translateAnimation = new TranslateAnimation(1, 0.0f, 1, 0.0f, 1, 1.5f, 1, 0.0f);
-                    translateAnimation.setDuration((long) 2000);
+                    translateAnimation.setDuration((long) 1000);
                     translateAnimation.setFillAfter(true);
                     translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -166,7 +163,7 @@ public class CustomiseinterActivity extends AppCompatActivity {
                     });
                     translateAnimation.setFillEnabled(true);
                     findViewById.startAnimation(translateAnimation);
-                    F(findViewById(R.id.cvTopAd), 2000);
+                    F(findViewById(R.id.cvTopAd), 1000);
                     String str3 = f2124p.f18654b;
                     C = str3;
                     if (str3.contains("http")) {
@@ -174,18 +171,15 @@ public class CustomiseinterActivity extends AppCompatActivity {
                     } else {
                         findViewById(R.id.querkaText).setVisibility(View.GONE);
                     }
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            FadeIn(findViewById(R.id.aa));
-                            FadeIn(findViewById(R.id.adPersonalLlCloseInstallBtnsCenter));
-                        }
-                    },2000);
+                    new Handler().postDelayed(() -> {
+                        FadeIn(findViewById(R.id.aa));
+                        FadeIn(findViewById(R.id.adPersonalLlCloseInstallBtnsCenter));
+                    },1000);
                 } else {
                     Glob.f2126r = i8 + 1;
                     final View findViewById2 = findViewById(R.id.native_ad_icon);
                     TranslateAnimation translateAnimation2 = new TranslateAnimation(1, 0.0f, 1, 0.0f, 1, -2.0f, 1, 0.0f);
-                    translateAnimation2.setDuration((long) 1000);
+                    translateAnimation2.setDuration((long) 500);
                     translateAnimation2.setFillAfter(true);
                     translateAnimation2.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -210,60 +204,46 @@ public class CustomiseinterActivity extends AppCompatActivity {
                         public void run() {
                             int i7;
                             View view;
-                            E(findViewById(R.id.native_ad_title), 600);
-                            E(findViewById(R.id.banner), 1000);
-                            E(findViewById(R.id.native_ad_social_context), 1200);
+                            E(findViewById(R.id.native_ad_title), 300);
+                            E(findViewById(R.id.banner), 500);
+                            E(findViewById(R.id.native_ad_social_context), 600);
                             String str = f2124p.f18654b;
                             C = str;
                             if (str.contains("http")) {
                                 view = findViewById(R.id.querkaText);
-                                i7 = 900;
+                                i7 = 450;
                             } else {
-                                E(findViewById(R.id.userCount), 800);
+                                E(findViewById(R.id.userCount), 400);
                                 view = findViewById(R.id.adPersonalLlPlayStore);
-                                i7 = 1400;
+                                i7 = 700;
                             }
                             E(view, i7);
-                            E(findViewById(R.id.adPersonalLlCloseInstallBtns), 1600);
+                            E(findViewById(R.id.adPersonalLlCloseInstallBtns), 800);
                         }
-                    }, 800);
+                    }, 400);
                 }
-                findViewById(R.id.native_ad_call_to_action).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String url = APIManager.QUREKALINK;
-                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                        builder.setShowTitle(true);
-                        builder.build().launchUrl(CustomiseinterActivity.this, Uri.parse(url));
-                    }
+                findViewById(R.id.native_ad_call_to_action).setOnClickListener(view -> {
+                    String url = APIManager.QUREKALINK;
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setShowTitle(true);
+                    builder.build().launchUrl(CustomiseinterActivity.this, Uri.parse(url));
                 });
 
-                int_bg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String url = APIManager.QUREKALINK;
-                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                        builder.setShowTitle(true);
-                        builder.build().launchUrl(CustomiseinterActivity.this, Uri.parse(url));
-                    }
+                int_bg.setOnClickListener(view -> {
+                    String url = APIManager.QUREKALINK;
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setShowTitle(true);
+                    builder.build().launchUrl(CustomiseinterActivity.this, Uri.parse(url));
                 });
-                findViewById(R.id.ImgClose).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.e("TAG", "onClick: "+ f2125q);
-                        if(f2125q!=null) {
-                            f2125q.a();
-                            f2125q=null;
-                        }
-                        finish();
+                findViewById(R.id.ImgClose).setOnClickListener(view -> {
+                    Log.e("TAG", "onClick: "+ f2125q);
+                    if(f2125q!=null) {
+                        f2125q.a();
+                        f2125q=null;
                     }
+                    finish();
                 });
-                f2134z.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        G();
-                    }
-                });
+                f2134z.setOnClickListener(v -> G());
                 V++;
                 return;
             } catch (Exception unused) {
