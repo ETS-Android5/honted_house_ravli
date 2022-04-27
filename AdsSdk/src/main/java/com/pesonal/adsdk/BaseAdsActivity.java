@@ -438,7 +438,8 @@ public class BaseAdsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        refreshHandler.removeCallbacks(runnable);
+        if (refreshHandler != null && runnable != null)
+            refreshHandler.removeCallbacks(runnable);
     }
 
     public void showRedirectDialog(final String url) {
