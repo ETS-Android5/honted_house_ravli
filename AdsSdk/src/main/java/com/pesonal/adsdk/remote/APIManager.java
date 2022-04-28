@@ -2043,13 +2043,13 @@ public class APIManager {
             return;
         }
 
-        if (!AD_VISIBLE) {
-            if (rewardCallback != null) {
-                rewardCallback.onClose(true);
-                rewardCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
-            }
-            return;
-        }
+//        if (!AD_VISIBLE) {
+//            if (rewardCallback != null) {
+//                rewardCallback.onClose(true);
+//                rewardCallback.onState(AdvertisementState.FIRST_TIME_AD_OFF);
+//            }
+//            return;
+//        }
 
         if (APIManager.getApp_adShowStatus() == 0) {
             if (rewardCallback != null) {
