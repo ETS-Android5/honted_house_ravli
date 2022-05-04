@@ -1291,7 +1291,9 @@ public class APIManager {
                         }
                     }
                 });
-                customAppOpenAds.show();
+                if (!activity.isFinishing()) {
+                    customAppOpenAds.show();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 if (myCallback != null) {
@@ -2068,7 +2070,7 @@ public class APIManager {
             window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             if (showCustomReward || rewardedAd == null) {
-                if(sequenceQureka){
+                if (sequenceQureka) {
                     CustomiseinterActivity.H(activity, () -> {
                         loadRewardAd();
                         if (rewardCallback != null) {
@@ -2076,7 +2078,7 @@ public class APIManager {
                             rewardCallback.onState(AdvertisementState.QUREKA_REWARD_AD_CLOSE);
                         }
                     }, Glob.dataset(activity));
-                }else {
+                } else {
                     showCustomReward(activity);
                 }
             } else {

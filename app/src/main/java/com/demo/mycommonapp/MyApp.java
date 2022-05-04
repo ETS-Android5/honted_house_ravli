@@ -8,6 +8,8 @@ import com.pesonal.adsdk.remote.AdvertisementState;
 import com.pesonal.adsdk.remote.AnalyticsCallback;
 import com.pesonal.adsdk.remote.InterCallback;
 
+import java.util.ArrayList;
+
 public class MyApp extends AppClass {
 
 
@@ -21,7 +23,11 @@ public class MyApp extends AppClass {
         super.onCreate();
         if(BuildConfig.DEBUG)
             APIManager.setIsLog(true);
-        setClass(SplashActivity.class);
+        ArrayList<Class> classes=new ArrayList<>();
+        classes.add(StartSecondActivity.class);
+        classes.add(MainActivity2.class);
+        classes.add(SplashActivity.class);
+        setMultipleClass(classes);
         APIManager.setAdListner(s -> Log.e("TAG", "onState: "+s ));
     }
 }

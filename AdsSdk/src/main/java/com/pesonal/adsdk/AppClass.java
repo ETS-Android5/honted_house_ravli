@@ -4,10 +4,6 @@ package com.pesonal.adsdk;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -23,6 +19,8 @@ import com.downloader.PRDownloaderConfig;
 import com.pesonal.adsdk.remote.APIManager;
 import com.pesonal.adsdk.remote.AdvertisementState;
 
+import java.util.ArrayList;
+
 import de.blinkt.openvpn.DisconnectVPNActivity;
 import de.blinkt.openvpn.core.OpenVPNService;
 
@@ -31,12 +29,18 @@ public abstract class AppClass extends Application
 
     private Activity currentActivity;
     Class aClass;
+    ArrayList<Class> classes = new ArrayList<>();
+    private String substring="";
 
     public abstract void onState(AdvertisementState state);
 
     public void setClass(Class aClass) {
         this.aClass = aClass;
         OpenVPNService.setNotificationActivityClass(aClass);
+    }
+
+    public void setMultipleClass(ArrayList<Class> aClass) {
+        this.classes = aClass;
     }
 
 
@@ -55,17 +59,44 @@ public abstract class AppClass extends Application
 
     @OnLifecycleEvent(Event.ON_START)
     protected void onMoveToForeground() {
-        if (currentActivity != null)
-            if (APIManager.getApp_adShowStatus() == 1 && !APIManager.getInstance(currentActivity).getQureka())
-                if (aClass != null) {
-                    if (APIManager.isLog)
-                        Log.e("TAG", "onMoveToForeground: " + aClass.getName() + "  " + currentActivity.getLocalClassName());
-                    if (!aClass.getName().contains(currentActivity.getLocalClassName())) {
-                        if (!DisconnectVPNActivity.class.getName().contains(currentActivity.getLocalClassName())) {
-                            APIManager.getInstance(currentActivity).showOpenCall(currentActivity, this::onState);
-                        }
+        if (currentActivity != null) {
+            substring = currentActivity.getLocalClassName();
+            boolean adState = getAdState();
+            if (APIManager.isLog)
+                Log.e("TAG", "onMoveToForeground: " +substring+ "  "+adState);
+            if (adState && substring != null)
+                if (APIManager.getApp_adShowStatus() == 1 && !APIManager.getInstance(currentActivity).getQureka())
+                    APIManager.getInstance(currentActivity).showOpenCall(currentActivity, this::onState);
+        }
+    }
+
+    public boolean getAdState() {
+        if (aClass != null) {
+            if (aClass.getName().equalsIgnoreCase(substring)) {
+                return false;
+            } else if (DisconnectVPNActivity.class.getName().equalsIgnoreCase(substring)) {
+                return false;
+            } else if (classes.size() > 0) {
+                for (Class aClass : classes) {
+                    if (aClass.getName().equalsIgnoreCase(substring)) {
+                        return false;
                     }
                 }
+            }
+            return false;
+        } else {
+            if (DisconnectVPNActivity.class.getName().equalsIgnoreCase(substring)) {
+                return false;
+            } else if (classes.size() > 0) {
+                for (Class aClass : classes) {
+                    if (aClass.getName().equalsIgnoreCase(substring)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+
     }
 
 
@@ -97,7 +128,6 @@ public abstract class AppClass extends Application
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
     }
-
 
 
 }
