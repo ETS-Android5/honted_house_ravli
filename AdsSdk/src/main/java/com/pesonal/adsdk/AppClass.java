@@ -60,7 +60,7 @@ public abstract class AppClass extends Application
     @OnLifecycleEvent(Event.ON_START)
     protected void onMoveToForeground() {
         if (currentActivity != null) {
-            substring = currentActivity.getLocalClassName();
+            substring = currentActivity.getClass().getName();
             boolean adState = getAdState();
             if (APIManager.isLog)
                 Log.e("TAG", "onMoveToForeground: " +substring+ "  "+adState);

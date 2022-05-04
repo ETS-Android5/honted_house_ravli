@@ -2079,7 +2079,11 @@ public class APIManager {
                         }
                     }, Glob.dataset(activity));
                 } else {
-                    showCustomReward(activity);
+                    if (rewardCallback != null) {
+                        rewardCallback.onClose(false);
+                        rewardCallback.onState(AdvertisementState.REWARD_NOT_FOUND);
+                    }
+                    //showCustomReward(activity);
                 }
             } else {
                 if (responseRoot.getAPPSETTINGS().getAppDialogBeforeAdShow().equals("1")) {
