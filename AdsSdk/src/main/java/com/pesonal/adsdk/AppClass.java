@@ -74,29 +74,19 @@ public abstract class AppClass extends Application
         if (aClass != null) {
             if (aClass.getName().equalsIgnoreCase(substring)) {
                 return false;
-            } else if (DisconnectVPNActivity.class.getName().equalsIgnoreCase(substring)) {
-                return false;
-            } else if (classes.size() > 0) {
-                for (Class aClass : classes) {
-                    if (aClass.getName().equalsIgnoreCase(substring)) {
-                        return false;
-                    }
-                }
             }
+        }
+        if (DisconnectVPNActivity.class.getName().equalsIgnoreCase(substring)) {
             return false;
-        } else {
-            if (DisconnectVPNActivity.class.getName().equalsIgnoreCase(substring)) {
-                return false;
-            } else if (classes.size() > 0) {
-                for (Class aClass : classes) {
-                    if (aClass.getName().equalsIgnoreCase(substring)) {
-                        return false;
-                    }
+        }
+        if (classes.size() > 0) {
+            for (Class aClass : classes) {
+                if (aClass.getName().equalsIgnoreCase(substring)) {
+                    return false;
                 }
             }
         }
         return true;
-
     }
 
 

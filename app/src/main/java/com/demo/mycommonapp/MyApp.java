@@ -25,7 +25,7 @@ public class MyApp extends AppClass {
             APIManager.setIsLog(true);
         ArrayList<Class> classes=new ArrayList<>();
         classes.add(StartSecondActivity.class);
-        classes.add(MainActivity2.class);
+//        classes.add(MainActivity2.class);
         classes.add(SplashActivity.class);
         setMultipleClass(classes);
         APIManager.setAdListner(s -> Log.e("TAG", "onState: "+s ));
