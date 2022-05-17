@@ -107,101 +107,171 @@ Fetch Promo Apps list for ```StartActivity```.
 APIManager.getInstance(StartSecondActivity.this).get_SPLASHMoreAppData();
 ```
 
-### MainActivity
-Extend as ```BannerVpnActivity``` and call below method in ```onCreate()```.
-```java
+[comment]: <> (### MainActivity)
 
- if(APIManager.getInstance(this).getVpnMenuStatus()){
-     btnOpenVpnScreen.setVisibility(View.VISIBLE);
- }else btnOpenVpnScreen.setVisibility(View.GONE);
+[comment]: <> (Extend as ```BannerVpnActivity``` and call below method in ```onCreate&#40;&#41;```.)
 
- iVPN = (FrameLayout) findViewById(R.id.iVPN);
- rootViewGuide = (CircularRevealRelativeLayout) findViewById(R.id.rootViewGuide);
- guideVpn = (LottieAnimationView) findViewById(R.id.guideVpn);
- layoutGuideVPN = (FrameLayout) findViewById(R.id.layoutGuideVPN);
- if (APIManager.getInstance(this).getVpnStatus()) {
-     setBannerView(iVPN);
-     setGuideView(layoutGuideVPN);
-     setBackgroundColor(getColor(R.color.colorAdBlack));
-     setTextColor(getColor(R.color.colorAdWhite));
-     guideVpn.setOnClickListener(view -> {
-         connectVpnListener((isConnect, connectionState) -> {
-              if (isConnect == CONNECTION_STATE.CONNECTED){
-                  rootViewGuide.setVisibility(View.GONE);
-              } else if (isConnect == CONNECTION_STATE.CONNECTING) {
-                  guideVpn.setVisibility(View.GONE);
-                  layoutGuideVPN.setVisibility(View.INVISIBLE);
-              } else if (isConnect == CONNECTION_STATE.FAIL) {
-                  rootViewGuide.setVisibility(View.GONE);
-              }else if (isConnect == CONNECTION_STATE.DISCONNECTED) {
-                  rootViewGuide.setVisibility(View.GONE);
-              }
-         });
-     });
-     if (getConnection()) {
-         rootViewGuide.setVisibility(View.GONE);
-     } else {
-         rootViewGuide.setVisibility(View.VISIBLE);
-     }
- }
-```
+[comment]: <> (```java)
 
-And call below in ```onBackPressed()```.
-```java
- if (rootViewGuide.getVisibility() == View.VISIBLE)
-    return;
-```
-And put below layout in your ```xml```.
-```xml
+[comment]: <> ( if&#40;APIManager.getInstance&#40;this&#41;.getVpnMenuStatus&#40;&#41;&#41;{)
 
-   <FrameLayout
-        android:id="@+id/iVPN"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+[comment]: <> (     btnOpenVpnScreen.setVisibility&#40;View.VISIBLE&#41;;)
 
-   <com.google.android.material.circularreveal.CircularRevealRelativeLayout
-          android:id="@+id/rootViewGuide"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:clickable="true"
-          android:visibility="gone">
+[comment]: <> ( }else btnOpenVpnScreen.setVisibility&#40;View.GONE&#41;;)
 
-          <View
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_below="@+id/xyz"
-              android:background="#9D000000" />
+[comment]: <> ( iVPN = &#40;FrameLayout&#41; findViewById&#40;R.id.iVPN&#41;;)
 
-          <RelativeLayout
-              android:id="@+id/xyz"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_50sdp">
+[comment]: <> ( rootViewGuide = &#40;CircularRevealRelativeLayout&#41; findViewById&#40;R.id.rootViewGuide&#41;;)
 
-              <FrameLayout
-                  android:id="@+id/layoutGuideVPN"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent" />
+[comment]: <> ( guideVpn = &#40;LottieAnimationView&#41; findViewById&#40;R.id.guideVpn&#41;;)
 
-              <com.airbnb.lottie.LottieAnimationView
-                  android:id="@+id/guideVpn"
-                  android:layout_width="80dp"
-                  android:layout_height="50dp"
-                  android:layout_alignParentEnd="true"
-                  android:layout_centerVertical="true"
-                  android:layout_marginEnd="26dp"
-                  app:lottie_autoPlay="true"
-                  app:lottie_loop="true"
-                  app:lottie_rawRes="@raw/guide" />
+[comment]: <> ( layoutGuideVPN = &#40;FrameLayout&#41; findViewById&#40;R.id.layoutGuideVPN&#41;;)
 
-          </RelativeLayout>
+[comment]: <> ( if &#40;APIManager.getInstance&#40;this&#41;.getVpnStatus&#40;&#41;&#41; {)
 
-   </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
-```
+[comment]: <> (     setBannerView&#40;iVPN&#41;;)
 
-### For VPN Screen
-```java
-   startActivity(new Intent(MainActivity.this, VanishVPNActivity.class));
-```
+[comment]: <> (     setGuideView&#40;layoutGuideVPN&#41;;)
+
+[comment]: <> (     setBackgroundColor&#40;getColor&#40;R.color.colorAdBlack&#41;&#41;;)
+
+[comment]: <> (     setTextColor&#40;getColor&#40;R.color.colorAdWhite&#41;&#41;;)
+
+[comment]: <> (     guideVpn.setOnClickListener&#40;view -> {)
+
+[comment]: <> (         connectVpnListener&#40;&#40;isConnect, connectionState&#41; -> {)
+
+[comment]: <> (              if &#40;isConnect == CONNECTION_STATE.CONNECTED&#41;{)
+
+[comment]: <> (                  rootViewGuide.setVisibility&#40;View.GONE&#41;;)
+
+[comment]: <> (              } else if &#40;isConnect == CONNECTION_STATE.CONNECTING&#41; {)
+
+[comment]: <> (                  guideVpn.setVisibility&#40;View.GONE&#41;;)
+
+[comment]: <> (                  layoutGuideVPN.setVisibility&#40;View.INVISIBLE&#41;;)
+
+[comment]: <> (              } else if &#40;isConnect == CONNECTION_STATE.FAIL&#41; {)
+
+[comment]: <> (                  rootViewGuide.setVisibility&#40;View.GONE&#41;;)
+
+[comment]: <> (              }else if &#40;isConnect == CONNECTION_STATE.DISCONNECTED&#41; {)
+
+[comment]: <> (                  rootViewGuide.setVisibility&#40;View.GONE&#41;;)
+
+[comment]: <> (              })
+
+[comment]: <> (         }&#41;;)
+
+[comment]: <> (     }&#41;;)
+
+[comment]: <> (     if &#40;getConnection&#40;&#41;&#41; {)
+
+[comment]: <> (         rootViewGuide.setVisibility&#40;View.GONE&#41;;)
+
+[comment]: <> (     } else {)
+
+[comment]: <> (         rootViewGuide.setVisibility&#40;View.VISIBLE&#41;;)
+
+[comment]: <> (     })
+
+[comment]: <> ( })
+
+[comment]: <> (```)
+
+[comment]: <> (And call below in ```onBackPressed&#40;&#41;```.)
+
+[comment]: <> (```java)
+
+[comment]: <> ( if &#40;rootViewGuide.getVisibility&#40;&#41; == View.VISIBLE&#41;)
+
+[comment]: <> (    return;)
+
+[comment]: <> (```)
+
+[comment]: <> (And put below layout in your ```xml```.)
+
+[comment]: <> (```xml)
+
+[comment]: <> (   <FrameLayout)
+
+[comment]: <> (        android:id="@+id/iVPN")
+
+[comment]: <> (        android:layout_width="match_parent")
+
+[comment]: <> (        android:layout_height="wrap_content" />)
+
+[comment]: <> (   <com.google.android.material.circularreveal.CircularRevealRelativeLayout)
+
+[comment]: <> (          android:id="@+id/rootViewGuide")
+
+[comment]: <> (          android:layout_width="match_parent")
+
+[comment]: <> (          android:layout_height="match_parent")
+
+[comment]: <> (          android:clickable="true")
+
+[comment]: <> (          android:visibility="gone">)
+
+[comment]: <> (          <View)
+
+[comment]: <> (              android:layout_width="match_parent")
+
+[comment]: <> (              android:layout_height="match_parent")
+
+[comment]: <> (              android:layout_below="@+id/xyz")
+
+[comment]: <> (              android:background="#9D000000" />)
+
+[comment]: <> (          <RelativeLayout)
+
+[comment]: <> (              android:id="@+id/xyz")
+
+[comment]: <> (              android:layout_width="match_parent")
+
+[comment]: <> (              android:layout_height="@dimen/_50sdp">)
+
+[comment]: <> (              <FrameLayout)
+
+[comment]: <> (                  android:id="@+id/layoutGuideVPN")
+
+[comment]: <> (                  android:layout_width="match_parent")
+
+[comment]: <> (                  android:layout_height="match_parent" />)
+
+[comment]: <> (              <com.airbnb.lottie.LottieAnimationView)
+
+[comment]: <> (                  android:id="@+id/guideVpn")
+
+[comment]: <> (                  android:layout_width="80dp")
+
+[comment]: <> (                  android:layout_height="50dp")
+
+[comment]: <> (                  android:layout_alignParentEnd="true")
+
+[comment]: <> (                  android:layout_centerVertical="true")
+
+[comment]: <> (                  android:layout_marginEnd="26dp")
+
+[comment]: <> (                  app:lottie_autoPlay="true")
+
+[comment]: <> (                  app:lottie_loop="true")
+
+[comment]: <> (                  app:lottie_rawRes="@raw/guide" />)
+
+[comment]: <> (          </RelativeLayout>)
+
+[comment]: <> (   </com.google.android.material.circularreveal.CircularRevealRelativeLayout>)
+
+[comment]: <> (```)
+
+[comment]: <> (### For VPN Screen)
+
+[comment]: <> (```java)
+
+[comment]: <> (   startActivity&#40;new Intent&#40;MainActivity.this, VanishVPNActivity.class&#41;&#41;;)
+
+[comment]: <> (```)
 
 ### NativeAd
 ```java
