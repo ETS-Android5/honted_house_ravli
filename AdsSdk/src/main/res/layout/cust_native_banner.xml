@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_margin="3dp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/bg_solid"
                 android:gravity="center"
                 android:lines="1"
                 android:paddingHorizontal="@dimen/_15sdp"

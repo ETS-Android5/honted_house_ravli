@@ -5,12 +5,10 @@ plugins {
 
 group = 'com.github.Aanibrothers-Infotech'
 android {
-
-    resourcePrefix 'adModule_'
     compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

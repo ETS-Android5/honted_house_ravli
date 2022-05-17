@@ -11,6 +11,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -284,7 +285,7 @@ public class BaseAdsActivity extends BaseActivity {
                                     }
                                     editor_AD_PREF.putBoolean("need_internet", need_internet).apply();
                                     new TinyDB(BaseAdsActivity.this).putString("response", response1.toString());
-                                    downloadVpn(responseRoot.getAPPSETTINGS().getVpnLink(), responseRoot.getAPPSETTINGS().getVpnLocation());
+
                                     if (responseRoot.getAPPSETTINGS().getPromoADJson() != null)
                                         downloadPromoAD(responseRoot.getAPPSETTINGS().getPromoADJson());
                                 }
@@ -460,15 +461,12 @@ public class BaseAdsActivity extends BaseActivity {
         txt_decription.setText("We have transferred our server, so install our new app by clicking the button below to enjoy the new features of app.");
 
 
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Uri marketUri = Uri.parse(url);
-                    Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                    startActivity(marketIntent);
-                } catch (ActivityNotFoundException ignored1) {
-                }
+        update.setOnClickListener(view1 -> {
+            try {
+                Uri marketUri = Uri.parse(url);
+                Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                startActivity(marketIntent);
+            } catch (ActivityNotFoundException ignored1) {
             }
         });
 
@@ -486,18 +484,13 @@ public class BaseAdsActivity extends BaseActivity {
                 }
                 doubleBackToExitPressedOnce++;
                 Toast.makeText(BaseAdsActivity.this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = 0;
-                    }
-                }, 4000);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = 0, 4000);
             }
             return false;
         });
         Window window = dialog.getWindow();
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }
 
@@ -521,103 +514,6 @@ public class BaseAdsActivity extends BaseActivity {
     }
 
 
-    public void downloadVpn(String url, String vpnlocation) {
-        if (APIManager.isLog)
-            Log.e("TAG", "progress url json: " + url + "  " + vpnlocation);
-        PRDownloader.download(url, getCacheDir().getAbsolutePath(), "vpnList.json")
-                .build()
-                .setOnStartOrResumeListener(() -> {
-                })
-                .setOnPauseListener(() -> {
-                })
-                .setOnCancelListener(() -> {
-                })
-                .setOnProgressListener(progress -> {
-                    long pro = progress.currentBytes * 100 / progress.totalBytes;
-                    if (APIManager.isLog && pro == 100)
-                        Log.e("TAG", "progress:list " + pro);
-                })
-                .start(new OnDownloadListener() {
-                    @Override
-                    public void onDownloadComplete() {
-                        if (APIManager.isLog)
-                            Log.e("TAG", "progress onDownloadComplete: json  " + getCacheDir().getAbsolutePath() + "/vpnList.json");
-                        File file = new File(getCacheDir(), "vpnList.json");
-                        if (file.exists()) {
-                            String jsonFromFile = loadJsonFromFile(file);
-                            Gson gson = new GsonBuilder().create();
-                            ResponseVpn responseVpnList = gson.fromJson(jsonFromFile, ResponseVpn.class);
-                            for (CountryListItem countryListItem : responseVpnList.getCountryList()) {
-                                if (countryListItem.getCountryName().equalsIgnoreCase(vpnlocation)) {
-                                    int max = countryListItem.getServerList().size() - 1;
-                                    int min = 0;
-                                    int random = new Random().nextInt(max - min + 1) + min;
-                                    Log.e("TAG", "onDownloadComplete:random " + random);
-                                    new TinyDB(BaseAdsActivity.this).putString("vpnServer", countryListItem.getServerList().get(random).getCityName());
-                                    new TinyDB(BaseAdsActivity.this).putString("vpnServerFlag", countryListItem.getFlagUrl());
-                                    downloadConfigFile(countryListItem.getServerList().get(random).getConfig());
-                                }
-                            }
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Error error) {
-                        if (APIManager.isLog)
-                            Log.e("TAG", "progress onError: error" + error.getServerErrorMessage());
-                    }
-
-                });
-    }
-
-    public void downloadConfigFile(String url) {
-        if (APIManager.isLog)
-            Log.e("TAG", "downloadConfigFile: " + url + "  ");
-        PRDownloader.download(url, getCacheDir().getAbsolutePath(), "server.ovpn")
-                .build()
-                .setOnStartOrResumeListener(() -> {
-
-                })
-                .setOnPauseListener(() -> {
-
-                })
-                .setOnCancelListener(() -> {
-
-                })
-                .setOnProgressListener(progress -> {
-                    if (APIManager.isLog)
-                        Log.e("TAG", "progress: downloadConfigFile  " + (progress.currentBytes * 100 / progress.totalBytes));
-                })
-                .start(new OnDownloadListener() {
-                    @Override
-                    public void onDownloadComplete() {
-                        if (APIManager.isLog)
-                            Log.e("TAG", "progress onDownloadComplete: downloadConfigFile  ");
-
-                    }
-
-                    @Override
-                    public void onError(Error error) {
-                        if (APIManager.isLog)
-                            Log.e("TAG", "progress onError: downloadConfigFile" + error.getServerErrorMessage());
-                    }
-                });
-    }
-
-    public String loadJsonFromFile(File file) {
-        try {
-            InputStream inputStream = new FileInputStream(file);
-            int size = inputStream.available();
-            byte[] bytes = new byte[size];
-            inputStream.read(bytes);
-            inputStream.close();
-            return new String(bytes, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 
     public void downloadPromoAD(String url) {
         if (APIManager.isLog)

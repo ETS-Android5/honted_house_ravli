@@ -65,7 +65,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/bg_strok_edit"
+            android:background="@drawable/bg_strok"
             android:gravity="top|left"
             android:inputType="textMultiLine|textCapSentences"
             android:lines="8"

@@ -27,7 +27,7 @@
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/bg_solid"
                 android:text="Start"
                 android:textColor="@color/themeColor"
                 android:textSize="18dp" />
@@ -46,7 +46,7 @@
                 android:id="@+id/ivShare"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/bg_solid"
                 android:padding="12dp"
                 app:srcCompat="@drawable/icon_share" />
 
@@ -65,7 +65,7 @@
                 android:id="@+id/ivPrivacy"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/bg_solid"
                 android:padding="7dp"
                 app:srcCompat="@drawable/icon_privacy" />
 

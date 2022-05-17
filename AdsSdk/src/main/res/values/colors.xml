@@ -9,11 +9,5 @@
 
 
     <color name="colorVpnDeActive">#AFAFAF</color>
-    <color name="colorVpnDeActiveTransparent">#80AFAFAF</color>
-    <color name="colorVpnActive">#00a861</color>
-    <color name="colorVpnActiveTransparent">#8000A861</color>
 
-    <color name="colorBgVpn">#051721</color>
-    <color name="colorActive">#68B04D</color>
-    <color name="colorDeActive">#FF4153</color>
 </resources>

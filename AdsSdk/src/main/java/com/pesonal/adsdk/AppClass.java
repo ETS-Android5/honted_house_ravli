@@ -21,22 +21,19 @@ import com.pesonal.adsdk.remote.AdvertisementState;
 
 import java.util.ArrayList;
 
-import de.blinkt.openvpn.DisconnectVPNActivity;
-import de.blinkt.openvpn.core.OpenVPNService;
-
 public abstract class AppClass extends Application
         implements ActivityLifecycleCallbacks, LifecycleObserver {
 
     private Activity currentActivity;
     Class aClass;
     ArrayList<Class> classes = new ArrayList<>();
-    private String substring="";
+    private String substring = "";
 
     public abstract void onState(AdvertisementState state);
 
     public void setClass(Class aClass) {
         this.aClass = aClass;
-        OpenVPNService.setNotificationActivityClass(aClass);
+//        OpenVPNService.setNotificationActivityClass(aClass);
     }
 
     public void setMultipleClass(ArrayList<Class> aClass) {
@@ -63,7 +60,7 @@ public abstract class AppClass extends Application
             substring = currentActivity.getClass().getName();
             boolean adState = getAdState();
             if (APIManager.isLog)
-                Log.e("TAG", "onMoveToForeground: " +substring+ "  "+adState);
+                Log.e("TAG", "onMoveToForeground: " + substring + "  " + adState);
             if (adState && substring != null)
                 if (APIManager.getApp_adShowStatus() == 1 && !APIManager.getInstance(currentActivity).getQureka())
                     APIManager.getInstance(currentActivity).showOpenCall(currentActivity, this::onState);
@@ -75,9 +72,6 @@ public abstract class AppClass extends Application
             if (aClass.getName().equalsIgnoreCase(substring)) {
                 return false;
             }
-        }
-        if (DisconnectVPNActivity.class.getName().equalsIgnoreCase(substring)) {
-            return false;
         }
         if (classes.size() > 0) {
             for (Class aClass : classes) {

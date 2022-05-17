@@ -160,7 +160,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
-                            android:background="@drawable/button_bg"
+                            android:background="@drawable/bg_solid"
                             android:gravity="center"
                             android:padding="13dp"
                             android:textAllCaps="true"

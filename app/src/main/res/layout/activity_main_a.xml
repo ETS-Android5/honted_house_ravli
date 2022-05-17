@@ -12,11 +12,6 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/iVPN"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
 
         <Button
             android:id="@+id/btnRate"
@@ -74,40 +69,4 @@
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
-    <com.google.android.material.circularreveal.CircularRevealRelativeLayout
-        android:id="@+id/rootViewGuide"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:visibility="gone">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/layoutGuideVPN"
-            android:background="#9D000000" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp">
-
-            <FrameLayout
-                android:id="@+id/layoutGuideVPN"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/guideVpn"
-                android:layout_width="80dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="26dp"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/guide" />
-
-        </RelativeLayout>
-
-    </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 </FrameLayout>
