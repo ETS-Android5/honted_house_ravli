@@ -5,21 +5,10 @@ This is AdModule for Aani brothers infotech team members.
 
 # Setup
 
-This library requires `minSdkVersion` to `24` or above.
+This library requires `minSdkVersion` to `19` or above.
 
-## Step #1. Add this line ```gradle.properties``` file
 
-```android.bundle.enableUncompressedNativeLibs=false```
-
-and Add below line `application` tag in `AndroidManifest.xml`
-```
-android:extractNativeLibs="true"
-tools:replace="android:extractNativeLibs"
-```
-
-android.bundle.enableUncompressedNativeLibs=false
-
-## Step #2. Add the JitPack repository to your build file
+## Step #1. Add the JitPack repository to your build file
 
 ```gradle
 allprojects {
@@ -33,7 +22,7 @@ allprojects {
 }
 ```
 
-## Step #3. Add the dependency.
+## Step #2. Add the dependency.
 ![Release](https://jitpack.io/v/Aanibrothers-Infotech/honted_house_ravli.svg)
 
 
@@ -43,7 +32,7 @@ dependencies {
 }
 ```
 
-## Step #4. Initialization.
+## Step #3. Initialization.
 ### Splash Activity
 Extend as ```BaseAdsActivity``` and call below method in ```onCreate()```.
 ```java
